@@ -37,10 +37,53 @@
                 CornerRadius="0 5 5 0"
                 BorderBrush="Gray">
 
-                <ListView>
-                    
-                </ListView>
-                
+                <DataGrid   
+                    Grid.Row="2" 
+                    ItemsSource="{Binding DataStockList}"
+                    SelectedItem="{Binding CurrentDataStock}"
+                    HorizontalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    AutoGenerateColumns="False">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Номер" Binding="{Binding Path=IdItem}"/>
+                        <DataGridTextColumn Header="Наименование" Binding="{Binding Path=NameItem}"/>
+                        <DataGridTextColumn Header="Ед.измер." Binding="{Binding Path=UnitMeasure}"/>
+                        <DataGridTextColumn Header="Остаток" Binding="{Binding Path=RemainingStock}"/>
+                        <DataGridTextColumn Header="Срок годности" Binding="{Binding Path=ExpirationDate, StringFormat=dd-MM-yyyy}"/>
+                        <DataGridTextColumn Header="Дата поступления" Binding="{Binding Path=DateReceipt, StringFormat=dd-MM-yyyy}"/>
+                        <DataGridTextColumn Header="Дата перемещения на пост" Binding="{Binding Path=DateMove, StringFormat=dd-MM-yyyy}"/>
+                    </DataGrid.Columns>
+                    <!--<ListView.Resources>
+
+                        <DataTemplate x:Key="DefaultTemplateItem">
+
+                            
+
+                        </DataTemplate>
+
+                    </ListView.Resources>-->
+
+                    <!--<ListView.ItemContainerStyle>
+
+                        <Style TargetType="ListViewItem">
+
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            --><!--<Setter Property="ContentTemplate" Value="{StaticResource DefaultTemplateItem}"/>--><!--
+
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+
+                        </Style>
+
+                    </ListView.ItemContainerStyle>-->
+
+                </DataGrid>
+
             </Border>
 
         </Grid>

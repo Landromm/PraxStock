@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PraxStock.Model.OtherModel;
-internal class MainListItems
+public class MainListItems
 {
 	public int IdItem { get; set; }
 
@@ -13,5 +13,11 @@ internal class MainListItems
 
 	public string? UnitMeasure { get; set; }
 
+	public double? RemainingStock { get; set; }
 
+	public DateOnly ExpirationDate { get; set; }
+
+	public DateOnly DateReceipt { get; set; }
+
+	public DateOnly DateMove { get; set; }
 }
