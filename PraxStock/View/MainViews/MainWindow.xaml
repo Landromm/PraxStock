@@ -33,7 +33,7 @@
                 Grid.Row="1"
                 Grid.RowSpan="2"
                 Grid.Column="0"
-                Grid.ColumnSpan="3">
+                Grid.ColumnSpan="4">
 
                 <TabItem>
                     <TabItem.Header>
@@ -101,7 +101,7 @@
 
                         <!--Таблица-список.-->
                         <Border
-                            Grid.ColumnSpan="4"
+                            Grid.ColumnSpan="3"
                             Grid.Row="1"
                             Grid.RowSpan="2"
                             BorderThickness="0 2 2 2"
@@ -244,7 +244,7 @@
 
                         <!--Таблица-список.-->
                         <Border
-        Grid.ColumnSpan="4"
+        Grid.ColumnSpan="3"
         Grid.Row="1"
         Grid.RowSpan="2"
         BorderThickness="0 2 2 2"
@@ -387,7 +387,7 @@
 
                         <!--Таблица-список.-->
                         <Border
-        Grid.ColumnSpan="4"
+        Grid.ColumnSpan="3"
         Grid.Row="1"
         Grid.RowSpan="2"
         BorderThickness="0 2 2 2"
