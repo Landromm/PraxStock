@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace PraxStock.ViewModel.MainViewModel;
-public class MainViewModel : DialogViewModel
+internal class MainViewModel : DialogViewModel
 {
 	private readonly IUserDialog _userDialog = null!;
 
@@ -36,18 +36,18 @@ public class MainViewModel : DialogViewModel
 			new MainListItems()
 			{
 				IdItem = 1,
-				NameItem = "Аспирин",
+				Name = "Аспирин",
 				UnitMeasure = "уп.",
-				RemainingStock = 100.5,
+				UnitCount = 100.5,
 				ExpirationDate = new DateOnly(2024, 12, 31),
 				DateReceipt = new DateOnly(2024, 06, 05)
 			},
 			new MainListItems()
 			{
 				IdItem = 2,
-				NameItem = "Перчатки",
+				Name = "Перчатки",
 				UnitMeasure = "уп.",
-				RemainingStock = 5.5,
+				UnitCount = 5.5,
 				ExpirationDate = new DateOnly(2026, 12, 31),
 				DateReceipt = new DateOnly(2024, 06, 05),
 				DateMove = new DateOnly(2024, 09, 09)
@@ -55,9 +55,9 @@ public class MainViewModel : DialogViewModel
 			new MainListItems()
 			{
 				IdItem = 3,
-				NameItem = "Иглы",
+				Name = "Иглы",
 				UnitMeasure = "шт.",
-				RemainingStock = 563.0,
+				UnitCount = 563.0,
 				ExpirationDate = new DateOnly(2025, 12, 31),
 				DateReceipt = new DateOnly(2024, 08, 01),
 				DateMove = new DateOnly(2024, 09, 09)
