@@ -27,7 +27,6 @@ internal class MainViewModel : DialogViewModel
 		}
 	}
 
-
 	public MainViewModel(IUserDialog userDialog)
 	{
 		_userDialog = userDialog;
@@ -61,7 +60,7 @@ internal class MainViewModel : DialogViewModel
 				ExpirationDate = new DateOnly(2025, 12, 31),
 				DateReceipt = new DateOnly(2024, 08, 01),
 				DateMove = new DateOnly(2024, 09, 09)
-			},
+			}
 		];
 	}
 
@@ -82,6 +81,26 @@ internal class MainViewModel : DialogViewModel
 			_userDialog.OpenSettingsWindow();
 		});
 	}
+
+
+	#region Command OpenItemsListWindowCommand - Открытие окна отображения и редактирования списка основных позиций.
+
+	/// <summary>Открытие окна отображения и редактирования списка основных позиций.</summary>
+	private LambdaCommand? _OpenItemsListWindowCommand;
+
+	/// <summary>Открытие окна отображения и редактирования списка основных позиций.</summary>
+	public ICommand OpenItemsListWindowCommand => _OpenItemsListWindowCommand ??= new(ExecutedOpenItemsListWindowCommand);
+
+	/// <summary>Логика выполнения - Открытие окна отображения и редактирования списка основных позиций.</summary>
+	private void ExecutedOpenItemsListWindowCommand()
+	{
+		Application.Current.Dispatcher.Invoke(() =>
+		{
+			_userDialog.OpenItemsListWindow();
+		});
+	}
+	#endregion
+
 	#endregion
 	#endregion
 

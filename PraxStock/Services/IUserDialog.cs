@@ -9,4 +9,5 @@ public interface IUserDialog
 {
 	void OpenMainWindow();
 	void OpenSettingsWindow();
+	void OpenItemsListWindow();
 }

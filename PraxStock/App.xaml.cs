@@ -2,7 +2,9 @@
 using PraxStock.Services;
 using PraxStock.Services.Implementations;
 using PraxStock.View.MainViews;
+using PraxStock.View.SecondViews;
 using PraxStock.ViewModel.MainViewModel;
+using PraxStock.ViewModel.SecondViewModel;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -24,6 +26,7 @@ public partial class App
 
 		services.AddSingleton<MainViewModel>();
 		services.AddScoped<SettingsViewModel>();
+		services.AddScoped<ItemsListViewModel>();
 
 		services.AddSingleton<IUserDialog, UserDialogServices>();
 
@@ -42,6 +45,17 @@ public partial class App
 				var scope = s.CreateScope();
 				var model = s.GetRequiredService<SettingsViewModel>();
 				var window = new SettingsWindow { DataContext = model };
+				model.DialogComplete += (_, _) => window.Close();
+				window.Closed += (_, _) => scope.Dispose();
+
+				return window;
+			});
+		services.AddTransient(
+			s =>
+			{
+				var scope = s.CreateScope();
+				var model = s.GetRequiredService<ItemsListViewModel>();
+				var window = new ItemsListView { DataContext = model };
 				model.DialogComplete += (_, _) => window.Close();
 				window.Closed += (_, _) => scope.Dispose();
 

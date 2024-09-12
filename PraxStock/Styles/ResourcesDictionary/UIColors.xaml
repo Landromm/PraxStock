@@ -17,6 +17,7 @@
     <SolidColorBrush x:Key="BorderColor1Default" Color="#094D74"/>
     <SolidColorBrush x:Key="BorderColor1Dark" Color="#3D3D3D"/>
     <!--Color Palette-->
+    <SolidColorBrush x:Key="PraxixColor" Color="#73C0C8"/>
     <SolidColorBrush x:Key="color1Default" Color="#D35A5A"/>
     <SolidColorBrush x:Key="color2Default" Color="#FF0000"/>
     <SolidColorBrush x:Key="color3Default" Color="#71A05A"/>
@@ -30,6 +31,19 @@
     <SolidColorBrush x:Key="color4Dark" Color="#3AAF00" Opacity="0.7"/>
     <SolidColorBrush x:Key="color5Dark" Color="#FFE4A2"/>
     <SolidColorBrush x:Key="color6Dark" Color="#FFDA80"/>
+    <SolidColorBrush x:Key="color1" Color="#E285DE"/>
+    <SolidColorBrush x:Key="color2" Color="#784DFD"/>
+    <SolidColorBrush x:Key="color3" Color="#4ADAEC"/>
+    <SolidColorBrush x:Key="color4" Color="#FB539B"/>
+    <SolidColorBrush x:Key="color5" Color="#7E82FC"/>
+    <SolidColorBrush x:Key="color6" Color="#FFC047"/>
+    <SolidColorBrush x:Key="color7" Color="#EF6C96"/>
+    <SolidColorBrush x:Key="color8" Color="#78A3FC"/>
+    <SolidColorBrush x:Key="color9" Color="#07F3C0"/>
+    <SolidColorBrush x:Key="color10" Color="#FBA1AA"/>
+    <SolidColorBrush x:Key="color11" Color="#e8e1ed"/>
+    <SolidColorBrush x:Key="color12" Color="#302f2f"/>
+    <SolidColorBrush x:Key="color13" Color="#4dde43"/>
 
     <!--Font Colors-->
     <SolidColorBrush x:Key="mainFontColorDefault" Color="#CFDAEC"/>

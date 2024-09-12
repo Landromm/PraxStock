@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PraxStock.View.MainViews;
+using PraxStock.View.SecondViews;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,22 @@ internal class UserDialogServices : IUserDialog
 		window = _service.GetRequiredService<SettingsWindow>();
 		window.Closed += (_, _) => _settingsWindow = null;
 		_settingsWindow = window;
+		window.Show();
+	}
+
+	//Открытие окна просмотра и радактирования списка основных позиций.
+	private ItemsListView? _itemsListWindow = null;
+	public void OpenItemsListWindow()
+	{
+		if(_itemsListWindow is { } window) 
+		{
+			window.Show();
+			return;
+		}
+
+		window = _service.GetRequiredService<ItemsListView>();
+		window.Closed += (_, _) => _itemsListWindow = null;
+		_itemsListWindow = window;
 		window.Show();
 	}
 
