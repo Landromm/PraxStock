@@ -212,7 +212,8 @@
                     Height="30"
                     Width="100"
                     Content="Сохранить"
-                    Margin="0 30 0 5" RenderTransformOrigin="0.52,-0.001"/>
+                    Margin="0 30 0 5" RenderTransformOrigin="0.52,-0.001"
+                    Command="{Binding AddItemCommand}"/>
 
                 <Button
                     Height="30"

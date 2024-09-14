@@ -80,6 +80,30 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 
 
+		#region Command AddItemCommand - Добавление новой позиции.
+
+		///<summary>Добавление новой позиции. - поле.</summary>
+		private LambdaCommand? _AddItemCommand;
+
+		///<summary>Добавление новой позиции. - Реализация интерфейса</summary>
+		public ICommand AddItemCommand => _AddItemCommand ??= new(ExecuteAddItemCommand);
+
+		///<summary>Логикак выполнения - Добавление новой позиции</summary>
+		private void ExecuteAddItemCommand()
+		{
+			if(NameItemList != null && UnitMeasureList != null)
+			{
+				_repositoriesDB.AddItemsList(NameItemList, UnitMeasureList);
+				MainItemsList.Clear();
+				NameItemList = "";
+				UnitMeasureList = "";
+				MainItemsList = _repositoriesDB.GetAllItemsList();
+			}
+		}
+		#endregion
+
+
+
 		#region Command ResetAddFieldCommand - Очистка полей для добавления новой позиции.
 
 		///<summary>Очистка полей для добавления новой позиции. - поле.</summary>
