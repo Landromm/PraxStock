@@ -6,10 +6,9 @@
         xmlns:local="clr-namespace:PraxStock.View.SecondViews" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
         Title="ItemsListView"
-        Height="400"
-        MaxHeight="550"
-        Width="400"
-        MaxWidth="550"
+        Height="430"
+        Width="420"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
     <Grid>
@@ -21,14 +20,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="200"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--Поисковая строка-->
         <StackPanel 
             Grid.Column="0"
-            Grid.ColumnSpan="2"
             Grid.Row="0"
             Orientation="Horizontal"
             VerticalAlignment="Center"
@@ -45,7 +43,7 @@
                 Text="{Binding SearchMainList, UpdateSourceTrigger=PropertyChanged}"
                 FontSize="13"
                 Height="24"
-                Width="180"
+                Width="150"
                 Background="Transparent"
                 FontWeight="Medium"
                 FontFamily="Montserrat"
@@ -54,26 +52,31 @@
                 BorderBrush="Gray"
                 BorderThickness="0,0,0,2"
                 VerticalContentAlignment="Center"
-                Margin="0,0,0,0"/>
-
-            <Border Padding="5" Background="Transparent">
-                <ComboBox 
-                    Grid.Column="1" 
-                    Height="25" 
-                    Width="150"
-                    ItemsSource="{Binding ItemCBMainList}"
-                    SelectedItem="{Binding SelectedSearchMainList}"
-                    SelectedIndex="3">
-                </ComboBox>
-            </Border>
+                Margin="0,0,5,0"/>
 
         </StackPanel>
+
+        <Border
+            Grid.Column="1"
+            Grid.Row="0"
+            VerticalAlignment="Center"
+            Margin="5 0"
+            Padding="5" 
+            Background="Transparent">
+            <ComboBox 
+                Grid.Column="1" 
+                Height="25" 
+                ItemsSource="{Binding ItemCBMainList}"
+                SelectedItem="{Binding SelectedSearchMainList}"
+                SelectedIndex="3">
+            </ComboBox>
+        </Border>
 
         <!--Таблица-список.-->
         <Border
             Grid.ColumnSpan="2"
             Grid.Row="1"
-            BorderThickness="2"
+            BorderThickness="0"
             Margin="2"
             CornerRadius="5"
             BorderBrush="{StaticResource PraxixColor}">
@@ -81,20 +84,23 @@
             <ListView   
                 Grid.Row="2" 
                 Margin="5"
-                ItemsSource="{Binding DataStockList}"
+                Width="375"
+                ItemsSource="{Binding MainItemsList}"
                 SelectedItem="{Binding CurrentDataStockList}"
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
                 AlternationCount="2"
-                d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True">
+                d:ItemsSource="{d:SampleData ItemCount=5}" 
+                HorizontalContentAlignment="Center" 
+                Grid.IsSharedSizeScope="True">
 
                 <ListView.View>
                     <GridView>
                         <GridViewColumn 
                             DisplayMemberBinding="{Binding Path=IdItem}"
-                            Header="Номер позиции"/>
+                            Header="# Позиции"/>
                         <GridViewColumn 
-                            DisplayMemberBinding="{Binding Path=Name}"
+                            DisplayMemberBinding="{Binding Path=NameItem}"
                             Header="Наименование"/>
                         <GridViewColumn 
                             DisplayMemberBinding="{Binding Path=UnitMeasure}"
@@ -159,8 +165,61 @@
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Grid.Row="3">
-            
-            
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                Grid.Column="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="15 5">
+
+                <Label
+                    Content="Наименование"/>
+                
+                <TextBox
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="5 0"
+                    Height="30"
+                    Width="200"/>
+                
+                <Label
+                    Content="Еденица измерения"/>
+                
+                <TextBox
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="5 0"
+                    Height="30"
+                    Width="200"/>
+
+            </StackPanel>
+
+            <StackPanel
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top">
+
+                <Button
+                    Height="30"
+                    Width="100"
+                    Content="Сохранить"
+                    Margin="0 30 0 5" RenderTransformOrigin="0.52,-0.001"/>
+
+                <Button
+                    Height="30"
+                    Width="100"
+                    Content="Очистить"
+                    Margin="0 20 0 5"/>
+
+
+            </StackPanel>
             
         </Grid>
 
