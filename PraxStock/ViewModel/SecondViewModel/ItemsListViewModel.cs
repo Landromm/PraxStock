@@ -1,6 +1,7 @@
 ﻿using Microsoft.Web.WebView2.Core;
 using PraxStock.Communication.Repositories;
 using PraxStock.Model.DBModels;
+using PraxStock.View.Commands;
 using PraxStock.ViewModel.Base;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PraxStock.ViewModel.SecondViewModel
 {
@@ -31,7 +33,6 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
-
 
 		#region NameItemList : string -  Наименование позиции.
 
@@ -77,6 +78,26 @@ namespace PraxStock.ViewModel.SecondViewModel
 		{
 			MainItemsList = _repositoriesDB.GetAllItemsList();
 		}
+
+
+		#region Command ResetAddFieldCommand - Очистка полей для добавления новой позиции.
+
+		///<summary>Очистка полей для добавления новой позиции. - поле.</summary>
+		private LambdaCommand? _ResetAddFieldCommand;
+
+		///<summary>Очистка полей для добавления новой позиции. - Реализация интерфейса</summary>
+		public ICommand ResetAddFieldCommand => _ResetAddFieldCommand ??= new(ExecuteResetAddFieldCommand);
+
+		///<summary>Логикак выполнения - Очистка полей для добавления новой позиции</summary>
+		private void ExecuteResetAddFieldCommand()
+		{
+			if (NameItemList != null)
+				NameItemList = "";
+			if (UnitMeasureList != null)
+				UnitMeasureList = "";
+		}
+		#endregion
+
 
 	}
 }
