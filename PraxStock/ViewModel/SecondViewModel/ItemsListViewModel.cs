@@ -17,7 +17,6 @@ namespace PraxStock.ViewModel.SecondViewModel
     {
 		private readonly IAdminRepositories _repositoriesDB = null!;
 
-
 		#region ItemCBMainList : List<string> - Перечень параметров поиска.
 
 		/// <summary>Перечень параметров поиска. - поле.</summary>
@@ -143,21 +142,21 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
-
-
 		public ItemsListViewModel()
 		{
 			_repositoriesDB = new AdminRepositories();
-			ItemCBMainList = new List<string>(){ "№ Позиции", "Наименование", "Ед.измер." };
-			SelectedSearchMainList = "Наименование";
 			InicializationMain();
 		}
 
+		/// <summary>
+		/// Инициализация основных параметров.
+		/// </summary>
 		private void InicializationMain()
 		{
 			MainItemsList = _repositoriesDB.GetAllItemsList();
+			ItemCBMainList = new List<string>() { "№ Позиции", "Наименование", "Ед.измер." };
+			SelectedSearchMainList = "Наименование";
 		}
-
 
 		#region Command AddItemCommand - Добавление новой позиции.
 
