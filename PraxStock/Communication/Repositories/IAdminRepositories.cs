@@ -11,8 +11,12 @@ namespace PraxStock.Communication.Repositories
     interface IAdminRepositories
     {
         ObservableCollection<Item> GetAllItemsList();
+        ObservableCollection<Item> GetBySearchNumberItem(string searchNumber);
+        ObservableCollection<Item> GetBySearchNameItem(string searchName);
+        ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure);
         void AddItemsList(string nameItem, string unitMeasure);
         void ChangedItemList(string nameItem, string unitMeasure, int idItem);
+
 
 	}
 }

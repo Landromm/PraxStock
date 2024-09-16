@@ -68,7 +68,7 @@
                 Height="25" 
                 ItemsSource="{Binding ItemCBMainList}"
                 SelectedItem="{Binding SelectedSearchMainList}"
-                SelectedIndex="3">
+                SelectedIndex="1">
             </ComboBox>
         </Border>
 

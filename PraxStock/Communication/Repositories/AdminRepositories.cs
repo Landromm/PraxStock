@@ -1,4 +1,5 @@
-﻿using PraxStock.Model.DBModels;
+﻿using Microsoft.EntityFrameworkCore;
+using PraxStock.Model.DBModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -46,6 +47,54 @@ namespace PraxStock.Communication.Repositories
 				contex.Update(item);
 				contex.SaveChanges();
 			}
+		}
+
+		public ObservableCollection<Item> GetBySearchNumberItem(string searchNumber)
+		{
+			ObservableCollection<Item> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var selectSearchCollection = from item in context.Items
+											 where EF.Functions.Like(item.IdItem.ToString(), searchNumber + "%")
+											 select item;
+
+				foreach (var item in selectSearchCollection)
+					resultCollection.Add(item);
+			}
+
+			return resultCollection;
+		}
+
+		public ObservableCollection<Item> GetBySearchNameItem(string searchName)
+		{
+			ObservableCollection<Item> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var selectSearchCollection = from item in context.Items
+											 where EF.Functions.Like(item.NameItem, searchName + "%")
+											 select item;
+
+				foreach (var item in selectSearchCollection)
+					resultCollection.Add(item);
+			}
+
+			return resultCollection;
+		}
+
+		public ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure)
+		{
+			ObservableCollection<Item> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var selectSearchCollection = from item in context.Items
+											 where EF.Functions.Like(item.UnitMeasure, searchUnitMeasure + "%")
+											 select item;
+
+				foreach (var item in selectSearchCollection)
+					resultCollection.Add(item);
+			}
+
+			return resultCollection;
 		}
 	}
 }
