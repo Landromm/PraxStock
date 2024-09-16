@@ -34,14 +34,48 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="3"
                 HorizontalAlignment="Left"
-                Margin="10 5">
+                Margin="10 5" Cursor="Hand">
 
                 <Button 
                     Style="{StaticResource iconButtonCatalog}"
                     Tag="{StaticResource color2}"
                     Command="{Binding OpenItemsListWindowCommand}">
 
-                    <fa:IconImage Icon="FileAlt" 
+                    <fa:IconImage 
+                        Icon="FileMedical" 
+                        Style="{StaticResource iconButtonCatalogIcon}"/>
+
+                </Button>
+
+                <Button 
+                    Style="{StaticResource iconButtonCatalog}"
+                    Tag="{StaticResource color2}"
+                    Command="{Binding OpenReceiptListWindowCommand}">
+
+                    <fa:IconImage 
+                        Icon="BoxOpen" 
+                        Style="{StaticResource iconButtonCatalogIcon}"/>
+
+                </Button>
+
+                <Button 
+                    Style="{StaticResource iconButtonCatalog}"
+                    Tag="{StaticResource color2}"
+                    Command="{Binding OpenMoveListWindowCommand}">
+
+                    <fa:IconImage 
+                        Icon="ShareFromSquare" 
+                        Style="{StaticResource iconButtonCatalogIcon}"/>
+
+                </Button>
+
+                <Button 
+                    Style="{StaticResource iconButtonCatalog}"
+                    Tag="{StaticResource color2}"
+                    Command="{Binding RefreshMainCommand}">
+
+                    <fa:IconImage 
+                        Icon="Refresh" 
                         Style="{StaticResource iconButtonCatalogIcon}"/>
 
                 </Button>
@@ -373,6 +407,8 @@
                             </ListView>
 
                         </Border>
+                        
+                        
 
                     </Grid>
                     
@@ -472,7 +508,7 @@
                                             Header="Ед.измер."/>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=UnitCount}"
-                                            Header="Остаток"/>
+                                            Header="Количество"/>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=ExpirationDate, StringFormat=dd-MM-yyyy}"
                                             Header="Срок годности"/>
