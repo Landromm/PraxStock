@@ -17,7 +17,30 @@ namespace PraxStock.ViewModel.SecondViewModel
     {
 		private readonly IAdminRepositories _repositoriesDB = null!;
 
-		#region ObservableCollection<Item> : Item -  Коллекция основных элементов.
+		#region Item : CurrentDataStockList -  Коллекция основных элементов.
+
+		///<summary>Коллекция основных элементов. - поле.</summary>
+		private Item _CurrentDataStockList;
+
+		///<summary>Коллекция основных элементов. - свойство.</summary>
+		public Item CurrentDataStockList
+		{
+			get => _CurrentDataStockList;
+			set
+			{
+				_CurrentDataStockList = value;
+				OnPropertyChanged(nameof(CurrentDataStockList));
+				if(_CurrentDataStockList != null)
+				{
+					NameItemList = _CurrentDataStockList.NameItem;
+					UnitMeasureList = _CurrentDataStockList.UnitMeasure;
+				}
+			}
+		}
+		#endregion
+
+
+		#region ObservableCollection<Item> : MainItemsList -  Коллекция основных элементов.
 
 		///<summary>Коллекция основных элементов. - поле.</summary>
 		private ObservableCollection<Item> _MainItemsList;
@@ -33,6 +56,8 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
+
+
 
 		#region NameItemList : string -  Наименование позиции.
 
@@ -97,12 +122,11 @@ namespace PraxStock.ViewModel.SecondViewModel
 				MainItemsList.Clear();
 				NameItemList = "";
 				UnitMeasureList = "";
+				CurrentDataStockList = new Item();
 				MainItemsList = _repositoriesDB.GetAllItemsList();
 			}
 		}
 		#endregion
-
-
 
 		#region Command ResetAddFieldCommand - Очистка полей для добавления новой позиции.
 
@@ -119,6 +143,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 				NameItemList = "";
 			if (UnitMeasureList != null)
 				UnitMeasureList = "";
+			CurrentDataStockList = new Item();
 		}
 		#endregion
 

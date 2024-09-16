@@ -23,5 +23,10 @@ namespace PraxStock.View.SecondViews
         {
             InitializeComponent();
         }
+
+		private void ButtonReset_Click(object sender, RoutedEventArgs e)
+		{
+            MainListItem.SelectedItem = null;
+        }
     }
 }
