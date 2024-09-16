@@ -116,9 +116,18 @@ namespace PraxStock.ViewModel.SecondViewModel
 		///<summary>Логикак выполнения - Добавление новой позиции</summary>
 		private void ExecuteAddItemCommand()
 		{
-			if(NameItemList != null && UnitMeasureList != null)
+			if(NameItemList != null && UnitMeasureList != null && CurrentDataStockList is null)
 			{
 				_repositoriesDB.AddItemsList(NameItemList, UnitMeasureList);
+				MainItemsList.Clear();
+				NameItemList = "";
+				UnitMeasureList = "";
+				CurrentDataStockList = new Item();
+				MainItemsList = _repositoriesDB.GetAllItemsList();
+			}
+			if(NameItemList != null && UnitMeasureList != null && CurrentDataStockList is not null)
+			{
+				_repositoriesDB.ChangedItemList(NameItemList, UnitMeasureList, CurrentDataStockList.IdItem);
 				MainItemsList.Clear();
 				NameItemList = "";
 				UnitMeasureList = "";

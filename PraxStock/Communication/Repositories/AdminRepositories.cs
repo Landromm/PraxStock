@@ -32,5 +32,20 @@ namespace PraxStock.Communication.Repositories
 				contex.SaveChanges();
 			}
 		}
+
+		public void ChangedItemList(string nameItem, string unitMeasure, int idItem)
+		{
+			using var contex = new PraxixSkladContext();
+			{
+				var item = new Item()
+				{
+					IdItem = idItem,
+					NameItem = nameItem,
+					UnitMeasure = unitMeasure
+				};
+				contex.Update(item);
+				contex.SaveChanges();
+			}
+		}
 	}
 }

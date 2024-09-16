@@ -93,7 +93,8 @@
                 AlternationCount="2"
                 d:ItemsSource="{d:SampleData ItemCount=5}" 
                 HorizontalContentAlignment="Center" 
-                Grid.IsSharedSizeScope="True">
+                Grid.IsSharedSizeScope="True" 
+                SelectionChanged="MainListItem_SelectionChanged">
 
                 <ListView.View>
                     <GridView>
@@ -210,9 +211,10 @@
                 VerticalAlignment="Top">
 
                 <Button
+                    x:Name="btnSavaAndAdd"
                     Height="30"
                     Width="100"
-                    Content="Сохранить"
+                    Content="Добавить"
                     Margin="0 30 0 5" RenderTransformOrigin="0.52,-0.001"
                     Command="{Binding AddItemCommand}"/>
 

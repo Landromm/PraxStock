@@ -12,5 +12,7 @@ namespace PraxStock.Communication.Repositories
     {
         ObservableCollection<Item> GetAllItemsList();
         void AddItemsList(string nameItem, string unitMeasure);
-    }
+        void ChangedItemList(string nameItem, string unitMeasure, int idItem);
+
+	}
 }

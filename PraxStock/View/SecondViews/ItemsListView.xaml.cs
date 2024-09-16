@@ -27,6 +27,12 @@ namespace PraxStock.View.SecondViews
 		private void ButtonReset_Click(object sender, RoutedEventArgs e)
 		{
             MainListItem.SelectedItem = null;
+            btnSavaAndAdd.Content = "Добавить";
         }
-    }
+
+		private void MainListItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			btnSavaAndAdd.Content = "Сохранить";
+		}
+	}
 }
