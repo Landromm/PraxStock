@@ -27,6 +27,8 @@ public partial class App
 		services.AddSingleton<MainViewModel>();
 		services.AddScoped<SettingsViewModel>();
 		services.AddScoped<ItemsListViewModel>();
+		services.AddSingleton<ReceiptAddViewModel>();
+		services.AddSingleton<MoveAddViewModel>();
 
 		services.AddSingleton<IUserDialog, UserDialogServices>();
 
@@ -58,6 +60,24 @@ public partial class App
 				var window = new ItemsListView { DataContext = model };
 				model.DialogComplete += (_, _) => window.Close();
 				window.Closed += (_, _) => scope.Dispose();
+
+				return window;
+			});
+		services.AddTransient(
+			s =>
+			{
+				var model = s.GetRequiredService<ReceiptAddViewModel>();
+				var window = new ReceiptAddView { DataContext = model };
+				model.DialogComplete += (_, _) => window.Close();
+
+				return window;
+			});
+		services.AddTransient(
+			s =>
+			{
+				var model = s.GetRequiredService<MoveAddViewModel>();
+				var window = new MoveAddView { DataContext = model };
+				model.DialogComplete += (_, _) => window.Close();
 
 				return window;
 			});

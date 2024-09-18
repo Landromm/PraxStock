@@ -11,6 +11,8 @@ public partial class MoveInPost
 
     public double QuantityMove { get; set; }
 
+    public string? NamePost { get; set; }
+
     public DateOnly DateMove { get; set; }
 
     public virtual Item IdItemNavigation { get; set; } = null!;

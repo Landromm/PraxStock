@@ -65,5 +65,35 @@ internal class UserDialogServices : IUserDialog
 		window.Show();
 	}
 
+	//Открытие окна добавления поступления.
+	private ReceiptAddView? _receiptAddView = null;
+	public void OpenAddReceiptWindow()
+	{
+		if(_receiptAddView is { } window)
+		{
+			window.ShowDialog();
+			return;
+		}
+		window = _service.GetRequiredService<ReceiptAddView>();
+		window.Closed += (_, _) => _receiptAddView = null;
+		_receiptAddView = window;
+		window.ShowDialog();
+	}
+
+	//Открытие окна добавления перемещения позиций.
+	private MoveAddView? _moveAddView = null;
+	public void OpenMoveAddWindow()
+	{
+		if(_moveAddView is { } window)
+		{
+			window.ShowDialog();
+			return;
+		}
+		window = _service.GetRequiredService<MoveAddView>();
+		window.Closed += (_, _) => _moveAddView = null;
+		_moveAddView = window;
+		window.ShowDialog();
+	}
+
 
 }

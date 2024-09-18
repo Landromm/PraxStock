@@ -11,7 +11,7 @@ public partial class Receipt
 
     public double QuantityReceipt { get; set; }
 
-    public DateOnly ExprirationDate { get; set; }
+    public DateOnly? ExprirationDate { get; set; }
 
     public DateOnly DateReceipt { get; set; }
 

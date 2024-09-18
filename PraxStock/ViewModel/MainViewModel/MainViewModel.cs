@@ -81,7 +81,7 @@ internal class MainViewModel : DialogViewModel
 			_userDialog.OpenSettingsWindow();
 		});
 	}
-
+	#endregion
 
 	#region Command OpenItemsListWindowCommand - Открытие окна отображения и редактирования списка основных позиций.
 
@@ -101,6 +101,55 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 
+	#region Command OpenReceiptListWindowCommand - Открытие окна добавления поступления.
+
+	/// <summary>Открытие окна добавления поступления.</summary>
+	private LambdaCommand? _OpenReceiptListWindowCommand;
+
+	/// <summary>Открытие окна добавления поступления.</summary>
+	public ICommand OpenReceiptListWindowCommand => _OpenReceiptListWindowCommand ??= new(ExecutedOpenReceiptListWindowCommand);
+
+	/// <summary>Логика выполнения - Открытие окна добавления поступления.</summary>
+	private void ExecutedOpenReceiptListWindowCommand()
+	{
+		Application.Current.Dispatcher.Invoke(() =>
+		{
+			_userDialog.OpenAddReceiptWindow();
+		});
+	}
+	#endregion
+
+	#region Command OpenMoveListWindowCommand - Открытие окна добавления перемещения позиции.
+
+	/// <summary>Открытие окна добавления перемещения позиции.</summary>
+	private LambdaCommand? _OpenMoveListWindowCommand;
+
+	/// <summary>Открытие окна добавления перемещения позиции.</summary>
+	public ICommand OpenMoveListWindowCommand => _OpenMoveListWindowCommand ??= new(ExecutedOpenMoveListWindowCommand);
+
+	/// <summary>Логика выполнения - Открытие окна добавления перемещения позиции.</summary>
+	private void ExecutedOpenMoveListWindowCommand()
+	{
+		Application.Current.Dispatcher.Invoke(() =>
+		{
+			_userDialog.OpenMoveAddWindow();
+		});
+	}
+	#endregion
+
+	#region Command RefreshMainCommand - Обновление всей информации во всех собирательных списках.
+
+	/// <summary>Обновление всей информации во всех собирательных списках.</summary>
+	private LambdaCommand? _RefreshMainCommand;
+
+	/// <summary>Обновление всей информации во всех собирательных списках.</summary>
+	public ICommand RefreshMainCommand => _RefreshMainCommand ??= new(ExecutedRefreshMainCommand);
+
+	/// <summary>Логика выполнения - Обновление всей информации во всех собирательных списках.</summary>
+	private void ExecutedRefreshMainCommand()
+	{
+
+	}
 	#endregion
 	#endregion
 

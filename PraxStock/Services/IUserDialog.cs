@@ -10,4 +10,6 @@ public interface IUserDialog
 	void OpenMainWindow();
 	void OpenSettingsWindow();
 	void OpenItemsListWindow();
+	void OpenAddReceiptWindow();
+	void OpenMoveAddWindow();
 }
