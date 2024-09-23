@@ -96,5 +96,18 @@ namespace PraxStock.Communication.Repositories
 
 			return resultCollection;
 		}
+
+		public List<string> GetAllNameItem()
+		{
+			var result = new List<string>();
+			using var context = new PraxixSkladContext();
+			{
+				result = context.Items
+					.Select(n =>  n.NameItem)
+					.ToList();
+			}
+
+			return result;
+		}
 	}
 }

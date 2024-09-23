@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PraxStock.View.SecondViews"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Поступление" 
         Height="300" 
@@ -17,12 +18,20 @@
             <Label
                 Content="Позиция:"/>
             <ComboBox
-                IsEditable="False"/>
+                IsEditable="False"
+                ItemsSource="{Binding NameItemList}"
+                SelectedItem="{Binding SelectedNameItem}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="DropDownOpened">
+                        <i:InvokeCommandAction Command="{Binding DropdownSelectionChanged}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
             <Label
                 Content="Наименование"/>
             <TextBox
                 IsEnabled="False"
-                Text="Analgin"/>
+                Text="{Binding NameItem}"/>
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -42,9 +51,9 @@
                         Content="Еденица измерения"/>
                     <TextBox
                         IsEnabled="False"
-                        Text="pc."/>
+                        Text="{Binding UnitMeasure}"/>
                 </StackPanel>
-                <StackPanel
+                <StackPanel 
                     Grid.Column="1"
                     Grid.Row="0"
                     Orientation="Vertical"
@@ -52,25 +61,27 @@
                     <Label
                         Content="Количество"/>
                     <TextBox 
-                        IsEnabled="False"
-                        Text="0"/>
+                        IsEnabled="True"
+                        Text="{Binding QuantityReceipt}"/>
                 </StackPanel>
-                <StackPanel
+                <StackPanel 
                     Grid.Column="0"
                     Grid.Row="1"
                     Margin="0 5 5 5">
                     <Label
                         Content="Срок годности (до):"/>
-                    <DatePicker/>
+                    <DatePicker
+                        SelectedDate="{Binding ExpirationDate}"/>
 
                 </StackPanel>
-                <StackPanel
+                <StackPanel 
                     Grid.Column="1"
                     Grid.Row="1"
                     Margin="5 5 0 5">
                     <Label
                         Content="Дата поступления:"/>
-                    <DatePicker/>
+                    <DatePicker
+                        SelectedDate="{Binding DateReceipt}"/>
 
                 </StackPanel>
             </Grid>
@@ -85,12 +96,14 @@
                     Content="Очистить"
                     Width="100"
                     Height="30"
-                    Margin="5 5 15 5"/>
+                    Margin="5 5 15 5"
+                    Command="{Binding ResetCommand}"/>
                 <Button
                     Content="Добавить"
                     Width="100"
                     Height="30"
-                    Margin="15 5 5 5"/>
+                    Margin="15 5 5 5"
+                    Command="{Binding AddReceiptCommand}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
