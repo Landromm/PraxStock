@@ -30,38 +30,6 @@ internal class MainViewModel : DialogViewModel
 	public MainViewModel(IUserDialog userDialog)
 	{
 		_userDialog = userDialog;
-		DataStockList =
-		[
-			new MainListItems()
-			{
-				IdItem = 1,
-				Name = "Аспирин",
-				UnitMeasure = "уп.",
-				UnitCount = 100.5,
-				ExpirationDate = new DateOnly(2024, 12, 31),
-				DateReceipt = new DateOnly(2024, 06, 05)
-			},
-			new MainListItems()
-			{
-				IdItem = 2,
-				Name = "Перчатки",
-				UnitMeasure = "уп.",
-				UnitCount = 5.5,
-				ExpirationDate = new DateOnly(2026, 12, 31),
-				DateReceipt = new DateOnly(2024, 06, 05),
-				DateMove = new DateOnly(2024, 09, 09)
-			},
-			new MainListItems()
-			{
-				IdItem = 3,
-				Name = "Иглы",
-				UnitMeasure = "шт.",
-				UnitCount = 563.0,
-				ExpirationDate = new DateOnly(2025, 12, 31),
-				DateReceipt = new DateOnly(2024, 08, 01),
-				DateMove = new DateOnly(2024, 09, 09)
-			}
-		];
 	}
 
 	#region Command's - Реализация комманд.
