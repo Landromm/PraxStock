@@ -71,7 +71,8 @@
                     <Label
                         Content="Срок годности (до):"/>
                     <DatePicker
-                        SelectedDate="{Binding ExpirationDate}"/>
+                        SelectedDate="{Binding ExpirationDate, UpdateSourceTrigger=PropertyChanged}"
+                        DisplayDate="{Binding ExpirationDate}"/>
 
                 </StackPanel>
                 <StackPanel 
@@ -81,7 +82,8 @@
                     <Label
                         Content="Дата поступления:"/>
                     <DatePicker
-                        SelectedDate="{Binding DateReceipt}"/>
+                        SelectedDate="{Binding DateReceipt, UpdateSourceTrigger=PropertyChanged}"
+                        DisplayDate="{Binding DateReceipt}"/>
 
                 </StackPanel>
             </Grid>

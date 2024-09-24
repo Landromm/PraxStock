@@ -124,10 +124,10 @@ namespace PraxStock.ViewModel.SecondViewModel
 		#region ExpirationDate : DateOnly - Срок годности.
 
 		/// <summary>Срок годности. - поле.</summary>
-		private DateOnly _ExpirationDate;
+		private DateTime _ExpirationDate;
 
 		/// <summary>Срок годности. - свойство.</summary>
-		public DateOnly ExpirationDate
+		public DateTime ExpirationDate
 		{	
 			get => _ExpirationDate;
 			set
@@ -141,10 +141,10 @@ namespace PraxStock.ViewModel.SecondViewModel
 		#region DateReceipt : DateOnly - Дата поступления.
 
 		/// <summary>Дата поступления. - поле.</summary>
-		private DateOnly _DateReceipt;
+		private DateTime _DateReceipt;
 
 		/// <summary>Дата поступления. - свойство.</summary>
-		public DateOnly DateReceipt
+		public DateTime DateReceipt
 		{
 			get => _DateReceipt;
 			set
@@ -192,17 +192,44 @@ namespace PraxStock.ViewModel.SecondViewModel
 			fullInfoItem.Name = NameItem;
 			fullInfoItem.UnitMeasure = UnitMeasure;
 			fullInfoItem.UnitCount = QuantityReceipt;
-			fullInfoItem.ExpirationDate = ExpirationDate;
-			fullInfoItem.DateReceipt = DateReceipt;
+			fullInfoItem.ExpirationDate = DateOnly.FromDateTime(ExpirationDate);
+			fullInfoItem.DateReceipt = DateOnly.FromDateTime(DateReceipt);
+
+			_repositoriesDB.AddReceiptItem(fullInfoItem);
+
+			NameItem = "";
+			UnitMeasure = "";
+			QuantityReceipt = 0;
 		}
 		#endregion
+
+		#region Command ResetCommand - Очистить форму для добавления нового поступления позиции.
+
+		/// <summary>Очистить форму для добавления нового поступления позиции.</summary>
+		private LambdaCommand? _ResetCommand;
+
+		/// <summary>Очистить форму для добавления нового поступления позиции.</summary>
+		public ICommand ResetCommand => _ResetCommand ??= new(ExecutedResetCommand);
+
+		/// <summary>Логика выполнения - Очистить форму для добавления нового поступления позиции.</summary>
+		private void ExecutedResetCommand()
+		{
+			NameItem = "";
+			UnitMeasure = "";
+			QuantityReceipt = 0;
+			ExpirationDate = DateTime.Now;
+			DateReceipt = DateTime.Now;
+		}
+		#endregion
+
 
 		private void InicializationMain()
 		{
 			NameItemList = _repositoriesDB.GetAllNameItem();
 			NameItemList = [];
 			ItemListCollection = [];
-			DateReceipt = DateOnly.FromDateTime(DateTime.Now);
+			ExpirationDate = DateTime.Now;
+			DateReceipt = DateTime.Now;
 		}
 	}
 }

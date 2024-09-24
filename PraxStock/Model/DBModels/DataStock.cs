@@ -13,5 +13,5 @@ public partial class DataStock
 
     public virtual Item IdItemNavigation { get; set; } = null!;
 
-    public virtual Receipt? Receipt { get; set; }
+    public virtual Receipt IdItemStockNavigation { get; set; } = null!;
 }

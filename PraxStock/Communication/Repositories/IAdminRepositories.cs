@@ -1,4 +1,5 @@
 ﻿using PraxStock.Model.DBModels;
+using PraxStock.Model.OtherModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +19,8 @@ namespace PraxStock.Communication.Repositories
         List<string> GetAllNameItem();
         void AddItemsList(string nameItem, string unitMeasure);
         void ChangedItemList(string nameItem, string unitMeasure, int idItem);
+
+        void AddReceiptItem(ReceiptListItem receiptListItem);
 
 
 	}

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PraxStock.Model.DBModels;
+using PraxStock.Model.OtherModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -108,6 +109,49 @@ namespace PraxStock.Communication.Repositories
 			}
 
 			return result;
+		}
+
+		public void AddReceiptItem(ReceiptListItem receiptListItem)
+		{
+			Receipt receipt = new();
+			DataStock dataStock = new();
+			using var context = new PraxixSkladContext();
+			{
+				var idItem = (from item in context.Items
+							  where item.NameItem == receiptListItem.Name
+							  select item.IdItem).First();
+
+				receipt = new Receipt()
+				{
+					IdItem = idItem,
+					QuantityReceipt = receiptListItem.UnitCount,
+					ExprirationDate = receiptListItem.ExpirationDate,
+					DateReceipt = receiptListItem.DateReceipt,
+				};
+
+
+				context.Receipts.Add(receipt);
+				context.SaveChanges();
+
+				using var context2 = new PraxixSkladContext();
+				{
+					var idStock = context.Receipts
+						.Where(id => id.IdItem == idItem)
+						.OrderBy(x => x.IdReceipt)
+						.Select(idS => idS.IdReceipt)
+						.LastOrDefault();
+
+					dataStock = new DataStock()
+					{
+						IdItemStock = idStock,
+						IdItem = idItem,
+						RemainingStock = receiptListItem.UnitCount
+					};
+
+					context.DataStocks.Add(dataStock);
+					context.SaveChanges();
+				}
+			}
 		}
 	}
 }

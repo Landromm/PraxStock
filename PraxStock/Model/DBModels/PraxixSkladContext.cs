@@ -27,7 +27,7 @@ public partial class PraxixSkladContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=ASUTP-RADKEVICH; Database=Praxix_Sklad; Integrated Security=True; TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=ASUTP-RADKEVICH\\MSSQL_RADKEVICH; Database=Praxix_Sklad; Integrated Security=True; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -46,6 +46,10 @@ public partial class PraxixSkladContext : DbContext
                 .HasForeignKey(d => d.IdItem)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_DataStock_Items");
+
+            entity.HasOne(d => d.IdItemStockNavigation).WithOne(p => p.DataStock)
+                .HasForeignKey<DataStock>(d => d.IdItemStock)
+                .HasConstraintName("FK_DataStock_Receipt");
         });
 
         modelBuilder.Entity<Item>(entity =>
@@ -81,20 +85,13 @@ public partial class PraxixSkladContext : DbContext
 
             entity.ToTable("Receipt");
 
-            entity.Property(e => e.IdReceipt)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("idReceipt");
+            entity.Property(e => e.IdReceipt).HasColumnName("idReceipt");
             entity.Property(e => e.IdItem).HasColumnName("idItem");
 
             entity.HasOne(d => d.IdItemNavigation).WithMany(p => p.Receipts)
                 .HasForeignKey(d => d.IdItem)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Receipt_Items1");
-
-            entity.HasOne(d => d.IdReceiptNavigation).WithOne(p => p.Receipt)
-                .HasForeignKey<Receipt>(d => d.IdReceipt)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Receipt_DataStock");
         });
 
         modelBuilder.Entity<WriteOff>(entity =>

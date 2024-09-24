@@ -15,7 +15,7 @@ public partial class Receipt
 
     public DateOnly DateReceipt { get; set; }
 
-    public virtual Item IdItemNavigation { get; set; } = null!;
+    public virtual DataStock? DataStock { get; set; }
 
-    public virtual DataStock IdReceiptNavigation { get; set; } = null!;
+    public virtual Item IdItemNavigation { get; set; } = null!;
 }

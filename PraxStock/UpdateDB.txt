@@ -1,0 +1,3 @@
+// Генерация модели из БД (DB model first): 
+// Scaffold-DbContext "Server=ASUTP-RADKEVICH\MSSQL_RADKEVICH; Database=Praxix_Sklad; Integrated Security=True; TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Model\DBModels
+// Scaffold-DbContext "Server=LANDROMM-ROG; Database=Praxix_Sklad; Integrated Security=True; TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Model\DBModels
