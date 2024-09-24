@@ -191,9 +191,6 @@
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=DateReceipt, StringFormat=dd-MM-yyyy}"
                                             Header="Дата поступления"/>
-                                        <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=DateMove, StringFormat=dd-MM-yyyy}"
-                                            Header="Дата перемещения на пост"/>
                                     </GridView>
                                 </ListView.View>
                                 <ListView.Resources>
@@ -510,11 +507,11 @@
                                             DisplayMemberBinding="{Binding Path=UnitCount}"
                                             Header="Количество"/>
                                         <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=ExpirationDate, StringFormat=dd-MM-yyyy}"
-                                            Header="Срок годности"/>
-                                        <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=DateMove, StringFormat=dd-MM-yyyy}"
                                             Header="Дата перемещения на пост"/>
+                                        <GridViewColumn 
+                                            DisplayMemberBinding="{Binding Path=NamePost}"
+                                            Header="Пост"/>
                                     </GridView>
                                 </ListView.View>
                                 <ListView.Resources>

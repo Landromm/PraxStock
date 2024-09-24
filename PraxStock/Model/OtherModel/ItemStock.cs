@@ -13,6 +13,6 @@ internal class ItemStock
 
 	public double UnitCount { get; set; }
 
-	public DateOnly ExpirationDate { get; set; }
+	public DateOnly? ExpirationDate { get; set; }
 
 }

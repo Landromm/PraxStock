@@ -15,8 +15,11 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<Item> GetBySearchNumberItem(string searchNumber);
         ObservableCollection<Item> GetBySearchNameItem(string searchName);
         ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure);
+        ObservableCollection<MainListItems> GetDataStockList();
+        ObservableCollection<ReceiptListItem> GetReseiptList();
 
-        List<string> GetAllNameItem();
+
+		List<string> GetAllNameItem();
         void AddItemsList(string nameItem, string unitMeasure);
         void ChangedItemList(string nameItem, string unitMeasure, int idItem);
 

@@ -1,4 +1,5 @@
-﻿using PraxStock.Model.OtherModel;
+﻿using PraxStock.Communication.Repositories;
+using PraxStock.Model.OtherModel;
 using PraxStock.Services;
 using PraxStock.View.Commands;
 using PraxStock.ViewModel.Base;
@@ -15,6 +16,7 @@ namespace PraxStock.ViewModel.MainViewModel;
 internal class MainViewModel : DialogViewModel
 {
 	private readonly IUserDialog _userDialog = null!;
+	private readonly IAdminRepositories _repositoriesDB = null!;
 
 	private ObservableCollection<MainListItems> _dataStockList;
 	public ObservableCollection<MainListItems> DataStockList
@@ -27,9 +29,36 @@ internal class MainViewModel : DialogViewModel
 		}
 	}
 
+
+	#region ObservableCollection<ReceiptListItem> : ReceiptListItem -  Перечень поступлений.
+
+	///<summary>Перечень поступлений. - поле.</summary>
+	private ObservableCollection<ReceiptListItem> _ReceiptList;
+
+	///<summary>Перечень поступлений. - свойство.</summary>
+	public ObservableCollection<ReceiptListItem> ReceiptList
+	{
+		get => _ReceiptList ?? (_ReceiptList = new ObservableCollection<ReceiptListItem>());
+		set
+		{
+			_ReceiptList = value;
+			OnPropertyChanged(nameof(ReceiptList));
+		}
+	}
+	#endregion
+
+
 	public MainViewModel(IUserDialog userDialog)
 	{
 		_userDialog = userDialog;
+		_repositoriesDB = new AdminRepositories();
+		Inicialization();
+	}
+
+	private void Inicialization()
+	{
+		DataStockList = _repositoriesDB.GetDataStockList();
+		ReceiptList = _repositoriesDB.GetReseiptList();
 	}
 
 	#region Command's - Реализация комманд.
@@ -116,7 +145,10 @@ internal class MainViewModel : DialogViewModel
 	/// <summary>Логика выполнения - Обновление всей информации во всех собирательных списках.</summary>
 	private void ExecutedRefreshMainCommand()
 	{
-
+		DataStockList.Clear();
+		ReceiptList.Clear();
+		DataStockList = _repositoriesDB.GetDataStockList();
+		ReceiptList = _repositoriesDB.GetReseiptList();
 	}
 	#endregion
 	#endregion

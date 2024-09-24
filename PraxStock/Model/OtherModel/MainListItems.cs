@@ -18,6 +18,4 @@ internal class MainListItems : ItemStock
 	//public DateOnly ExpirationDate { get; set; }
 
 	public DateOnly DateReceipt { get; set; }
-
-	public DateOnly DateMove { get; set; }
 }

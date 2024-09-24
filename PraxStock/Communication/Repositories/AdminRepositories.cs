@@ -153,5 +153,70 @@ namespace PraxStock.Communication.Repositories
 				}
 			}
 		}
+
+		public ObservableCollection<MainListItems> GetDataStockList()
+		{
+			var mainCollection = new ObservableCollection<MainListItems>();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from dataStoks in context.DataStocks
+							 join items in context.Items on dataStoks.IdItem equals items.IdItem
+							 join receipt in context.Receipts on dataStoks.IdItemStock equals receipt.IdReceipt
+							 select new
+							 {
+								 IdItemStock = dataStoks.IdItemStock,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 RemainingStock = dataStoks.RemainingStock,
+								 ExpirationDate = receipt.ExprirationDate,
+								 DateReceipt = receipt.DateReceipt
+							 };
+				foreach (var item in result)
+				{
+					mainCollection.Add(new MainListItems()
+					{
+						IdItem = item.IdItemStock,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.RemainingStock,
+						ExpirationDate= item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				}
+			}
+			return mainCollection;
+		}
+
+		public ObservableCollection<ReceiptListItem> GetReseiptList()
+		{
+			var receiptCollection = new ObservableCollection<ReceiptListItem>();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from receipt in context.Receipts
+							 join items in context.Items on receipt.IdItem equals items.IdItem
+							 select new
+							 {
+								 IdReceipt = receipt.IdReceipt,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 QuantityReceipt = receipt.QuantityReceipt,
+								 ExpirationDate = receipt.ExprirationDate,
+								 DateReceipt = receipt.DateReceipt
+							 };
+				foreach (var item in result)
+				{
+					receiptCollection.Add(new ReceiptListItem()
+					{
+						IdReceipt = item.IdReceipt,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.QuantityReceipt,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				}
+			}
+			return receiptCollection;
+		}
 	}
 }
