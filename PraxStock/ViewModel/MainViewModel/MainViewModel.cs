@@ -114,11 +114,8 @@ internal class MainViewModel : DialogViewModel
 
 	/// <summary>Логика выполнения - Открытие окна отображения и редактирования списка основных позиций.</summary>
 	private void ExecutedOpenItemsListWindowCommand()
-	{
-		Application.Current.Dispatcher.Invoke(() =>
-		{
-			_userDialog.OpenItemsListWindow();
-		});
+	{		
+		_userDialog.OpenItemsListWindow();
 	}
 	#endregion
 
@@ -132,11 +129,8 @@ internal class MainViewModel : DialogViewModel
 
 	/// <summary>Логика выполнения - Открытие окна добавления поступления.</summary>
 	private void ExecutedOpenReceiptListWindowCommand()
-	{
-		Application.Current.Dispatcher.Invoke(() =>
-		{
-			_userDialog.OpenAddReceiptWindow();
-		});
+	{		
+		_userDialog.OpenAddReceiptWindow();
 	}
 	#endregion
 
