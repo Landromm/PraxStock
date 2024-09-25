@@ -121,7 +121,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
-		#region ExpirationDate : DateOnly - Срок годности.
+		#region ExpirationDate : DateTime - Срок годности.
 
 		/// <summary>Срок годности. - поле.</summary>
 		private DateTime _ExpirationDate;
@@ -138,7 +138,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
-		#region DateReceipt : DateOnly - Дата поступления.
+		#region DateReceipt : DateTime - Дата поступления.
 
 		/// <summary>Дата поступления. - поле.</summary>
 		private DateTime _DateReceipt;

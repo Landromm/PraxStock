@@ -133,18 +133,20 @@
             DisplayDate="{Binding DateMove}"/>
 
         <Button
+            x:Name="btnCancel"
             Grid.Row="7"
             Grid.Column="0"
             Content="Отменить"
             Margin="10"
-            Command="{Binding CancelCommand}"/>
+            Command="{Binding CancelCommand}" Click="btnCancel_Click"/>
 
         <Button
             Grid.Row="7"
             Grid.Column="1"
             Content="Подтвердить"
             Margin="10"
-            Command="{Binding AddMoveCommand}"/>
+            Command="{Binding AddMoveCommand}"
+            IsCancel="True"/>
 
     </Grid>
 </Window>
