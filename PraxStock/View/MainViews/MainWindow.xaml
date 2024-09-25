@@ -175,7 +175,7 @@
                                     <GridView>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=IdItem}"
-                                            Header="Номер позиции"/>
+                                            Header="№ позиции"/>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=Name}"
                                             Header="Наименование"/>

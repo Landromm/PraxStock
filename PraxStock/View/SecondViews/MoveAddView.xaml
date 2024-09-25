@@ -5,8 +5,142 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PraxStock.View.SecondViews"
         mc:Ignorable="d"
-        Title="MoveAddView" Height="450" Width="800">
+        Title="MoveAddView" Height="380" Width="300"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Наименование:"
+            FontSize="14"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"/>
+
+        <TextBox
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="Аспирин:"
+            FontSize="14"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsEnabled="False"
+            Padding="10 3"/>
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Text="Введите необходимое количество для перемещения."
+            VerticalAlignment="Center"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Margin="10 5"/>
+
+        <StackPanel
+            Orientation="Vertical"
+            Grid.Row="2"
+            Grid.Column="0"
+            HorizontalAlignment="Center">
+            
+            <Label
+                Content="В наличии:"/>
+
+            <TextBlock
+                Text="90"
+                FontSize="26"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+
+        </StackPanel>
+
+        <StackPanel
+            Orientation="Vertical"
+            Grid.Row="2"
+            Grid.Column="1"
+            HorizontalAlignment="Center">
+
+            <Label
+                Content="Переместить:"
+                HorizontalAlignment="Center"/>
+
+            <TextBox
+                Width="100"
+                Text="90"
+                FontSize="26"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"/>
+
+        </StackPanel>
+
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Text="Введите наименование места перещения:"
+            TextAlignment="Center"
+            VerticalAlignment="Bottom"
+            TextWrapping="Wrap"
+            Margin="10 5"/>
+
+        <TextBox
+            Grid.Row="4"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="10 5"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Center"
+            Text="Пример наименования"
+            FontSize="16"
+            FontWeight="DemiBold"/>
+
+        <TextBlock
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Text="Выберите дату перемещения:"
+            TextAlignment="Center"
+            VerticalAlignment="Center"
+            TextWrapping="Wrap"
+            Margin="10 5"/>
+
+        <DatePicker
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Width="175"
+            Margin="0 5"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Center"/>
+
+        <Button
+            Grid.Row="7"
+            Grid.Column="0"
+            Content="Отменить"
+            Margin="10"/>
+
+        <Button
+            Grid.Row="7"
+            Grid.Column="1"
+            Content="Подтвердить"
+            Margin="10"/>
+
     </Grid>
 </Window>
