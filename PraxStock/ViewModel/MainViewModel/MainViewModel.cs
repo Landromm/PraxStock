@@ -1,6 +1,8 @@
 ﻿using PraxStock.Communication.Repositories;
+using PraxStock.Model.Message;
 using PraxStock.Model.OtherModel;
 using PraxStock.Services;
+using PraxStock.Services.Implementations;
 using PraxStock.View.Commands;
 using PraxStock.ViewModel.Base;
 using System;
@@ -16,7 +18,10 @@ namespace PraxStock.ViewModel.MainViewModel;
 internal class MainViewModel : DialogViewModel
 {
 	private readonly IUserDialog _userDialog = null!;
+	private readonly IMessageBus _messageBus = null!;
+	private readonly IDisposable _subscription = null!; 
 	private readonly IAdminRepositories _repositoriesDB = null!;
+
 
 	private ObservableCollection<MainListItems> _dataStockList;
 	public ObservableCollection<MainListItems> DataStockList
@@ -28,7 +33,6 @@ internal class MainViewModel : DialogViewModel
 			OnPropertyChanged(nameof(DataStockList));
 		}
 	}
-
 
 	#region ObservableCollection<ReceiptListItem> : ReceiptListItem -  Перечень поступлений.
 
@@ -48,9 +52,29 @@ internal class MainViewModel : DialogViewModel
 	#endregion
 
 
-	public MainViewModel(IUserDialog userDialog)
+	#region CurrentDataStockList : MainListItems - Текущий выбор позициив перечне.
+
+	/// <summary>Текущий выбор позициив перечне. - поле.</summary>
+	private MainListItems _CurrentDataStockList;
+
+	/// <summary>Текущий выбор позициив перечне. - свойство.</summary>
+	public MainListItems CurrentDataStockList
+	{
+		get => _CurrentDataStockList;
+		set
+		{
+			_CurrentDataStockList = value;
+			OnPropertyChanged(nameof(CurrentDataStockList));
+		}
+	}
+	#endregion
+
+
+
+	public MainViewModel(IUserDialog userDialog, IMessageBus MessageBus)
 	{
 		_userDialog = userDialog;
+		_messageBus = MessageBus;
 		_repositoriesDB = new AdminRepositories();
 		Inicialization();
 	}
@@ -127,10 +151,11 @@ internal class MainViewModel : DialogViewModel
 	/// <summary>Логика выполнения - Открытие окна добавления перемещения позиции.</summary>
 	private void ExecutedOpenMoveListWindowCommand()
 	{
-		Application.Current.Dispatcher.Invoke(() =>
+		if(CurrentDataStockList is not null)
 		{
 			_userDialog.OpenMoveAddWindow();
-		});
+			_messageBus.Send(new CurrentlyMainItemList(CurrentDataStockList));
+		}
 	}
 	#endregion
 
@@ -152,5 +177,6 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 	#endregion
+
 
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PraxStock.Model.OtherModel;
-internal class MainListItems : ItemStock
+public class MainListItems : ItemStock
 {
 	public int IdItem { get; set; }
 

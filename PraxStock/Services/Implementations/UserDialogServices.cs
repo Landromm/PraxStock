@@ -84,15 +84,16 @@ internal class UserDialogServices : IUserDialog
 	private MoveAddView? _moveAddView = null;
 	public void OpenMoveAddWindow()
 	{
-		if(_moveAddView is { } window)
+		if (_moveAddView is { } window)
 		{
-			window.ShowDialog();
+			window.Show();
 			return;
 		}
+		
 		window = _service.GetRequiredService<MoveAddView>();
 		window.Closed += (_, _) => _moveAddView = null;
 		_moveAddView = window;
-		window.ShowDialog();
+		window.Show();
 	}
 
 

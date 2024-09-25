@@ -1,6 +1,7 @@
 ﻿using Microsoft.Web.WebView2.Core;
 using PraxStock.Communication.Repositories;
 using PraxStock.Model.DBModels;
+using PraxStock.Services;
 using PraxStock.View.Commands;
 using PraxStock.ViewModel.Base;
 using System;
@@ -17,6 +18,7 @@ namespace PraxStock.ViewModel.SecondViewModel
     class ItemsListViewModel : DialogViewModel
     {
 		private readonly IAdminRepositories _repositoriesDB = null!;
+		private readonly IUserDialog _userDialog = null!;
 
 		#region ItemCBMainList : List<string> - Перечень параметров поиска.
 
@@ -143,9 +145,10 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
-		public ItemsListViewModel()
+		public ItemsListViewModel(IUserDialog userDialog)
 		{
 			_repositoriesDB = new AdminRepositories();
+			_userDialog = userDialog;
 			InicializationMain();
 		}
 

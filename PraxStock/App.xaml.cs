@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PraxStock.Model.OtherModel;
 using PraxStock.Services;
 using PraxStock.Services.Implementations;
 using PraxStock.View.MainViews;
@@ -28,9 +29,10 @@ public partial class App
 		services.AddScoped<SettingsViewModel>();
 		services.AddScoped<ItemsListViewModel>();
 		services.AddSingleton<ReceiptAddViewModel>();
-		services.AddSingleton<MoveAddViewModel>();
+		services.AddScoped<MoveAddViewModel>();
 
 		services.AddSingleton<IUserDialog, UserDialogServices>();
+		services.AddSingleton<IMessageBus, MessageBusServices>();
 
 		services.AddTransient(
 			s =>
@@ -45,7 +47,7 @@ public partial class App
 			s =>
 			{
 				var scope = s.CreateScope();
-				var model = s.GetRequiredService<SettingsViewModel>();
+				var model = scope.ServiceProvider.GetRequiredService<SettingsViewModel>();
 				var window = new SettingsWindow { DataContext = model };
 				model.DialogComplete += (_, _) => window.Close();
 				window.Closed += (_, _) => scope.Dispose();
@@ -56,7 +58,7 @@ public partial class App
 			s =>
 			{
 				var scope = s.CreateScope();
-				var model = s.GetRequiredService<ItemsListViewModel>();
+				var model = scope.ServiceProvider.GetRequiredService<ItemsListViewModel>();
 				var window = new ItemsListView { DataContext = model };
 				model.DialogComplete += (_, _) => window.Close();
 				window.Closed += (_, _) => scope.Dispose();
@@ -75,9 +77,11 @@ public partial class App
 		services.AddTransient(
 			s =>
 			{
-				var model = s.GetRequiredService<MoveAddViewModel>();
-				var window = new MoveAddView { DataContext = model };
-				model.DialogComplete += (_, _) => window.Close();
+				var scope = s.CreateScope();
+				var model = scope.ServiceProvider.GetRequiredService<MoveAddViewModel>();
+				var window = new MoveAddView() { DataContext = model };
+					model.DialogComplete += (_, _) => window.Close();
+					window.Closed += (_, _) => scope.Dispose();
 
 				return window;
 			});

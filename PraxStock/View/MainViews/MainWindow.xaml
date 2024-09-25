@@ -81,7 +81,7 @@
                 </Button>
 
             </DockPanel>
-            
+
             <!--Контейнер списков-->
             <TabControl
                 Grid.Row="1"
@@ -98,9 +98,10 @@
                     <Grid>
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="231*"/>
+                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="181*"/>
+                            <ColumnDefinition Width="231*"/>
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -112,11 +113,10 @@
                         <!--Поисковая строка-->
                         <StackPanel 
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Grid.Row="0"
+                            Grid.ColumnSpan="4"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
-                            Margin="5,0,0,0">
+                            Margin="5,0,231,0">
 
                             <fa:IconImage 
                                 Icon="Search" 
@@ -155,7 +155,7 @@
 
                         <!--Таблица-список.-->
                         <Border
-                            Grid.ColumnSpan="3"
+                            Grid.ColumnSpan="4"
                             Grid.Row="1"
                             Grid.RowSpan="2"
                             BorderThickness="0 2 2 2"
@@ -227,7 +227,7 @@
 
                                     </Style>-->
                                     <Style TargetType="ListViewItem">
-                                        
+
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                         <Setter Property="ContentTemplate" Value="{StaticResource DefaultTemplateItem}"/>
                                         <Setter Property="Foreground" Value="Black" />
@@ -404,11 +404,11 @@
                             </ListView>
 
                         </Border>
-                        
-                        
+
+
 
                     </Grid>
-                    
+
                 </TabItem>
                 <!--Перемещения-->
                 <TabItem>
@@ -549,8 +549,8 @@
                 </TabItem>
 
             </TabControl>
-            
-            
+
+
 
 
         </Grid>
