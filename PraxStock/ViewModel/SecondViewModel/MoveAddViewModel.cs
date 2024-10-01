@@ -124,13 +124,15 @@ class MoveAddViewModel : DialogViewModel
 	#region Command CancelCommand - Отмена введенных данных.
 
 	///<summary>Отмена введенных данных. - поле.</summary>
-	private LambdaCommand? _CancelCommand;
+	private CloseWindowCommand? _CancelCommand;
 
 	///<summary>Отмена введенных данных. - Реализация интерфейса</summary>
-	public ICommand CancelCommand => _CancelCommand ??= new(ExecuteCancelCommand);
+	public ICommand CancelCommand => _CancelCommand ??= new(ExecuteCancelCommand, CanExecuteCancelCommand);
+
+	private bool CanExecuteCancelCommand(object p) => true;
 
 	///<summary>Логикак выполнения - Отмена введенных данных</summary>
-	private void ExecuteCancelCommand()
+	private void ExecuteCancelCommand(object p)
 	{
 		UnitCount = 0;
 		NamePost = "";
@@ -141,13 +143,15 @@ class MoveAddViewModel : DialogViewModel
 	#region Command AddMoveCommand - Подтверждение перемещения при выполнении условий.
 
 	///<summary>Подтверждение перемещения при выполнении условий. - поле.</summary>
-	private LambdaCommand? _AddMoveCommand;
+	private CloseWindowCommand? _AddMoveCommand;
 
 	///<summary>Подтверждение перемещения при выполнении условий. - Реализация интерфейса</summary>
-	public ICommand AddMoveCommand => _AddMoveCommand ??= new(ExecuteAddMoveCommand);
+	public ICommand AddMoveCommand => _AddMoveCommand ??= new(ExecuteAddMoveCommand, CanExecuteAddMoveCommand);
+
+	private static bool CanExecuteAddMoveCommand(object p) => true;
 
 	///<summary>Логикак выполнения - Подтверждение перемещения при выполнении условий</summary>
-	private void ExecuteAddMoveCommand()
+	private void ExecuteAddMoveCommand(object p)
 	{
 
 	}

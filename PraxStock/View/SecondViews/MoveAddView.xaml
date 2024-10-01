@@ -138,7 +138,8 @@
             Grid.Column="0"
             Content="Отменить"
             Margin="10"
-            Command="{Binding CancelCommand}" Click="btnCancel_Click"/>
+            Command="{Binding CancelCommand}"
+            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:MoveAddView}}"/>
 
         <Button
             Grid.Row="7"
@@ -146,7 +147,7 @@
             Content="Подтвердить"
             Margin="10"
             Command="{Binding AddMoveCommand}"
-            IsCancel="True"/>
+            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:MoveAddView}}"/>
 
     </Grid>
 </Window>
