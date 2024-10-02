@@ -99,6 +99,84 @@ namespace PraxStock.Communication.Repositories
 			return resultCollection;
 		}
 
+		public ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName)
+		{
+			ObservableCollection<MainListItems> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var resultSearchCollection = from dataStock in context.DataStocks
+											 join items in context.Items on dataStock.IdItem equals items.IdItem
+											 join receipt in context.Receipts on dataStock.IdItemStock equals receipt.IdReceipt
+											 where EF.Functions.Like(items.NameItem, "%" + searchName + "%")
+											 select new
+											 {
+												 IdItemStock = dataStock.IdItemStock,
+												 IdItem = dataStock.IdItem,
+												 NameItem = items.NameItem,
+												 UnitMeasure = items.UnitMeasure,
+												 RemainingStock = dataStock.RemainingStock,
+												 ExpirationDate = receipt.ExprirationDate,
+												 DateReceipt = receipt.DateReceipt
+											 };
+				foreach (var item in resultSearchCollection)
+					resultCollection.Add(new MainListItems()
+					{
+						IdDataStock = item.IdItemStock,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.RemainingStock,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				return resultCollection;
+			}
+		}
+
+		public ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock)
+		{
+			ObservableCollection<MainListItems> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var resultSearchCollection = from dataStock in context.DataStocks
+											 join items in context.Items on dataStock.IdItem equals items.IdItem
+											 join receipt in context.Receipts on dataStock.IdItemStock equals receipt.IdReceipt
+											 where EF.Functions.Like(dataStock.RemainingStock.ToString(), remainingStock + "%")
+											 select new
+											 {
+												 IdItemStock = dataStock.IdItemStock,
+												 IdItem = dataStock.IdItem,
+												 NameItem = items.NameItem,
+												 UnitMeasure = items.UnitMeasure,
+												 RemainingStock = dataStock.RemainingStock,
+												 ExpirationDate = receipt.ExprirationDate,
+												 DateReceipt = receipt.DateReceipt
+											 };
+				foreach (var item in resultSearchCollection)
+					resultCollection.Add(new MainListItems()
+					{
+						IdDataStock = item.IdItemStock,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.RemainingStock,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				return resultCollection;
+			}
+		}
+
+		public ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt)
+		{
+			throw new NotImplementedException();
+		}
+
 		public List<string> GetAllNameItem()
 		{
 			var result = new List<string>();
@@ -327,5 +405,6 @@ namespace PraxStock.Communication.Repositories
 				return moveList;
 			}
 		}
+
 	}
 }

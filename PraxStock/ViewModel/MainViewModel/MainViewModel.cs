@@ -24,6 +24,57 @@ internal class MainViewModel : DialogViewModel
 	private readonly IAdminRepositories _repositoriesDB = null!;
 
 
+	#region ItemCBMainList : List<string> -  Перечень параметров поиска основного списка позиций.
+
+	///<summary>Перечень параметров поиска основного списка позиций. - поле.</summary>
+	private List<string> _ItemCBMainList;
+
+	///<summary>Перечень параметров поиска основного списка позиций. - свойство.</summary>
+	public List<string> ItemCBMainList
+	{
+		get => _ItemCBMainList;
+		set
+		{
+			_ItemCBMainList = value;
+			OnPropertyChanged(nameof(ItemCBMainList));
+		}
+	}
+	#endregion
+
+	#region SelectedSearchMainList : string -  Текущий выбор из перечня параметров поиска по основному списку.
+
+	///<summary>Текущий выбор из перечня параметров поиска по основному списку. - поле.</summary>
+	private string _SelectedSearchMainList;
+
+	///<summary>Текущий выбор из перечня параметров поиска по основному списку. - свойство.</summary>
+	public string SelectedSearchMainList
+	{
+		get => _SelectedSearchMainList;
+		set
+		{
+			_SelectedSearchMainList = value;
+			OnPropertyChanged(nameof(SelectedSearchMainList));
+		}
+	}
+	#endregion
+
+	#region SearchMainList : string -  Поле строки поиска по основному перечню позиций.
+
+	///<summary>Поле строки поиска по основному перечню позиций. - поле.</summary>
+	private string _SearchMainList;
+
+	///<summary>Поле строки поиска по основному перечню позиций. - свойство.</summary>
+	public string SearchMainList
+	{
+		get => _SearchMainList;
+		set
+		{
+			_SearchMainList = value;
+			OnPropertyChanged(nameof(SearchMainList));
+			ExecuteShowListCatalogAfterSearch();
+		}
+	}
+	#endregion
 
 	#region ObservableCollection<MainListItems> : DataStockList -  Перечень основных позиций.
 
@@ -100,6 +151,15 @@ internal class MainViewModel : DialogViewModel
 		_userDialog = userDialog;
 		_messageBus = MessageBus;
 		_repositoriesDB = new AdminRepositories();
+		
+		ItemCBMainList = new List<string>
+		{
+			"Наименование",
+			"Остаток",
+			"Срок годности",
+			"Дата поступления"
+		};
+		SelectedSearchMainList = "Наименование";
 		Inicialization();
 	}
 
@@ -206,5 +266,39 @@ internal class MainViewModel : DialogViewModel
 	#endregion
 	#endregion
 
+	/// <summary>
+	/// Метод выборки основного перечня позиций по введенным данным.
+	/// </summary>
+	private void ExecuteShowListCatalogAfterSearch()
+	{
+		DataStockList = [];
+		switch (SelectedSearchMainList)
+		{
+			case "Наименование" :
+				{
+					var tempMainList = _repositoriesDB.GetBySearchNameItemMainList(SearchMainList);
+					foreach (var item in tempMainList)
+						DataStockList.Add(item);
+					tempMainList = null;
+					break;
+				}
+			case "Остаток":
+				{
+					var tempMainList = _repositoriesDB.GetBySearchRemainingStockMainList(SearchMainList);
+					foreach (var item in tempMainList)
+						DataStockList.Add(item);
+					tempMainList = null;
+					break;
+				}
+			case "Срок годности":
+				{
+					break;
+				}
+			case "Дата поступления":
+				{
+					break;
+				}
+		}
+	}
 
 }

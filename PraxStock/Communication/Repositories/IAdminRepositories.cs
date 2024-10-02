@@ -15,7 +15,13 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<Item> GetBySearchNumberItem(string searchNumber);
         ObservableCollection<Item> GetBySearchNameItem(string searchName);
         ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure);
-        ObservableCollection<MainListItems> GetDataStockList();
+
+        ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName);
+        ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock);
+        ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate);
+        ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt);
+
+		ObservableCollection<MainListItems> GetDataStockList();
         ObservableCollection<ReceiptListItem> GetReseiptList();
         ObservableCollection<MoveListItem> GetMoveInPostList();
 
