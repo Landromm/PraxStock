@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using PraxStock.Model.DBModels;
 using PraxStock.Model.OtherModel;
 using System;
@@ -221,9 +222,63 @@ namespace PraxStock.Communication.Repositories
 			return receiptCollection;
 		}
 
-		public void AddMoveInPost(MoveListItem moveListItem)
+		public bool AddMoveInPost(MoveListItem moveListItem)
 		{
+			try
+			{
+				using var context = new PraxixSkladContext();
+				{
+					SqlParameter[] param =
+					{
+					new ()
+					{
+						ParameterName = "@idItem",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Value = moveListItem.IdItem,
+					},
+					new ()
+					{
+						ParameterName = "@idItemStock",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Value = moveListItem.IdDataStock
 
+					},
+					new ()
+					{
+						ParameterName = "@quantityMove",
+						SqlDbType = System.Data.SqlDbType.Float,
+						Value = moveListItem.UnitCount
+					},
+					new ()
+					{
+						ParameterName = "@NamePost",
+						SqlDbType = System.Data.SqlDbType.VarChar,
+						Size = 50,
+						Value = moveListItem.NamePost
+					},
+					new ()
+					{
+						ParameterName = "@dateMove",
+						SqlDbType = System.Data.SqlDbType.Date,
+						Value = moveListItem.DateMove
+					},
+					new ()
+					{
+						ParameterName = "@result",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Direction = System.Data.ParameterDirection.Output
+					}
+				};
+					context.Database.ExecuteSqlRaw(
+						"update_dataStock @idItem, @idItemStock, @quantityMove, @NamePost, @dateMove, @result output", param);
+
+					return Convert.ToInt32(param[5].Value) == 1 ? true : false;
+				}
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
 		}
 
 		public double GetRemainingStock(int idDataStock)

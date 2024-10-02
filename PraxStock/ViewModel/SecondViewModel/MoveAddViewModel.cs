@@ -229,7 +229,28 @@ class MoveAddViewModel : DialogViewModel
 			UnitCount = UnitCount,
 			NamePost = NamePost,
 			DateMove = DateOnly.FromDateTime(DateMove)
-		};		
+		};
+		var resultAdd = _repositoriesDB.AddMoveInPost(moveListItem);
+		if (resultAdd)
+		{
+			MessageBox.Show("Добавление перемещения позиции произведено УСПЕШНО!",
+				"Результат операции перемещения",
+				MessageBoxButton.OK,
+				MessageBoxImage.Information);
+
+			IdDateStock = 0;
+			IdItems = 0;
+			NameItem = "";
+			NamePost = "";
+			UnitMeasure = "";
+			RemainingStock = 0;
+			UnitCount = 0;
+		}
+		else
+			MessageBox.Show("Ошибка операции перемещения позиции!",
+				"Результат операции перемещения",
+				MessageBoxButton.OK,
+				MessageBoxImage.Warning);
 	}
 	#endregion
 
