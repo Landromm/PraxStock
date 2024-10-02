@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using PraxStock.View.SecondViews;
+using PraxStock.Communication.Repositories;
+using PraxStock.Model.OtherModel;
 
 namespace PraxStock.ViewModel.SecondViewModel;
 
@@ -17,6 +19,41 @@ class MoveAddViewModel : DialogViewModel
 {
 	private readonly IMessageBus _messageBus = null!;
 	private readonly IDisposable _subscription = null!;
+	private readonly IAdminRepositories _repositoriesDB = null!;
+
+	#region IdDateStock : int - Id позиции на складе.
+
+	/// <summary>Id позиции на складе. - поле.</summary>
+	private int _IdDateStock;
+
+	/// <summary>Id позиции на складе. - свойство.</summary>
+	public int IdDateStock
+	{
+		get => _IdDateStock;
+		set
+		{
+			_IdDateStock = value;
+			OnPropertyChanged(nameof(IdDateStock));
+		}
+	}
+	#endregion
+
+	#region IdItems : int - ID самой позиции.
+
+	/// <summary>ID самой позиции. - поле.</summary>
+	private int _IdItems;
+
+	/// <summary>ID самой позиции. - свойство.</summary>
+	public int IdItems
+	{
+		get => _IdItems;
+		set
+		{
+			_IdItems = value;
+			OnPropertyChanged(nameof(IdItems));
+		}
+	}
+	#endregion
 
 
 	#region NameItem : string? - Наименование выбранной позиции.
@@ -32,6 +69,23 @@ class MoveAddViewModel : DialogViewModel
 		{
 			_NameItem = value;
 			OnPropertyChanged(nameof(NameItem));
+		}
+	}
+	#endregion
+
+	#region UnitMeasure : string? - Единицы измерения позиции.
+
+	/// <summary>Единицы измерения позиции. - поле.</summary>
+	private string? _unitMeasure;
+
+	/// <summary>Единицы измерения позиции. - свойство.</summary>
+	public string? UnitMeasure
+	{
+		get => _unitMeasure;
+		set
+		{
+			_unitMeasure = value;
+			OnPropertyChanged(nameof(UnitMeasure));
 		}
 	}
 	#endregion
@@ -105,16 +159,22 @@ class MoveAddViewModel : DialogViewModel
 	#endregion
 
 
+
+
 	public MoveAddViewModel(IMessageBus MessageBus) 
     {
 		_messageBus = MessageBus;
+		_repositoriesDB = new AdminRepositories();
 		_subscription = MessageBus.RegisterHandler<CurrentlyMainItemList>(OnReceiveMessage);
 		DateMove = DateTime.Now;
 	}
 
 	private void OnReceiveMessage(CurrentlyMainItemList message)
 	{
+		IdDateStock = message._MainListItems.IdDataStock;
+		IdItems = message._MainListItems.IdItem;
 		NameItem = message._MainListItems.Name;
+		UnitMeasure = message._MainListItems.UnitMeasure;
 		RemainingStock = message._MainListItems.UnitCount;
 		Dispose();
 	}
@@ -144,12 +204,39 @@ class MoveAddViewModel : DialogViewModel
 	private LambdaCommand? _AddMoveCommand;
 
 	///<summary>Подтверждение перемещения при выполнении условий. - Реализация интерфейса</summary>
-	public ICommand AddMoveCommand => _AddMoveCommand ??= new(ExecuteAddMoveCommand);
+	public ICommand AddMoveCommand => _AddMoveCommand ??= new(ExecuteAddMoveCommand, CanExecuteAddMoveCommand);
 
+	private bool CanExecuteAddMoveCommand()
+	{
+		if (UnitCount > 0 && NamePost is not null)
+			return true;	
+			
+		return false;
+						
+	}
 	///<summary>Логикак выполнения - Подтверждение перемещения при выполнении условий</summary>
 	private void ExecuteAddMoveCommand()
 	{
-
+		if (UnitCount! > RemainingStock)
+		{
+			MessageBox.Show("Количество перемещаемой позиции, не может быть больше остатка на складе!",
+				"Не верное количество!",
+				MessageBoxButton.OK,
+				MessageBoxImage.Warning);
+			UnitCount = 0;
+			return;
+		}
+		var moveListItem = new MoveListItem()
+		{
+			IdDataStock = IdDateStock,
+			IdItem = IdItems,
+			Name = NameItem,
+			UnitMeasure = UnitMeasure,
+			UnitCount = UnitCount,
+			NamePost = NamePost,
+			DateMove = DateOnly.FromDateTime(DateMove)
+		};
+		
 	}
 	#endregion
 

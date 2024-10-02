@@ -145,7 +145,14 @@ internal class MainViewModel : DialogViewModel
 	/// <summary>Логика выполнения - Открытие окна добавления перемещения позиции.</summary>
 	private void ExecutedOpenMoveListWindowCommand()
 	{
-		if(CurrentDataStockList is not null)
+		if(CurrentDataStockList is null)
+		{
+			MessageBox.Show("Выберите позицию из списка, чтобы открылось окно перемещения позиций.",
+				"Совет!",
+				MessageBoxButton.OK,
+				MessageBoxImage.Exclamation);
+		}
+		else
 		{
 			_userDialog.OpenMoveAddWindow();
 			_messageBus.Send(new CurrentlyMainItemList(CurrentDataStockList));

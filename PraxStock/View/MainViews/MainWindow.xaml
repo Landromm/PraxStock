@@ -169,12 +169,12 @@
                                 HorizontalAlignment="Stretch"
                                 Background="Transparent"
                                 AlternationCount="2"
-                                d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True">
+                                d:ItemsSource="{d:SampleData ItemCount=8}" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True">
 
                                 <ListView.View>
                                     <GridView>
                                         <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=IdItem}"
+                                            DisplayMemberBinding="{Binding Path=IdDataStock}"
                                             Header="№ позиции"/>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=Name}"

@@ -165,6 +165,7 @@ namespace PraxStock.Communication.Repositories
 							 select new
 							 {
 								 IdItemStock = dataStoks.IdItemStock,
+								 IdItem = dataStoks.IdItem,
 								 NameItem = items.NameItem,
 								 UnitMeasure = items.UnitMeasure,
 								 RemainingStock = dataStoks.RemainingStock,
@@ -175,7 +176,8 @@ namespace PraxStock.Communication.Repositories
 				{
 					mainCollection.Add(new MainListItems()
 					{
-						IdItem = item.IdItemStock,
+						IdDataStock = item.IdItemStock,
+						IdItem = item.IdItem,
 						Name = item.NameItem,
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.RemainingStock,
@@ -217,6 +219,11 @@ namespace PraxStock.Communication.Repositories
 				}
 			}
 			return receiptCollection;
+		}
+
+		public void AddMoveInPost(MoveListItem moveListItem)
+		{
+
 		}
 	}
 }

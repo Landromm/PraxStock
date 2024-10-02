@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 namespace PraxStock.Model.OtherModel;
 public class MainListItems : ItemStock
 {
-	public int IdItem { get; set; }
-
 	//public string? NameItem { get; set; }
 
 	//public string? UnitMeasure { get; set; }
