@@ -294,5 +294,38 @@ namespace PraxStock.Communication.Repositories
 			}
 			
 		}
+
+		public ObservableCollection<MoveListItem> GetMoveInPostList()
+		{
+			ObservableCollection<MoveListItem> moveList = new();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from moveInPost in context.MoveInPosts
+							 join items in context.Items on moveInPost.IdItem equals items.IdItem
+							 select new
+							 {
+								 IdMove = moveInPost.IdMove,
+								 IdItem = moveInPost.IdItem,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 QuantityMove = moveInPost.QuantityMove,
+								 DateMove = moveInPost.DateMove,
+								 NamePost = moveInPost.NamePost
+							 };
+				foreach (var item in result)
+					moveList.Add(new MoveListItem
+					{
+						IdMove = item.IdMove,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,	
+						UnitCount = item.QuantityMove,
+						DateMove = item.DateMove,
+						NamePost = item.NamePost
+					});
+
+				return moveList;
+			}
+		}
 	}
 }

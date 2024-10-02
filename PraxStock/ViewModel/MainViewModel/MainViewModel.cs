@@ -8,6 +8,7 @@ using PraxStock.ViewModel.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,16 +24,23 @@ internal class MainViewModel : DialogViewModel
 	private readonly IAdminRepositories _repositoriesDB = null!;
 
 
-	private ObservableCollection<MainListItems> _dataStockList;
+
+	#region ObservableCollection<MainListItems> : DataStockList -  Перечень основных позиций.
+
+	///<summary>Перечень основных позиций. - поле.</summary>
+	private ObservableCollection<MainListItems> _DataStockList;
+
+	///<summary>Перечень основных позиций. - свойство.</summary>
 	public ObservableCollection<MainListItems> DataStockList
 	{
-		get => _dataStockList ?? (_dataStockList = new ObservableCollection<MainListItems>());
+		get => _DataStockList ?? (_DataStockList = new ObservableCollection<MainListItems>());
 		set
 		{
-			_dataStockList = value;
+			_DataStockList = value;
 			OnPropertyChanged(nameof(DataStockList));
 		}
 	}
+	#endregion
 
 	#region ObservableCollection<ReceiptListItem> : ReceiptListItem -  Перечень поступлений.
 
@@ -51,6 +59,22 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 
+	#region ObservableCollection<MoveListItem> : MoveLis -  Перечень перемещений позиций.
+
+	///<summary>Перечень перемещений позиций. - поле.</summary>
+	private ObservableCollection<MoveListItem> _MoveList;
+
+	///<summary>Перечень перемещений позиций. - свойство.</summary>
+	public ObservableCollection<MoveListItem> MoveList
+	{
+		get => _MoveList ?? (_MoveList = new ObservableCollection<MoveListItem>());
+		set
+		{
+			_MoveList = value;
+			OnPropertyChanged(nameof(MoveListItem));
+		}
+	}
+	#endregion
 
 	#region CurrentDataStockList : MainListItems - Текущий выбор позициив перечне.
 
@@ -83,6 +107,7 @@ internal class MainViewModel : DialogViewModel
 	{
 		DataStockList = _repositoriesDB.GetDataStockList();
 		ReceiptList = _repositoriesDB.GetReseiptList();
+		MoveList = _repositoriesDB.GetMoveInPostList();
 	}
 
 	#region Command's - Реализация комманд.
@@ -173,8 +198,10 @@ internal class MainViewModel : DialogViewModel
 	{
 		DataStockList.Clear();
 		ReceiptList.Clear();
+		MoveList.Clear();
 		DataStockList = _repositoriesDB.GetDataStockList();
 		ReceiptList = _repositoriesDB.GetReseiptList();
+		MoveList = _repositoriesDB.GetMoveInPostList();
 	}
 	#endregion
 	#endregion

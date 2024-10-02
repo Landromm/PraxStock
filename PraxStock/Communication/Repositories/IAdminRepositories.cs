@@ -17,6 +17,7 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure);
         ObservableCollection<MainListItems> GetDataStockList();
         ObservableCollection<ReceiptListItem> GetReseiptList();
+        ObservableCollection<MoveListItem> GetMoveInPostList();
 
 
 		List<string> GetAllNameItem();
