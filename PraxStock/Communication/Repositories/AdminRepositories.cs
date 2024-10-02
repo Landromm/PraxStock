@@ -225,5 +225,19 @@ namespace PraxStock.Communication.Repositories
 		{
 
 		}
+
+		public double GetRemainingStock(int idDataStock)
+		{
+			using var context = new PraxixSkladContext();
+			{
+				var result = context.DataStocks.Where(id => id.IdItemStock == idDataStock).First();
+			
+				if(result != null)
+					return result.RemainingStock;
+				else 
+					return 0;
+			}
+			
+		}
 	}
 }

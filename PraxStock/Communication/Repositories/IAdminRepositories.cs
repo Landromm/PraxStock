@@ -26,6 +26,7 @@ namespace PraxStock.Communication.Repositories
         void AddReceiptItem(ReceiptListItem receiptListItem);
 
         void AddMoveInPost(MoveListItem moveListItem);
+        double GetRemainingStock(int idDataStock);
 
 
 	}

@@ -175,7 +175,7 @@ class MoveAddViewModel : DialogViewModel
 		IdItems = message._MainListItems.IdItem;
 		NameItem = message._MainListItems.Name;
 		UnitMeasure = message._MainListItems.UnitMeasure;
-		RemainingStock = message._MainListItems.UnitCount;
+		RemainingStock = _repositoriesDB.GetRemainingStock(message._MainListItems.IdDataStock);
 		Dispose();
 	}
 	public void Dispose() => _subscription.Dispose();
