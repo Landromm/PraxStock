@@ -55,7 +55,6 @@ class MoveAddViewModel : DialogViewModel
 	}
 	#endregion
 
-
 	#region NameItem : string? - Наименование выбранной позиции.
 
 	/// <summary>Наименование выбранной позиции. - поле.</summary>
@@ -158,9 +157,6 @@ class MoveAddViewModel : DialogViewModel
 	}
 	#endregion
 
-
-
-
 	public MoveAddViewModel(IMessageBus MessageBus) 
     {
 		_messageBus = MessageBus;
@@ -209,10 +205,8 @@ class MoveAddViewModel : DialogViewModel
 	private bool CanExecuteAddMoveCommand()
 	{
 		if (UnitCount > 0 && NamePost is not null)
-			return true;	
-			
+			return true;
 		return false;
-						
 	}
 	///<summary>Логикак выполнения - Подтверждение перемещения при выполнении условий</summary>
 	private void ExecuteAddMoveCommand()
@@ -235,8 +229,7 @@ class MoveAddViewModel : DialogViewModel
 			UnitCount = UnitCount,
 			NamePost = NamePost,
 			DateMove = DateOnly.FromDateTime(DateMove)
-		};
-		
+		};		
 	}
 	#endregion
 
