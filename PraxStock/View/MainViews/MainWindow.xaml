@@ -496,7 +496,7 @@
                                     <GridView>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=IdMove}"
-                                            Header="Номер позиции"/>
+                                            Header="№ позиции"/>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=Name}"
                                             Header="Наименование"/>

@@ -110,7 +110,7 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 
-	#region ObservableCollection<MoveListItem> : MoveLis -  Перечень перемещений позиций.
+	#region ObservableCollection<MoveListItem> : MoveList -  Перечень перемещений позиций.
 
 	///<summary>Перечень перемещений позиций. - поле.</summary>
 	private ObservableCollection<MoveListItem> _MoveList;
@@ -122,7 +122,7 @@ internal class MainViewModel : DialogViewModel
 		set
 		{
 			_MoveList = value;
-			OnPropertyChanged(nameof(MoveListItem));
+			OnPropertyChanged(nameof(MoveList));
 		}
 	}
 	#endregion
