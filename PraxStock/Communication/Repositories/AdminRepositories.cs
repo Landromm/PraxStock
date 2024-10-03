@@ -237,32 +237,203 @@ namespace PraxStock.Communication.Repositories
 
 		public ObservableCollection<ReceiptListItem> GetBySearchNameItemReceiptList(string searchName)
 		{
-			throw new NotImplementedException();
+			var receiptCollection = new ObservableCollection<ReceiptListItem>();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from receipt in context.Receipts
+							 join items in context.Items on receipt.IdItem equals items.IdItem
+							 where EF.Functions.Like(items.NameItem, "%" + searchName + "%")
+							 select new
+							 {
+								 IdReceipt = receipt.IdReceipt,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 QuantityReceipt = receipt.QuantityReceipt,
+								 ExpirationDate = receipt.ExprirationDate,
+								 DateReceipt = receipt.DateReceipt
+							 };
+				foreach (var item in result)
+				{
+					receiptCollection.Add(new ReceiptListItem()
+					{
+						IdReceipt = item.IdReceipt,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.QuantityReceipt,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				}
+			}
+			return receiptCollection;
 		}
 
 		public ObservableCollection<ReceiptListItem> GetBySearchUnitCountReceiptList(string unitCount)
 		{
-			throw new NotImplementedException();
+			var receiptCollection = new ObservableCollection<ReceiptListItem>();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from receipt in context.Receipts
+							 join items in context.Items on receipt.IdItem equals items.IdItem
+							 where EF.Functions.Like(receipt.QuantityReceipt.ToString(), unitCount + "%")
+							 select new
+							 {
+								 IdReceipt = receipt.IdReceipt,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 QuantityReceipt = receipt.QuantityReceipt,
+								 ExpirationDate = receipt.ExprirationDate,
+								 DateReceipt = receipt.DateReceipt
+							 };
+				foreach (var item in result)
+				{
+					receiptCollection.Add(new ReceiptListItem()
+					{
+						IdReceipt = item.IdReceipt,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.QuantityReceipt,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				}
+			}
+			return receiptCollection;
 		}
 
 		public ObservableCollection<ReceiptListItem> GetBySearchDateReceiptReceiptList(DateOnly dateReceipt)
 		{
-			throw new NotImplementedException();
+			var receiptCollection = new ObservableCollection<ReceiptListItem>();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from receipt in context.Receipts
+							 join items in context.Items on receipt.IdItem equals items.IdItem
+							 where EF.Functions.Like(receipt.DateReceipt.ToString(), dateReceipt.ToString("yyyy-MM-dd") + "%")
+							 select new
+							 {
+								 IdReceipt = receipt.IdReceipt,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 QuantityReceipt = receipt.QuantityReceipt,
+								 ExpirationDate = receipt.ExprirationDate,
+								 DateReceipt = receipt.DateReceipt
+							 };
+				foreach (var item in result)
+				{
+					receiptCollection.Add(new ReceiptListItem()
+					{
+						IdReceipt = item.IdReceipt,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.QuantityReceipt,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				}
+			}
+			return receiptCollection;
 		}
 
 		public ObservableCollection<MoveListItem> GetBySearchNameItemMoveList(string searchName)
 		{
-			throw new NotImplementedException();
+			ObservableCollection<MoveListItem> moveList = new();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from moveInPost in context.MoveInPosts
+							 join items in context.Items on moveInPost.IdItem equals items.IdItem
+							 where EF.Functions.Like(items.NameItem, "%" + searchName + "%")
+							 select new
+							 {
+								 IdMove = moveInPost.IdMove,
+								 IdItem = moveInPost.IdItem,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 QuantityMove = moveInPost.QuantityMove,
+								 DateMove = moveInPost.DateMove,
+								 NamePost = moveInPost.NamePost
+							 };
+				foreach (var item in result)
+					moveList.Add(new MoveListItem
+					{
+						IdMove = item.IdMove,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.QuantityMove,
+						DateMove = item.DateMove,
+						NamePost = item.NamePost
+					});
+
+				return moveList;
+			}
 		}
 
 		public ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(DateOnly dateReceipt)
 		{
-			throw new NotImplementedException();
+			ObservableCollection<MoveListItem> moveList = new();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from moveInPost in context.MoveInPosts
+							 join items in context.Items on moveInPost.IdItem equals items.IdItem
+							 where EF.Functions.Like(moveInPost.DateMove.ToString(), dateReceipt.ToString("yyyy-MM-dd") + "%")
+							 select new
+							 {
+								 IdMove = moveInPost.IdMove,
+								 IdItem = moveInPost.IdItem,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 QuantityMove = moveInPost.QuantityMove,
+								 DateMove = moveInPost.DateMove,
+								 NamePost = moveInPost.NamePost
+							 };
+				foreach (var item in result)
+					moveList.Add(new MoveListItem
+					{
+						IdMove = item.IdMove,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.QuantityMove,
+						DateMove = item.DateMove,
+						NamePost = item.NamePost
+					});
+
+				return moveList;
+			}
 		}
 
 		public ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost)
 		{
-			throw new NotImplementedException();
+			ObservableCollection<MoveListItem> moveList = new();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from moveInPost in context.MoveInPosts
+							 join items in context.Items on moveInPost.IdItem equals items.IdItem
+							 where EF.Functions.Like(moveInPost.NamePost, "%" + namePost + "%")
+							 select new
+							 {
+								 IdMove = moveInPost.IdMove,
+								 IdItem = moveInPost.IdItem,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 QuantityMove = moveInPost.QuantityMove,
+								 DateMove = moveInPost.DateMove,
+								 NamePost = moveInPost.NamePost
+							 };
+				foreach (var item in result)
+					moveList.Add(new MoveListItem
+					{
+						IdMove = item.IdMove,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.QuantityMove,
+						DateMove = item.DateMove,
+						NamePost = item.NamePost
+					});
+
+				return moveList;
+			}
 		}
 
 		public List<string> GetAllNameItem()
@@ -388,6 +559,38 @@ namespace PraxStock.Communication.Repositories
 			return receiptCollection;
 		}
 
+		public ObservableCollection<MoveListItem> GetMoveInPostList()
+		{
+			ObservableCollection<MoveListItem> moveList = new();
+			using var context = new PraxixSkladContext();
+			{
+				var result = from moveInPost in context.MoveInPosts
+							 join items in context.Items on moveInPost.IdItem equals items.IdItem
+							 select new
+							 {
+								 IdMove = moveInPost.IdMove,
+								 IdItem = moveInPost.IdItem,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 QuantityMove = moveInPost.QuantityMove,
+								 DateMove = moveInPost.DateMove,
+								 NamePost = moveInPost.NamePost
+							 };
+				foreach (var item in result)
+					moveList.Add(new MoveListItem
+					{
+						IdMove = item.IdMove,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.QuantityMove,
+						DateMove = item.DateMove,
+						NamePost = item.NamePost
+					});
+
+				return moveList;
+			}
+		}
 		public bool AddMoveInPost(MoveListItem moveListItem)
 		{
 			try
@@ -461,38 +664,7 @@ namespace PraxStock.Communication.Repositories
 			
 		}
 
-		public ObservableCollection<MoveListItem> GetMoveInPostList()
-		{
-			ObservableCollection<MoveListItem> moveList = new();
-			using var context = new PraxixSkladContext();
-			{
-				var result = from moveInPost in context.MoveInPosts
-							 join items in context.Items on moveInPost.IdItem equals items.IdItem
-							 select new
-							 {
-								 IdMove = moveInPost.IdMove,
-								 IdItem = moveInPost.IdItem,
-								 NameItem = items.NameItem,
-								 UnitMeasure = items.UnitMeasure,
-								 QuantityMove = moveInPost.QuantityMove,
-								 DateMove = moveInPost.DateMove,
-								 NamePost = moveInPost.NamePost
-							 };
-				foreach (var item in result)
-					moveList.Add(new MoveListItem
-					{
-						IdMove = item.IdMove,
-						IdItem = item.IdItem,
-						Name = item.NameItem,
-						UnitMeasure = item.UnitMeasure,	
-						UnitCount = item.QuantityMove,
-						DateMove = item.DateMove,
-						NamePost = item.NamePost
-					});
 
-				return moveList;
-			}
-		}
 
 
 	}

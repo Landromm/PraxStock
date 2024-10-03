@@ -329,7 +329,7 @@
                                     Width="125"
                                     ItemsSource="{Binding ItemCBReceiptList}"
                                     SelectedItem="{Binding SelectedSearchReceiptList}"
-                                    SelectedIndex="3">
+                                    SelectedIndex="0">
                                 </ComboBox>
                             </Border>
 

@@ -124,7 +124,6 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 
-
 	#region ItemCBMoveList : List<string> - Перечень параметров поска списка перемещенных позиций.
 
 	/// <summary>Перечень параметров поска списка перемещенных позиций. - поле.</summary>
@@ -174,7 +173,6 @@ internal class MainViewModel : DialogViewModel
 		}
 	}
 	#endregion
-
 
 
 	#region ObservableCollection<MainListItems> : DataStockList -  Перечень основных позиций.
@@ -246,7 +244,6 @@ internal class MainViewModel : DialogViewModel
 	#endregion
 
 
-
 	public MainViewModel(IUserDialog userDialog, IMessageBus MessageBus)
 	{
 		_userDialog = userDialog;
@@ -257,6 +254,8 @@ internal class MainViewModel : DialogViewModel
 		ItemCBReceiptList = new List<string> {"Наименование", "Количество", "Дата поступления"};
 		ItemCBMoveList = new List<string> {"Наименование", "Дата перемещения", "Пост"};
 		SelectedSearchMainList = "Наименование";
+		SelectedSearchReceiptList = "Наименование";
+		SelectedSearchMoveList = "Наименование";
 		Inicialization();
 	}
 
@@ -434,6 +433,7 @@ internal class MainViewModel : DialogViewModel
 				}
 		}
 	}
+
 	/// <summary>
 	/// Метод выборки перечня перемещенных позиций по введенным данным.
 	/// </summary>
