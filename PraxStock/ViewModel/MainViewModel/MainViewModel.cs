@@ -156,7 +156,6 @@ internal class MainViewModel : DialogViewModel
 		{
 			"Наименование",
 			"Остаток",
-			"Срок годности",
 			"Дата поступления"
 		};
 		SelectedSearchMainList = "Наименование";
@@ -279,7 +278,6 @@ internal class MainViewModel : DialogViewModel
 					var tempMainList = _repositoriesDB.GetBySearchNameItemMainList(SearchMainList);
 					foreach (var item in tempMainList)
 						DataStockList.Add(item);
-					tempMainList = null;
 					break;
 				}
 			case "Остаток":
@@ -287,15 +285,17 @@ internal class MainViewModel : DialogViewModel
 					var tempMainList = _repositoriesDB.GetBySearchRemainingStockMainList(SearchMainList);
 					foreach (var item in tempMainList)
 						DataStockList.Add(item);
-					tempMainList = null;
-					break;
-				}
-			case "Срок годности":
-				{
 					break;
 				}
 			case "Дата поступления":
 				{
+					var resultParse = DateOnly.TryParse(SearchMainList, out var dateString);
+					if (resultParse)
+					{
+						var tempMainList = _repositoriesDB.GetBySearchDateReceiptMainList(dateString);
+						foreach (var item in tempMainList)
+							DataStockList.Add(item);
+					}
 					break;
 				}
 		}

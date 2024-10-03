@@ -169,12 +169,70 @@ namespace PraxStock.Communication.Repositories
 
 		public ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate)
 		{
-			throw new NotImplementedException();
+			ObservableCollection<MainListItems> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var resultSearchCollection = from dataStock in context.DataStocks
+											 join items in context.Items on dataStock.IdItem equals items.IdItem
+											 join receipt in context.Receipts on dataStock.IdItemStock equals receipt.IdReceipt
+											 where EF.Functions.Like(receipt.ExprirationDate.ToString(), expirationDate.ToString("yyyy-MM-dd") + "%")
+											 select new
+											 {
+												 IdItemStock = dataStock.IdItemStock,
+												 IdItem = dataStock.IdItem,
+												 NameItem = items.NameItem,
+												 UnitMeasure = items.UnitMeasure,
+												 RemainingStock = dataStock.RemainingStock,
+												 ExpirationDate = receipt.ExprirationDate,
+												 DateReceipt = receipt.DateReceipt
+											 };
+				foreach (var item in resultSearchCollection)
+					resultCollection.Add(new MainListItems()
+					{
+						IdDataStock = item.IdItemStock,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.RemainingStock,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				return resultCollection;
+			}
 		}
 
 		public ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt)
 		{
-			throw new NotImplementedException();
+			ObservableCollection<MainListItems> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var resultSearchCollection = from dataStock in context.DataStocks
+											 join items in context.Items on dataStock.IdItem equals items.IdItem
+											 join receipt in context.Receipts on dataStock.IdItemStock equals receipt.IdReceipt
+											 where EF.Functions.Like(receipt.DateReceipt.ToString(), dateReceipt.ToString("yyyy-MM-dd") + "%")
+											 select new
+											 {
+												 IdItemStock = dataStock.IdItemStock,
+												 IdItem = dataStock.IdItem,
+												 NameItem = items.NameItem,
+												 UnitMeasure = items.UnitMeasure,
+												 RemainingStock = dataStock.RemainingStock,
+												 ExpirationDate = receipt.ExprirationDate,
+												 DateReceipt = receipt.DateReceipt
+											 };
+				foreach (var item in resultSearchCollection)
+					resultCollection.Add(new MainListItems()
+					{
+						IdDataStock = item.IdItemStock,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.RemainingStock,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				return resultCollection;
+			}
 		}
 
 		public List<string> GetAllNameItem()
