@@ -235,6 +235,36 @@ namespace PraxStock.Communication.Repositories
 			}
 		}
 
+		public ObservableCollection<ReceiptListItem> GetBySearchNameItemReceiptList(string searchName)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ObservableCollection<ReceiptListItem> GetBySearchUnitCountReceiptList(string unitCount)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ObservableCollection<ReceiptListItem> GetBySearchDateReceiptReceiptList(DateOnly dateReceipt)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ObservableCollection<MoveListItem> GetBySearchNameItemMoveList(string searchName)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(DateOnly dateReceipt)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost)
+		{
+			throw new NotImplementedException();
+		}
+
 		public List<string> GetAllNameItem()
 		{
 			var result = new List<string>();
@@ -463,6 +493,7 @@ namespace PraxStock.Communication.Repositories
 				return moveList;
 			}
 		}
+
 
 	}
 }

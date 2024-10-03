@@ -40,7 +40,6 @@ internal class MainViewModel : DialogViewModel
 		}
 	}
 	#endregion
-
 	#region SelectedSearchMainList : string -  Текущий выбор из перечня параметров поиска по основному списку.
 
 	///<summary>Текущий выбор из перечня параметров поиска по основному списку. - поле.</summary>
@@ -57,7 +56,6 @@ internal class MainViewModel : DialogViewModel
 		}
 	}
 	#endregion
-
 	#region SearchMainList : string -  Поле строки поиска по основному перечню позиций.
 
 	///<summary>Поле строки поиска по основному перечню позиций. - поле.</summary>
@@ -75,6 +73,109 @@ internal class MainViewModel : DialogViewModel
 		}
 	}
 	#endregion
+
+	#region ItemCBReceiptList : List<string> - Перечень параметров поиска списка поступивших позиций.
+
+	/// <summary>Перечень параметров поиска списка поступивших позиций. - поле.</summary>
+	private List<string> _ItemCBReceiptList;
+
+	/// <summary>Перечень параметров поиска списка поступивших позиций. - свойство.</summary>
+	public List<string> ItemCBReceiptList
+	{
+		get => _ItemCBReceiptList;
+		set
+		{
+			_ItemCBReceiptList = value;
+			OnPropertyChanged(nameof(ItemCBReceiptList));
+		}
+	}
+	#endregion
+	#region SelectedSearchReceiptList : string - Текущий выбор из перечня параметров поиска списка поступивших позиций.
+
+	/// <summary>Текущий выбор из перечня параметров поиска списка поступивших позиций. - поле.</summary>
+	private string _SelectedSearchReceiptList;
+
+	/// <summary>Текущий выбор из перечня параметров поиска списка поступивших позиций. - свойство.</summary>
+	public string SelectedSearchReceiptList
+	{
+		get => _SelectedSearchReceiptList;
+		set
+		{
+			_SelectedSearchReceiptList = value;
+			OnPropertyChanged(nameof(SelectedSearchReceiptList));
+		}
+	}
+	#endregion
+	#region SearchReceiptList : string - Поле сроки поиска по перечню поступлений.
+
+	/// <summary>Поле сроки поиска по перечню поступлений. - поле.</summary>
+	private string _SearchReceiptList;
+
+	/// <summary>Поле сроки поиска по перечню поступлений. - свойство.</summary>
+	public string SearchReceiptList
+	{
+		get => _SearchReceiptList;
+		set
+		{
+			_SearchReceiptList = value;
+			OnPropertyChanged(nameof(SearchReceiptList));
+			ExecuteShowListReceiptAfterSearch();
+		}
+	}
+	#endregion
+
+
+	#region ItemCBMoveList : List<string> - Перечень параметров поска списка перемещенных позиций.
+
+	/// <summary>Перечень параметров поска списка перемещенных позиций. - поле.</summary>
+	private List<string> _ItemCBMoveList;
+
+	/// <summary>Перечень параметров поска списка перемещенных позиций. - свойство.</summary>
+	public List<string> ItemCBMoveList
+	{
+		get => _ItemCBMoveList;
+		set
+		{
+			_ItemCBMoveList = value;
+			OnPropertyChanged(nameof(ItemCBMoveList));
+		}
+	}
+	#endregion
+	#region SelectedSearchMoveList : string - Перечень параметров поиска списка перемещенных позиций.
+
+	/// <summary>Перечень параметров поиска списка перемещенных позиций. - поле.</summary>
+	private string _SelectedSearchMoveList;
+
+	/// <summary>Перечень параметров поиска списка перемещенных позиций. - свойство.</summary>
+	public string SelectedSearchMoveList
+	{
+		get => _SelectedSearchMoveList;
+		set
+		{
+			_SelectedSearchMoveList = value;
+			OnPropertyChanged(nameof(SelectedSearchMoveList));
+		}
+	}
+	#endregion
+	#region SearchMoveList : string - Поле строки поиска по перечню перемещений.
+
+	/// <summary>Поле строки поиска по перечню перемещений. - поле.</summary>
+	private string _SearchMoveList;
+
+	/// <summary>Поле строки поиска по перечню перемещений. - свойство.</summary>
+	public string SearchMoveList
+	{
+		get => _SearchMoveList;
+		set
+		{
+			_SearchMoveList = value;
+			OnPropertyChanged(nameof(SearchMoveList));
+			ExecuteShowListMoveAfterSearch();
+		}
+	}
+	#endregion
+
+
 
 	#region ObservableCollection<MainListItems> : DataStockList -  Перечень основных позиций.
 
@@ -152,12 +253,9 @@ internal class MainViewModel : DialogViewModel
 		_messageBus = MessageBus;
 		_repositoriesDB = new AdminRepositories();
 		
-		ItemCBMainList = new List<string>
-		{
-			"Наименование",
-			"Остаток",
-			"Дата поступления"
-		};
+		ItemCBMainList = new List<string>{"Наименование", "Остаток", "Дата поступления"};
+		ItemCBReceiptList = new List<string> {"Наименование", "Количество", "Дата поступления"};
+		ItemCBMoveList = new List<string> {"Наименование", "Дата перемещения", "Пост"};
 		SelectedSearchMainList = "Наименование";
 		Inicialization();
 	}
@@ -298,6 +396,80 @@ internal class MainViewModel : DialogViewModel
 					}
 					break;
 				}
+		}
+	}
+
+	/// <summary>
+	/// Метод выборки перечня поступиших позиций по введенным данным.
+	/// </summary>
+	private void ExecuteShowListReceiptAfterSearch()
+	{
+		ReceiptList = [];
+		switch (SelectedSearchReceiptList)
+		{
+			case "Наименование":
+				{
+					var tempReceiptList = _repositoriesDB.GetBySearchNameItemReceiptList(SearchReceiptList);
+					foreach (var item in tempReceiptList)
+						ReceiptList.Add(item);
+					break;
+				}
+			case "Количество":
+				{
+					var tempReceiptList = _repositoriesDB.GetBySearchUnitCountReceiptList(SearchReceiptList);
+					foreach (var item in tempReceiptList)
+						ReceiptList.Add(item);
+                    break;
+				}
+			case "Дата поступления":
+				{
+					var resultParse = DateOnly.TryParse(SearchReceiptList, out var dateString);
+					if (resultParse)
+					{
+						var tempReceiptList = _repositoriesDB.GetBySearchDateReceiptReceiptList(dateString);
+						foreach (var item in tempReceiptList)
+							ReceiptList.Add(item);
+					}
+					break;
+				}
+		}
+	}
+	/// <summary>
+	/// Метод выборки перечня перемещенных позиций по введенным данным.
+	/// </summary>
+	private void ExecuteShowListMoveAfterSearch()
+	{
+		MoveList = [];
+		switch (SelectedSearchMoveList)
+		{
+			case "Наименование": 
+				{
+					var tempMovetList = _repositoriesDB.GetBySearchNameItemMoveList(SearchMoveList);
+					foreach (var item in tempMovetList)
+						MoveList.Add(item);
+
+					break; 
+				}
+			case "Дата перемещения":
+				{
+					var resultParse = DateOnly.TryParse(SearchMoveList, out var dateString);
+					if (resultParse)
+					{
+						var tempmoveList = _repositoriesDB.GetBySearchDateReceiptMoveList(dateString);
+						foreach (var item in tempmoveList)
+							MoveList.Add(item);
+					}
+					break;
+				}
+			case "Пост":
+				{
+					var tempMovetList = _repositoriesDB.GetBySearchNamePostMoveList(SearchMoveList);
+					foreach (var item in tempMovetList)
+						MoveList.Add(item);
+
+					break;
+				}
+
 		}
 	}
 

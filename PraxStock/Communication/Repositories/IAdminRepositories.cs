@@ -21,6 +21,14 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate);
         ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt);
 
+		ObservableCollection<ReceiptListItem> GetBySearchNameItemReceiptList(string searchName);
+		ObservableCollection<ReceiptListItem> GetBySearchUnitCountReceiptList(string unitCount);
+		ObservableCollection<ReceiptListItem> GetBySearchDateReceiptReceiptList(DateOnly dateReceipt);
+
+        ObservableCollection<MoveListItem> GetBySearchNameItemMoveList(string searchName);
+        ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(DateOnly dateReceipt);
+        ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost);
+
 		ObservableCollection<MainListItems> GetDataStockList();
         ObservableCollection<ReceiptListItem> GetReseiptList();
         ObservableCollection<MoveListItem> GetMoveInPostList();
@@ -34,7 +42,6 @@ namespace PraxStock.Communication.Repositories
 
         bool AddMoveInPost(MoveListItem moveListItem);
         double GetRemainingStock(int idDataStock);
-
 
 	}
 }
