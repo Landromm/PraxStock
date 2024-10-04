@@ -428,6 +428,60 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 
+	#region Command WriteOffCommand - Команда списания позиции.
+
+	/// <summary>Команда списания позиции.</summary>
+	private LambdaCommand? _WriteOffCommand;
+
+	/// <summary>Команда списания позиции.</summary>
+	public ICommand WriteOffCommand => _WriteOffCommand ??= new(ExecutedWriteOffCommand);
+
+	/// <summary>Логика выполнения - Команда списания позиции.</summary>
+	private void ExecutedWriteOffCommand()
+	{
+		if (CurrentDataStockList is null)
+		{
+			MessageBox.Show("Выберите позицию из списка.",
+				"Совет!",
+				MessageBoxButton.OK,
+				MessageBoxImage.Exclamation);
+			return;
+		}
+		
+		var result = MessageBox.Show("Вы уверены что хотите списать (удалить) выбранную позициию?",
+			"Удаление позиции",
+			MessageBoxButton.YesNo,
+			MessageBoxImage.Question);
+		if (result == MessageBoxResult.Yes)
+		{
+			var resultWriteOff = _repositoriesDB.AddWriteOff(CurrentDataStockList);
+			if(resultWriteOff)
+			{
+				MessageBox.Show(
+					"Позиция списана(удалена) УСПЕШНО!",
+					"Результат удаления",
+					MessageBoxButton.OK,
+					MessageBoxImage.Information);
+				DataStockList.Clear();
+				DataStockList = _repositoriesDB.GetDataStockList();
+			}
+
+			else
+			{
+				MessageBox.Show(
+					"В процессе удаления произошла ОШИБКА!\nПроверьте данные по перечням.",
+					"Результат удаления",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				DataStockList.Clear();
+				DataStockList = _repositoriesDB.GetDataStockList();
+			}
+		}
+		else
+			return;
+	}
+	#endregion
+
 
 	#endregion
 

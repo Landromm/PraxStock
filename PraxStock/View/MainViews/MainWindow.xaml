@@ -84,7 +84,7 @@
                     x:Name="iconButtonWriteOff"
                     Style="{StaticResource iconButtonWriteOff}"
                     Tag="{StaticResource color2Default}"
-                    Command="{Binding RefreshMainCommand}">
+                    Command="{Binding WriteOffCommand}">
 
                     <fa:IconImage 
                         Icon="Trash" 

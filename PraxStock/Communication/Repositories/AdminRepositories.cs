@@ -664,8 +664,56 @@ namespace PraxStock.Communication.Repositories
 			
 		}
 
+		public bool AddWriteOff(MainListItems writeOffItem)
+		{
+			try
+			{
+				using var context = new PraxixSkladContext();
+				{
+					SqlParameter[] param =
+					{
+					new ()
+					{
+						ParameterName = "@idItem",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Value = writeOffItem.IdItem,
+					},
+					new ()
+					{
+						ParameterName = "@idItemStock",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Value = writeOffItem.IdDataStock
 
+					},
+					new ()
+					{
+						ParameterName = "@countWriteOff",
+						SqlDbType = System.Data.SqlDbType.Float,
+						Value = writeOffItem.UnitCount
+					},
+					new ()
+					{
+						ParameterName = "@dateWriteOff",
+						SqlDbType = System.Data.SqlDbType.Date,
+						Value = DateOnly.FromDateTime(DateTime.Now)
+					},
+					new ()
+					{
+						ParameterName = "@result",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Direction = System.Data.ParameterDirection.Output
+					}
+				};
+					context.Database.ExecuteSqlRaw(
+						"update_dataStock_afterWriteOff @idItem, @idItemStock, @countWriteOff, @dateWriteOff, @result output", param);
 
-
+					return Convert.ToInt32(param[4].Value) == 1 ? true : false;
+				}
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+		}
 	}
 }

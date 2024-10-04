@@ -43,5 +43,7 @@ namespace PraxStock.Communication.Repositories
         bool AddMoveInPost(MoveListItem moveListItem);
         double GetRemainingStock(int idDataStock);
 
+        bool AddWriteOff(MainListItems writeOffItem);
+
 	}
 }
