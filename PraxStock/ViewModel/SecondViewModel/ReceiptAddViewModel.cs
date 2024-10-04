@@ -69,6 +69,24 @@ namespace PraxStock.ViewModel.SecondViewModel
 		#endregion
 
 
+		#region ShowSecretPanel : bool -  Флаг отображения скрытой панели.
+
+		///<summary>Флаг отображения скрытой панели. - поле.</summary>
+		private bool _ShowSecretPanel;
+
+		///<summary>Флаг отображения скрытой панели. - свойство.</summary>
+		public bool ShowSecretPanel
+		{
+			get => _ShowSecretPanel;
+			set
+			{
+
+				_ShowSecretPanel = value;
+				OnPropertyChanged(nameof(ShowSecretPanel));
+			}
+		}
+		#endregion
+
 
 		#region NameItem : string? - Наименование позиции.
 
