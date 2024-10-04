@@ -5,11 +5,68 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PraxStock" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="800"
+        Title="MainWindow" Height="500" Width="900"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="False">
+
+    <Window.Resources>
+        <Style x:Key="gridViewCollumnTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Padding" Value="5 2"/>
+        </Style>
+
+        <Style x:Key="ToolTipTextBlock" TargetType="TextBlock">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Background" Value="{StaticResource color5Dark}"/>
+        </Style>
+
+        <Style x:Name="ListViewItemBase" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border
+                            Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
+                                      Content="{TemplateBinding Content}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="{StaticResource color5Default}" />
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="{StaticResource color6Default}" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource color8}" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PraxixColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TabItemHeader_TextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Padding" Value="10 3"/>
+        </Style>
+    </Window.Resources>
 
     <Border>
 
@@ -19,9 +76,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
@@ -103,11 +158,19 @@
 
                 <!--Основной перечень-->
                 <TabItem
-                    x:Name="tabMainList">
+                    x:Name="tabMainList"
+                    Background="{StaticResource PraxixColor}">
                     <TabItem.Header>
-                        <Label Content="Основной перечень"/>
+                        <TextBlock 
+                            Text="Основной перечень"
+                            Style="{StaticResource TabItemHeader_TextBlock}"/>
                     </TabItem.Header>
-                    
+                    <TabItem.ToolTip>
+                        <TextBlock
+                            Style="{StaticResource ToolTipTextBlock}"
+                            Text="Перечень имеющихся позиций на складе."/>
+                    </TabItem.ToolTip>
+
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding OnLoadedMainTabCommand}" />
@@ -115,14 +178,14 @@
                     </i:Interaction.Triggers>
 
 
-                    <Grid>
+                    <Grid
+                        Margin="5">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="231*"/>
                             <ColumnDefinition Width="50*"/>
                             <ColumnDefinition Width="181*"/>
                             <ColumnDefinition Width="231*"/>
-                            <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50"/>
@@ -178,39 +241,60 @@
                             Grid.ColumnSpan="4"
                             Grid.Row="1"
                             Grid.RowSpan="2"
-                            BorderThickness="0 2 2 2"
-                            CornerRadius="0 5 5 0"
+                            BorderThickness="3"
+                            CornerRadius="3"
                             BorderBrush="{StaticResource PraxixColor}">
 
-                            <ListView   
+                            <ListView
                                 Grid.Row="2" 
                                 ItemsSource="{Binding DataStockList}"
                                 SelectedItem="{Binding CurrentDataStockList}"
+                                BorderThickness="0"
                                 HorizontalAlignment="Stretch"
                                 Background="Transparent"
                                 AlternationCount="2"
-                                d:ItemsSource="{d:SampleData ItemCount=8}" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True">
+                                d:ItemsSource="{d:SampleData ItemCount=8}" 
+                                HorizontalContentAlignment="Center" 
+                                Grid.IsSharedSizeScope="True">
 
                                 <ListView.View>
                                     <GridView>
                                         <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=IdDataStock}"
-                                            Header="№ позиции"/>
+                                            DisplayMemberBinding="{Binding Path=IdDataStock}">
+                                            <TextBlock
+                                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                                Text="№"/>
+                                        </GridViewColumn>
                                         <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=Name}"
-                                            Header="Наименование"/>
+                                            DisplayMemberBinding="{Binding Path=Name}">
+                                            <TextBlock
+                                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                                Text="Наименование"/>
+                                        </GridViewColumn>
                                         <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=UnitMeasure}"
-                                            Header="Ед.измер"/>
+                                            DisplayMemberBinding="{Binding Path=UnitMeasure}">
+                                            <TextBlock
+                                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                                Text="Ед.измер"/>
+                                        </GridViewColumn>
                                         <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=UnitCount}"
-                                            Header="Остаток"/>
+                                            DisplayMemberBinding="{Binding Path=UnitCount}">
+                                            <TextBlock
+                                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                                Text="Остаток"/>
+                                        </GridViewColumn>
                                         <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=ExpirationDate, StringFormat=dd-MM-yyyy}"
-                                            Header="Срок годности"/>
+                                            DisplayMemberBinding="{Binding Path=ExpirationDate, StringFormat=dd-MM-yyyy}">
+                                            <TextBlock
+                                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                                Text="Срок годности"/>
+                                        </GridViewColumn>
                                         <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=DateReceipt, StringFormat=dd-MM-yyyy}"
-                                            Header="Дата поступления"/>
+                                            DisplayMemberBinding="{Binding Path=DateReceipt, StringFormat=dd-MM-yyyy}">
+                                            <TextBlock
+                                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                                Text="Дата поступления"/>
+                                        </GridViewColumn>
                                     </GridView>
                                 </ListView.View>
                                 <ListView.Resources>
@@ -221,36 +305,11 @@
                                     </DataTemplate>
 
                                 </ListView.Resources>
-
                                 <ListView.ItemContainerStyle>
-
-                                    <!--<Style TargetType="ListViewItem">
-
-                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                        <Setter Property="Foreground" Value="Black"/>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource DefaultTemplateItem}"/> 
-                                        
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="Green"/>
-                                            </Trigger>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="Red" />
-                                            </Trigger>
-                                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                                <Setter Property="Background" Value="{StaticResource color5Default}" />
-                                            </Trigger>
-                                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                                <Setter Property="Background" Value="{StaticResource color6Default}" />
-                                            </Trigger>
-                                        </Style.Triggers>
-
-                                    </Style>-->
                                     <Style TargetType="ListViewItem">
-
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                        <Setter Property="ContentTemplate" Value="{StaticResource DefaultTemplateItem}"/>
                                         <Setter Property="Foreground" Value="Black" />
+                                        <Setter Property="FontSize" Value="14"/>
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -259,8 +318,8 @@
                                                         Background="{TemplateBinding Background}"
                                                         BorderBrush="{TemplateBinding BorderBrush}"
                                                         BorderThickness="{TemplateBinding BorderThickness}">
-                                                        <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
-                                                                              Content="{TemplateBinding Content}" />
+                                                            <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
+                                                                  Content="{TemplateBinding Content}" />
                                                     </Border>
                                                 </ControlTemplate>
                                             </Setter.Value>
@@ -292,10 +351,19 @@
 
                 </TabItem>
                 <!--Поступления-->
-                <TabItem>
+                <TabItem
+                    x:Name="tabReceiptList"
+                    Background="{StaticResource color7Default}">
                     <TabItem.Header>
-                        <Label Content="Поступления"/>
+                        <TextBlock 
+                            Text="Поступления"
+                            Style="{StaticResource TabItemHeader_TextBlock}"/>
                     </TabItem.Header>
+                    <TabItem.ToolTip>
+                        <TextBlock
+                            Style="{StaticResource ToolTipTextBlock}"
+                            Text="Перечень поступивших позиций на складе."/>
+                    </TabItem.ToolTip>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding OnLoadedReceiptTabCommand}" />
@@ -435,9 +503,13 @@
 
                 </TabItem>
                 <!--Перемещения-->
-                <TabItem>
+                <TabItem
+                    x:Name="tabMoveList"
+                    Background="{StaticResource color1Default}">
                     <TabItem.Header>
-                        <Label Content="Перемещения"/>
+                        <TextBlock 
+                            Text="Перемещения"
+                            Style="{StaticResource TabItemHeader_TextBlock}"/>
                     </TabItem.Header>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">

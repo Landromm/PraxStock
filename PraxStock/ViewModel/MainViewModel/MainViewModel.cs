@@ -465,7 +465,6 @@ internal class MainViewModel : DialogViewModel
 				DataStockList.Clear();
 				DataStockList = _repositoriesDB.GetDataStockList();
 			}
-
 			else
 			{
 				MessageBox.Show(
