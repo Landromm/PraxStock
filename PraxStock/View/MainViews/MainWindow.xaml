@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PraxStock" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        xmlns:local="clr-namespace:PraxStock" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="800"
         WindowStartupLocation="CenterScreen"
@@ -80,6 +80,18 @@
 
                 </Button>
 
+                <Button 
+                    x:Name="iconButtonWriteOff"
+                    Style="{StaticResource iconButtonWriteOff}"
+                    Tag="{StaticResource color2Default}"
+                    Command="{Binding RefreshMainCommand}">
+
+                    <fa:IconImage 
+                        Icon="Trash" 
+                        Style="{StaticResource iconButtonCatalogIcon}"/>
+
+                </Button>
+
             </DockPanel>
 
             <!--Контейнер списков-->
@@ -90,10 +102,18 @@
                 Grid.ColumnSpan="4">
 
                 <!--Основной перечень-->
-                <TabItem>
+                <TabItem
+                    x:Name="tabMainList">
                     <TabItem.Header>
                         <Label Content="Основной перечень"/>
                     </TabItem.Header>
+                    
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction Command="{Binding OnLoadedMainTabCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
 
                     <Grid>
 
@@ -276,7 +296,11 @@
                     <TabItem.Header>
                         <Label Content="Поступления"/>
                     </TabItem.Header>
-
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction Command="{Binding OnLoadedReceiptTabCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Grid>
 
                         <Grid.ColumnDefinitions>
@@ -415,7 +439,11 @@
                     <TabItem.Header>
                         <Label Content="Перемещения"/>
                     </TabItem.Header>
-
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction Command="{Binding OnLoadedMoveTabCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Grid>
 
                         <Grid.ColumnDefinitions>

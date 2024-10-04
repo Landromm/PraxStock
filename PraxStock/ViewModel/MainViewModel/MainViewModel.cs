@@ -243,6 +243,25 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 
+	#region VisibleWriteOffButton : bool - Флаг видимости кнопки списания позиции.
+
+	/// <summary>Флаг видимости кнопки списания позиции. - поле.</summary>
+	private bool _VisibleWriteOffButton;
+
+	/// <summary>Флаг видимости кнопки списания позиции. - свойство.</summary>
+	public bool VisibleWriteOffButton
+	{
+		get => _VisibleWriteOffButton;
+		set
+		{
+			_VisibleWriteOffButton = value;
+			OnPropertyChanged(nameof(VisibleWriteOffButton));
+		}
+	}
+	#endregion
+	
+
+
 
 	public MainViewModel(IUserDialog userDialog, IMessageBus MessageBus)
 	{
@@ -360,6 +379,56 @@ internal class MainViewModel : DialogViewModel
 		MoveList = _repositoriesDB.GetMoveInPostList();
 	}
 	#endregion
+
+	#region Command OnLoadedMainTabCommand - Метод вызываемый при загрузке отображения основного перечня позиций.
+
+	/// <summary>Метод вызываемый при загрузке отображения основного перечня позиций.</summary>
+	private LambdaCommand? _OnLoadedMainTabCommand;
+
+	/// <summary>Метод вызываемый при загрузке отображения основного перечня позиций.</summary>
+	public ICommand OnLoadedMainTabCommand => _OnLoadedMainTabCommand ??= new(ExecutedOnLoadedMainTabCommand);
+
+	/// <summary>Логика выполнения - Метод вызываемый при загрузке отображения основного перечня позиций.</summary>
+	private void ExecutedOnLoadedMainTabCommand()
+	{
+		if(VisibleWriteOffButton != true)
+			VisibleWriteOffButton = true;
+	}
+	#endregion
+
+	#region Command OnLoadedReceiptTabCommand - Метод вызываемой при загрузке отображения перечня поступлений позиций.
+
+	/// <summary>Метод вызываемой при загрузке отображения перечня поступлений позиций.</summary>
+	private LambdaCommand? _OnLoadedReceiptTabCommand;
+
+	/// <summary>Метод вызываемой при загрузке отображения перечня поступлений позиций.</summary>
+	public ICommand OnLoadedReceiptTabCommand => _OnLoadedReceiptTabCommand ??= new(ExecutedOnLoadedReceiptTabCommand);
+
+	/// <summary>Логика выполнения - Метод вызываемой при загрузке отображения перечня поступлений позиций.</summary>
+	private void ExecutedOnLoadedReceiptTabCommand()
+	{
+		if(VisibleWriteOffButton)
+			VisibleWriteOffButton = false;
+	}
+	#endregion
+
+	#region Command OnLoadedMoveTabCommand - Метод вызываемый при загрузке отображения перечня перемещений позициий.
+
+	/// <summary>Метод вызываемый при загрузке отображения перечня перемещений позициий.</summary>
+	private LambdaCommand? _OnLoadedMoveTabCommand;
+
+	/// <summary>Метод вызываемый при загрузке отображения перечня перемещений позициий.</summary>
+	public ICommand OnLoadedMoveTabCommand => _OnLoadedMoveTabCommand ??= new(ExecutedOnLoadedMoveTabCommand);
+
+	/// <summary>Логика выполнения - Метод вызываемый при загрузке отображения перечня перемещений позициий.</summary>
+	private void ExecutedOnLoadedMoveTabCommand()
+	{
+		if(VisibleWriteOffButton)
+			VisibleWriteOffButton = false;
+	}
+	#endregion
+
+
 	#endregion
 
 	/// <summary>
