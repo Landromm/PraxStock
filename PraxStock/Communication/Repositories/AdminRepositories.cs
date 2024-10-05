@@ -449,6 +449,59 @@ namespace PraxStock.Communication.Repositories
 			return result;
 		}
 
+		public SortedList<int, string> GetAllNameItemSecond()
+		{
+			var result = new SortedList<int, string>();
+			using var context = new PraxixSkladContext();
+			{
+				var tempResult = from dataStock in context.DataStocks
+								  join items in context.Items on dataStock.IdItem equals items.IdItem
+								  select new
+								  {
+									  IdItemStock = dataStock.IdItemStock,
+									  NameItem = items.NameItem
+								  };
+				foreach (var item in tempResult)
+					result.Add(item.IdItemStock, item.NameItem);
+			}
+
+			return result;
+		}
+
+		public MainListItems GetBySearchIdStockItem(int searchIdStock)
+		{
+			MainListItems resultCollection = new();
+			using var context = new PraxixSkladContext();
+			{
+				var resultSearchCollection = from dataStock in context.DataStocks
+											 join items in context.Items on dataStock.IdItem equals items.IdItem
+											 join receipt in context.Receipts on dataStock.IdItemStock equals receipt.IdReceipt
+											 where dataStock.IdItemStock == searchIdStock
+											 select new
+											 {
+												 IdItemStock = dataStock.IdItemStock,
+												 IdItem = dataStock.IdItem,
+												 NameItem = items.NameItem,
+												 UnitMeasure = items.UnitMeasure,
+												 RemainingStock = dataStock.RemainingStock,
+												 ExpirationDate = receipt.ExprirationDate,
+												 DateReceipt = receipt.DateReceipt
+											 };
+				foreach (var item in resultSearchCollection)
+					resultCollection = new MainListItems()
+					{
+						IdDataStock = item.IdItemStock,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.RemainingStock,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					};
+				return resultCollection;
+			}
+		}
+
 		public void AddReceiptItem(ReceiptListItem receiptListItem)
 		{
 			Receipt receipt = new();
@@ -715,5 +768,7 @@ namespace PraxStock.Communication.Repositories
 				return false;
 			}
 		}
+
+
 	}
 }

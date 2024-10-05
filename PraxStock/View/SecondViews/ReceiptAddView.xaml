@@ -7,9 +7,9 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Поступление"
-        Width="350"
+        Width="370"
         Height="520"
-        MaxWidth="350"
+        MaxWidth="370"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         SizeToContent="Height">
@@ -80,8 +80,7 @@
                     <Label
                         Content="Срок годности (до):"/>
                     <DatePicker
-                        SelectedDate="{Binding ExpirationDate, UpdateSourceTrigger=PropertyChanged}"
-                        DisplayDate="{Binding ExpirationDate}"/>
+                        SelectedDate="{Binding ExpirationDate, UpdateSourceTrigger=PropertyChanged}"/>
 
                 </StackPanel>
                 <StackPanel 
@@ -111,8 +110,93 @@
             <DockPanel
                 Visibility="Visible">
                 <!--Visibility="{Binding ElementName=cbShowSecret, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">-->
-                
-                
+
+                <Label
+                    DockPanel.Dock="Top"
+                    Content="Позиция:"/>
+                <ComboBox
+                    DockPanel.Dock="Top"
+                    IsEditable="False"
+                    ItemsSource="{Binding NameItemListSecond}"
+                    SelectedItem="{Binding SelectedNameItemSecond}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="DropDownOpened">
+                            <i:InvokeCommandAction Command="{Binding DropdownSelectionSecondChanged}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <Label
+                    DockPanel.Dock="Top"
+                    Content="Наименование"/>
+                <TextBox
+                    DockPanel.Dock="Top"
+                    IsEnabled="False"
+                    Text="{Binding NameItemSecond}"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel
+                        IsEnabled="False"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Orientation="Vertical"
+                        Margin="0 0 5 0">
+                        <Label
+                            Content="Еденица измерения"/>
+                        <TextBox
+                            IsEnabled="False"
+                            Text="{Binding UnitMeasureSecond}"/>
+                    </StackPanel>
+                    
+                    <StackPanel 
+                        IsEnabled="False"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Orientation="Vertical"
+                        Margin="5 0 0 0">
+                        <Label
+                            Content="Количество"/>
+                        <TextBox 
+                            IsEnabled="True"
+                            Text="{Binding QuantityReceiptSecond}"/>
+                    </StackPanel>
+                    
+                    <StackPanel 
+                        IsEnabled="False"
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Margin="0 5 5 5">
+                        <Label
+                            Content="Срок годности (до):"/>
+                        <DatePicker
+                            SelectedDate="{Binding ExpirationDateSecond, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayDate="{Binding ExpirationDateSecond}"/>
+
+                    </StackPanel>
+                    
+                    <StackPanel 
+                        IsEnabled="False"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Margin="5 5 0 5">
+                        <Label
+                            Content="Дата поступления:"/>
+                        <DatePicker
+                            SelectedDate="{Binding DateReceiptSecond, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayDate="{Binding DateReceiptSecond}"/>
+
+                    </StackPanel>
+
+                </Grid>
+
 
             </DockPanel>
             
