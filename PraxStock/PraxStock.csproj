@@ -6,7 +6,15 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <PackageIcon>Warehouse.png</PackageIcon>
+    <ApplicationIcon>warehouse.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="warehouse.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Resources\" />
