@@ -449,23 +449,58 @@ namespace PraxStock.Communication.Repositories
 			return result;
 		}
 
-		public SortedList<int, string> GetAllNameItemSecond()
+		//public SortedList<int, string> GetAllNameItemSecond()
+		//{
+		//	var result = new SortedList<int, string>();
+		//	using var context = new PraxixSkladContext();
+		//	{
+		//		var tempResult = from dataStock in context.DataStocks
+		//						  join items in context.Items on dataStock.IdItem equals items.IdItem
+		//						  select new
+		//						  {
+		//							  IdItemStock = dataStock.IdItemStock,
+		//							  NameItem = items.NameItem
+		//						  };
+		//		foreach (var item in tempResult)
+		//			result.Add(item.IdItemStock, item.NameItem);
+		//	}
+
+		//	return result;
+		//}
+
+		public List<MainListItems> GetAllNameItemSecond()
 		{
-			var result = new SortedList<int, string>();
+			var mainCollection = new List<MainListItems>();
 			using var context = new PraxixSkladContext();
 			{
-				var tempResult = from dataStock in context.DataStocks
-								  join items in context.Items on dataStock.IdItem equals items.IdItem
-								  select new
-								  {
-									  IdItemStock = dataStock.IdItemStock,
-									  NameItem = items.NameItem
-								  };
-				foreach (var item in tempResult)
-					result.Add(item.IdItemStock, item.NameItem);
+				var result = from dataStoks in context.DataStocks
+							 join items in context.Items on dataStoks.IdItem equals items.IdItem
+							 join receipt in context.Receipts on dataStoks.IdItemStock equals receipt.IdReceipt
+							 select new
+							 {
+								 IdItemStock = dataStoks.IdItemStock,
+								 IdItem = dataStoks.IdItem,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 RemainingStock = dataStoks.RemainingStock,
+								 ExpirationDate = receipt.ExprirationDate,
+								 DateReceipt = receipt.DateReceipt
+							 };
+				foreach (var item in result)
+				{
+					mainCollection.Add(new MainListItems()
+					{
+						IdDataStock = item.IdItemStock,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.RemainingStock,
+						ExpirationDate = item.ExpirationDate,
+						DateReceipt = item.DateReceipt
+					});
+				}
 			}
-
-			return result;
+			return mainCollection;
 		}
 
 		public MainListItems GetBySearchIdStockItem(int searchIdStock)

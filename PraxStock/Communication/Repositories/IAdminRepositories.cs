@@ -35,8 +35,9 @@ namespace PraxStock.Communication.Repositories
 
 
 		List<string> GetAllNameItem();
-		SortedList<int, string> GetAllNameItemSecond();
-        MainListItems GetBySearchIdStockItem(int searchIdStock);
+		//SortedList<int, string> GetAllNameItemSecond();
+        List<MainListItems> GetAllNameItemSecond();
+		MainListItems GetBySearchIdStockItem(int searchIdStock);
 		void AddItemsList(string nameItem, string unitMeasure);
         void ChangedItemList(string nameItem, string unitMeasure, int idItem);
 

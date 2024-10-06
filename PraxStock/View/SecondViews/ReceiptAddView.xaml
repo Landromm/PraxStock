@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Поступление"
         Width="370"
-        Height="520"
+        Height="565"
         MaxWidth="370"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -24,11 +24,13 @@
             Margin="5">
 
             <Label
-                Content="Позиция:"/>
+                Content="Позиция:"
+                FontSize="14"/>
             <ComboBox
                 IsEditable="False"
                 ItemsSource="{Binding NameItemList}"
-                SelectedItem="{Binding SelectedNameItem}">
+                SelectedItem="{Binding SelectedNameItem}"
+                FontSize="16">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="DropDownOpened">
                         <i:InvokeCommandAction Command="{Binding DropdownSelectionChanged}"/>
@@ -36,10 +38,12 @@
                 </i:Interaction.Triggers>
             </ComboBox>
             <Label
-                Content="Наименование"/>
+                Content="Наименование"
+                FontSize="14"/>
             <TextBox
                 IsEnabled="False"
-                Text="{Binding NameItem}"/>
+                Text="{Binding NameItem}"
+                FontSize="16"/>
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -57,10 +61,12 @@
                     Orientation="Vertical"
                     Margin="0 0 5 0">
                     <Label
-                        Content="Еденица измерения"/>
+                        Content="Еденица измерения" 
+                        FontSize="14"/>
                     <TextBox
                         IsEnabled="False"
-                        Text="{Binding UnitMeasure}"/>
+                        Text="{Binding UnitMeasure}"
+                        FontSize="16"/>
                 </StackPanel>
                 <StackPanel 
                     Grid.Column="1"
@@ -68,19 +74,24 @@
                     Orientation="Vertical"
                     Margin="5 0 0 0">
                     <Label
-                        Content="Количество"/>
+                        Content="Количество"
+                        FontSize="14"/>
                     <TextBox 
                         IsEnabled="True"
-                        Text="{Binding QuantityReceipt}"/>
+                        Text="{Binding QuantityReceipt}"
+                        FontSize="16"
+                        FontWeight="Bold"/>
                 </StackPanel>
                 <StackPanel 
                     Grid.Column="0"
                     Grid.Row="1"
                     Margin="0 5 5 5">
                     <Label
-                        Content="Срок годности (до):"/>
+                        Content="Срок годности (до):"
+                        FontSize="14"/>
                     <DatePicker
-                        SelectedDate="{Binding ExpirationDate, UpdateSourceTrigger=PropertyChanged}"/>
+                        SelectedDate="{Binding ExpirationDate, UpdateSourceTrigger=PropertyChanged}"
+                        FontSize="16"/>
 
                 </StackPanel>
                 <StackPanel 
@@ -88,10 +99,12 @@
                     Grid.Row="1"
                     Margin="5 5 0 5">
                     <Label
-                        Content="Дата поступления:"/>
+                        Content="Дата поступления:"
+                        FontSize="14"/>
                     <DatePicker
                         SelectedDate="{Binding DateReceipt, UpdateSourceTrigger=PropertyChanged}"
-                        DisplayDate="{Binding DateReceipt}"/>
+                        DisplayDate="{Binding DateReceipt}"
+                        FontSize="16"/>
 
                 </StackPanel>
                 <CheckBox
@@ -104,33 +117,47 @@
                     Padding="7 0"
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center"
+                    FontSize="14"
                     IsChecked="{Binding ShowSecretPanel}"/>
             </Grid>
 
             <DockPanel
-                Visibility="Visible">
-                <!--Visibility="{Binding ElementName=cbShowSecret, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">-->
+                Visibility="{Binding ElementName=cbShowSecret, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
 
                 <Label
                     DockPanel.Dock="Top"
-                    Content="Позиция:"/>
+                    Content="Позиция:"
+                    FontSize="14"/>
                 <ComboBox
                     DockPanel.Dock="Top"
                     IsEditable="False"
+                    FontSize="16"
                     ItemsSource="{Binding NameItemListSecond}"
-                    SelectedItem="{Binding SelectedNameItemSecond}">
+                    SelectedValue="{Binding SelectedNameItemSecond}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="DropDownOpened">
                             <i:InvokeCommandAction Command="{Binding DropdownSelectionSecondChanged}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="2 2">                                    
+                                <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" Margin="2 2 5 2" FontSize="16" FontWeight="DemiBold"/>
+                                <TextBlock Text=" - " Margin="3 2" FontSize="16"/>
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding UnitMeasure}" Margin="2 2 5 2" FontSize="16" FontWeight="Bold"/>
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding UnitCount}" Margin="2 2 5 2" FontSize="16" FontWeight="Bold"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
                 <Label
                     DockPanel.Dock="Top"
-                    Content="Наименование"/>
+                    Content="Наименование"
+                    FontSize="14"/>
                 <TextBox
                     DockPanel.Dock="Top"
                     IsEnabled="False"
+                    FontSize="16"
                     Text="{Binding NameItemSecond}"/>
 
                 <Grid>
@@ -150,9 +177,11 @@
                         Orientation="Vertical"
                         Margin="0 0 5 0">
                         <Label
-                            Content="Еденица измерения"/>
+                            Content="Еденица измерения"
+                            FontSize="14"/>
                         <TextBox
                             IsEnabled="False"
+                            FontSize="16"
                             Text="{Binding UnitMeasureSecond}"/>
                     </StackPanel>
                     
@@ -163,9 +192,12 @@
                         Orientation="Vertical"
                         Margin="5 0 0 0">
                         <Label
-                            Content="Количество"/>
+                            Content="Количество"
+                            FontSize="14"/>
                         <TextBox 
                             IsEnabled="True"
+                            FontSize="16"
+                            FontWeight="DemiBold"
                             Text="{Binding QuantityReceiptSecond}"/>
                     </StackPanel>
                     
@@ -175,10 +207,13 @@
                         Grid.Row="1"
                         Margin="0 5 5 5">
                         <Label
-                            Content="Срок годности (до):"/>
+                            Content="Срок годности (до):"
+                            FontSize="14"/>
                         <DatePicker
                             SelectedDate="{Binding ExpirationDateSecond, UpdateSourceTrigger=PropertyChanged}"
-                            DisplayDate="{Binding ExpirationDateSecond}"/>
+                            DisplayDate="{Binding ExpirationDateSecond}"
+                            FontSize="16"
+                            FontWeight="DemiBold"/>
 
                     </StackPanel>
                     
@@ -188,10 +223,13 @@
                         Grid.Row="1"
                         Margin="5 5 0 5">
                         <Label
-                            Content="Дата поступления:"/>
+                            Content="Дата поступления:"
+                            FontSize="14"/>
                         <DatePicker
                             SelectedDate="{Binding DateReceiptSecond, UpdateSourceTrigger=PropertyChanged}"
-                            DisplayDate="{Binding DateReceiptSecond}"/>
+                            DisplayDate="{Binding DateReceiptSecond}"
+                            FontSize="16"
+                            FontWeight="DemiBold"/>
 
                     </StackPanel>
 
@@ -205,7 +243,7 @@
                 Orientation="Horizontal"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Margin="0 10">
+                Margin="0 5">
                 
                 <Button
                     Content="Очистить"

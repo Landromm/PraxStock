@@ -64,13 +64,31 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
-		#region NameItemListSecond : List<string, int> -  Список наименований для суммирования.
+		//Если к ComboBox'у привяжеться коллекция объектов то этот список надо удалить.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//#region NameItemListSecond : List<string, int> -  Список наименований для суммирования.
+
+		/////<summary>Список наименований для суммирования. - поле.</summary>
+		//private SortedList<int, string> _NameItemListSecond;
+
+		/////<summary>Список наименований для суммирования. - свойство.</summary>
+		//public SortedList<int, string> NameItemListSecond
+		//{
+		//	get => _NameItemListSecond;
+		//	set
+		//	{
+		//		_NameItemListSecond = value;
+		//		OnPropertyChanged(nameof(NameItemListSecond));
+		//	}
+		//}
+		//#endregion
+
+		#region NameItemListSecond : List<MainListItems> -  Список наименований для суммирования.
 
 		///<summary>Список наименований для суммирования. - поле.</summary>
-		private SortedList<int, string> _NameItemListSecond;
+		private List<MainListItems> _NameItemListSecond;
 
 		///<summary>Список наименований для суммирования. - свойство.</summary>
-		public SortedList<int, string> NameItemListSecond
+		public List<MainListItems> NameItemListSecond
 		{
 			get => _NameItemListSecond;
 			set
@@ -108,27 +126,31 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
-		#region SelectedNameItemSecond : KeyValuePair<int, string> -  Выбранное наименование позиции для суммирования.
+		#region SelectedNameItemSecond : MainListItems -  Выбранное наименование позиции для суммирования.
 
 		///<summary>Выбранное наименование позиции для суммирования. - поле.</summary>
-		private KeyValuePair<int, string> _SelectedNameItemSecond;
+		private MainListItems _SelectedNameItemSecond;
 
 		///<summary>Выбранное наименование позиции для суммирования. - свойство.</summary>
-		public KeyValuePair<int, string> SelectedNameItemSecond
+		public MainListItems SelectedNameItemSecond
 		{
 			get => _SelectedNameItemSecond;
 			set
 			{
 				_SelectedNameItemSecond = value;
 				OnPropertyChanged(nameof(SelectedNameItemSecond));
-				ItemListCollectionSecond = _repositoriesDB.GetBySearchIdStockItem(value.Key);
-				NameItemSecond = ItemListCollectionSecond.Name;
-				UnitMeasureSecond = ItemListCollectionSecond.UnitMeasure;
-				QuantityReceiptSecond = ItemListCollectionSecond.UnitCount;
-				var tempExpiration = ItemListCollectionSecond.ExpirationDate;
-				if (tempExpiration is not null)
-					ExpirationDateSecond = ((DateOnly)tempExpiration).ToDateTime(TimeOnly.MinValue);
-				DateReceiptSecond = ItemListCollectionSecond.DateReceipt.ToDateTime(TimeOnly.MinValue);
+				if(value is not null)
+				{
+					ItemListCollectionSecond = _repositoriesDB.GetBySearchIdStockItem(value.IdDataStock);
+					NameItemSecond = ItemListCollectionSecond.Name;
+					UnitMeasureSecond = ItemListCollectionSecond.UnitMeasure;
+					QuantityReceiptSecond = ItemListCollectionSecond.UnitCount;
+					var tempExpiration = ItemListCollectionSecond.ExpirationDate;
+					if (tempExpiration is not null)
+						ExpirationDateSecond = ((DateOnly)tempExpiration).ToDateTime(TimeOnly.MinValue);
+					DateReceiptSecond = ItemListCollectionSecond.DateReceipt.ToDateTime(TimeOnly.MinValue);
+				}
+
 			}
 		}
 		#endregion
@@ -338,7 +360,6 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
-
 		#region Command AddReceiptCommand - Добавление нового поступления позиции.
 
 		/// <summary>Добавление нового поступления позиции.</summary>
@@ -358,7 +379,8 @@ namespace PraxStock.ViewModel.SecondViewModel
 				fullInfoItem.ExpirationDate = DateOnly.FromDateTime((DateTime)ExpirationDate);
 			fullInfoItem.DateReceipt = DateOnly.FromDateTime(DateReceipt);
 
-			_repositoriesDB.AddReceiptItem(fullInfoItem);
+			if(!ShowSecretPanel)
+				_repositoriesDB.AddReceiptItem(fullInfoItem);
 
 			NameItem = "";
 			UnitMeasure = "";
