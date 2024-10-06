@@ -372,6 +372,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 		private void ExecutedAddReceiptCommand()
 		{
 			ReceiptListItem fullInfoItem = new ReceiptListItem();
+			fullInfoItem.IdItem = _repositoriesDB.GetBySearchIdItem(NameItem!);
 			fullInfoItem.Name = NameItem;
 			fullInfoItem.UnitMeasure = UnitMeasure;
 			fullInfoItem.UnitCount = QuantityReceipt;
@@ -381,10 +382,38 @@ namespace PraxStock.ViewModel.SecondViewModel
 
 			if(!ShowSecretPanel)
 				_repositoriesDB.AddReceiptItem(fullInfoItem);
+			else
+			{
+				var resultReceipt = _repositoriesDB.AddReceiptItemSecond(fullInfoItem, SelectedNameItemSecond.IdDataStock);
+				if (resultReceipt)
+				{
+					MessageBox.Show(
+						"Позиция добавлена УСПЕШНО!",
+						"Результат удаления",
+						MessageBoxButton.OK,
+						MessageBoxImage.Information);
+				}
+				else
+				{
+					MessageBox.Show(
+						"В процессе добавления произошла ОШИБКА!",
+						"Результат удаления",
+						MessageBoxButton.OK,
+						MessageBoxImage.Warning);
+				}
+			}
 
-			NameItem = "";
-			UnitMeasure = "";
+			NameItem = null;
+			UnitMeasure = null;
 			QuantityReceipt = 0;
+			ItemListCollection = null!;
+			ItemListCollectionSecond = null!;
+			SelectedNameItem = null;
+			SelectedNameItemSecond = null!;
+			ShowSecretPanel = false;
+			NameItemSecond = null;
+			UnitMeasureSecond = null;
+			QuantityReceiptSecond = 0;
 		}
 		#endregion
 
@@ -399,9 +428,17 @@ namespace PraxStock.ViewModel.SecondViewModel
 		/// <summary>Логика выполнения - Очистить форму для добавления нового поступления позиции.</summary>
 		private void ExecutedResetCommand()
 		{
-			NameItem = "";
-			UnitMeasure = "";
+			NameItem = null;
+			UnitMeasure = null;
 			QuantityReceipt = 0;
+			ItemListCollection = null!;
+			ItemListCollectionSecond = null!;
+			SelectedNameItem = null;
+			SelectedNameItemSecond = null!;
+			ShowSecretPanel = false;
+			NameItemSecond = null;
+			UnitMeasureSecond = null;
+			QuantityReceiptSecond = 0;
 			DateReceipt = DateTime.Now;
 		}
 		#endregion

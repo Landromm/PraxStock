@@ -537,6 +537,18 @@ namespace PraxStock.Communication.Repositories
 			}
 		}
 
+		public int GetBySearchIdItem(string searchName)
+		{
+			using var context = new PraxixSkladContext();
+			{
+				var idItem = (from item in context.Items
+							  where item.NameItem == searchName
+							  select item.IdItem).First();
+
+				return idItem;
+			}
+		}
+
 		public void AddReceiptItem(ReceiptListItem receiptListItem)
 		{
 			Receipt receipt = new();
@@ -577,6 +589,67 @@ namespace PraxStock.Communication.Repositories
 					context.DataStocks.Add(dataStock);
 					context.SaveChanges();
 				}
+			}
+		}
+		public bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem)
+		{
+			try
+			{
+				using var context = new PraxixSkladContext();
+				{
+					SqlParameter[] param =
+					{
+					new ()
+					{
+						ParameterName = "@idItem",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Value = receiptListItem.IdItem,
+					},
+					new ()
+					{
+						ParameterName = "@idItemStock",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Value = idStockItem
+
+					},
+					new ()
+					{
+						ParameterName = "@quatityReceipt",
+						SqlDbType = System.Data.SqlDbType.Float,
+						Value = receiptListItem.UnitCount
+					},
+					new ()
+					{
+						ParameterName = "@expirrationDate",
+						SqlDbType = System.Data.SqlDbType.Date,
+						Value = receiptListItem.ExpirationDate
+					},
+					new ()
+					{
+						ParameterName = "@dateReceip",
+						SqlDbType = System.Data.SqlDbType.Date,
+						Value = receiptListItem.DateReceipt
+					},
+					new ()
+					{
+						ParameterName = "@result",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Direction = System.Data.ParameterDirection.Output
+					}
+				};
+					
+						if (param[3].Value == null)
+							param[3].Value = DBNull.Value;
+
+					context.Database.ExecuteSqlRaw(
+						"update_dataStock_afterReceipt @idItem, @idItemStock, @quatityReceipt, @expirrationDate, @dateReceip, @result output", param);
+
+					return Convert.ToInt32(param[5].Value) == 1 ? true : false;
+				}
+			}
+			catch (Exception ex)
+			{
+				return false;
 			}
 		}
 

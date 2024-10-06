@@ -38,12 +38,14 @@ namespace PraxStock.Communication.Repositories
 		//SortedList<int, string> GetAllNameItemSecond();
         List<MainListItems> GetAllNameItemSecond();
 		MainListItems GetBySearchIdStockItem(int searchIdStock);
+        int GetBySearchIdItem(string searchName);
 		void AddItemsList(string nameItem, string unitMeasure);
         void ChangedItemList(string nameItem, string unitMeasure, int idItem);
 
         void AddReceiptItem(ReceiptListItem receiptListItem);
+        bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem);
 
-        bool AddMoveInPost(MoveListItem moveListItem);
+		bool AddMoveInPost(MoveListItem moveListItem);
         double GetRemainingStock(int idDataStock);
 
         bool AddWriteOff(MainListItems writeOffItem);
