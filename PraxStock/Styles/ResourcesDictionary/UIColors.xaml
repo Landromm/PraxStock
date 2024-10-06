@@ -19,12 +19,16 @@
     <!--Color Palette-->
     <SolidColorBrush x:Key="PraxixColor" Color="#73C0C8"/>
     <SolidColorBrush x:Key="color1Default" Color="#D35A5A"/>
+    <SolidColorBrush x:Key="color1_1Default" Color="#ff9191"/>
+    <SolidColorBrush x:Key="color1_2Default" Color="#f5cece"/>
     <SolidColorBrush x:Key="color2Default" Color="#FF0000"/>
     <SolidColorBrush x:Key="color3Default" Color="#71A05A"/>
     <SolidColorBrush x:Key="color4Default" Color="#57FF04"/>
     <SolidColorBrush x:Key="color5Default" Color="#EEF0F6"/>
     <SolidColorBrush x:Key="color6Default" Color="#CFDAEC"/>
     <SolidColorBrush x:Key="color7Default" Color="#4CD661"/>
+    <SolidColorBrush x:Key="color8Default" Color="#90fca0"/>
+    <SolidColorBrush x:Key="color9Default" Color="#d9fcdf"/>
     <SolidColorBrush x:Key="color1Dark" Color="#D35A5A"/>
     <SolidColorBrush x:Key="color2Dark" Color="#DE0000" Opacity="0.7"/>
     <SolidColorBrush x:Key="color3Dark" Color="#71A05A"/>

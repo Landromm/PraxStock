@@ -347,7 +347,7 @@ internal class MainViewModel : DialogViewModel
 	{
 		if(CurrentDataStockList is null)
 		{
-			MessageBox.Show("Выберите позицию из списка, чтобы открылось окно перемещения позиций.",
+			MessageBox.Show("Выберите позицию из ОСНОВНОГО СПИСКА, чтобы открылось окно перемещения позиций.",
 				"Совет!",
 				MessageBoxButton.OK,
 				MessageBoxImage.Exclamation);
