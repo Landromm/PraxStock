@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace PraxStock.Model.DBModels;
@@ -28,10 +27,9 @@ public partial class PraxixSkladContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        //=> optionsBuilder.UseSqlServer("Server=ASUTP-RADKEVICH\\MSSQL_RADKEVICH; Database=Praxix_Sklad; Integrated Security=True; TrustServerCertificate=True");
-	    => optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["LibraryWPF.Properties.Settings.SqlConnectionWork"].ConnectionString);
+        => optionsBuilder.UseSqlServer("Server=ASUTP-RADKEVICH\\MSSQL_RADKEVICH; Database=Praxix_Sklad; Integrated Security=True; TrustServerCertificate=True");
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<DataStock>(entity =>
         {
@@ -42,7 +40,9 @@ public partial class PraxixSkladContext : DbContext
             entity.Property(e => e.IdItemStock)
                 .ValueGeneratedNever()
                 .HasColumnName("idItemStock");
+            entity.Property(e => e.FlagSett).HasDefaultValue(false);
             entity.Property(e => e.IdItem).HasColumnName("idItem");
+            entity.Property(e => e.MinValue).HasDefaultValue(0.0);
 
             entity.HasOne(d => d.IdItemNavigation).WithMany(p => p.DataStocks)
                 .HasForeignKey(d => d.IdItem)

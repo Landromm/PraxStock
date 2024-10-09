@@ -181,15 +181,87 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="4">
 
+                <TabControl.Style>
+                    <Style TargetType="TabControl">
+                        <Setter Property="Padding" Value="5 2"/>
+                        <Setter Property="ItemContainerStyle">
+                            <Setter.Value>
+                                <Style TargetType="TabItem">
+                                    <!--<Setter Property="Padding" Value="5 5"/>
+                                    <Setter Property="Margin" Value="2 0"/>-->
+                                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type TabItem}">
+                                                
+                                                <Border
+                                                    x:Name="body"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderThickness="1"
+                                                    BorderBrush="LightGray"
+                                                    CornerRadius="5 5 0 0"
+                                                    Padding="7 3"
+                                                    Margin="2 0">
+                                                    <StackPanel
+                                                        Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+
+                                                        <fa:IconImage Icon="ListAlt" VerticalAlignment="Center" Margin="0 2 5 2"/>
+
+                                                        <TextBlock Text="{TemplateBinding Header}"
+                                                               Foreground="Black"
+                                                               VerticalAlignment="Center"
+                                                               HorizontalAlignment="Center"
+                                                               FontSize="16"
+                                                               FontStyle="Italic"
+                                                               FontWeight="Medium"/>
+                                                    </StackPanel>
+                                                    
+                                                </Border>
+
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="body" Property="BorderThickness" Value="1 1 0 0"/>
+                                                        <Setter TargetName="body" Property="BorderBrush" Value="Black"/>
+                                                        <Setter TargetName="body" Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <ScaleTransform ScaleY="0.9" ScaleX="0.9"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter TargetName="body" Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <TranslateTransform Y="-2" X="0"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="body" Property="BorderThickness" Value="1 1 0 0"/>
+                                                        <Setter TargetName="body" Property="BorderBrush" Value="Black"/>
+                                                        <Setter TargetName="body" Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <ScaleTransform ScaleY="1.1" ScaleX="1.1"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter TargetName="body" Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <TranslateTransform Y="4" X="2"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Style>
+
                 <!--Основной перечень-->
                 <TabItem
                     x:Name="tabMainList"
-                    Background="{StaticResource PraxixColor}">
-                    <TabItem.Header>
-                        <TextBlock 
-                            Text="Основной перечень"
-                            Style="{StaticResource TabItemHeader_TextBlock}"/>
-                    </TabItem.Header>
+                    Background="{StaticResource PraxixColor}"
+                    Header="Основной перечень">
                     <TabItem.ToolTip>
                         <TextBlock
                             Style="{StaticResource ToolTipTextBlock}"
@@ -201,7 +273,6 @@
                             <i:InvokeCommandAction Command="{Binding OnLoadedMainTabCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-
 
                     <Grid
                         Margin="5">
@@ -291,11 +362,26 @@
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="№"/>
                                         </GridViewColumn>
-                                        <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=Name}">
+                                        <GridViewColumn>
                                             <TextBlock
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Наименование"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border 
+                                                        BorderThickness="1" 
+                                                        BorderBrush="{StaticResource PraxixColor}" 
+                                                        CornerRadius="3"
+                                                        Padding="5 3">
+                                                        <TextBlock 
+                                                            Text="{Binding Name}"
+                                                            TextAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="14"
+                                                            FontWeight="DemiBold"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=UnitMeasure}">
@@ -326,8 +412,7 @@
                                 <ListView.Resources>
 
                                     <DataTemplate x:Key="DefaultTemplateItem">
-
-
+                                        
                                     </DataTemplate>
 
                                 </ListView.Resources>
@@ -346,6 +431,14 @@
                                                         BorderThickness="{TemplateBinding BorderThickness}">
                                                             <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
                                                                   Content="{TemplateBinding Content}" />
+                                                        
+                                                            <Border.InputBindings>
+                                                                <MouseBinding 
+                                                                    Gesture="LeftDoubleClick"
+                                                                    Command="{Binding DataContext.ShowActionSelectedDataStockItemCommand,
+                                                                          RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                                                    CommandParameter="{Binding}"/>
+                                                            </Border.InputBindings>
                                                     </Border>
                                                 </ControlTemplate>
                                             </Setter.Value>
@@ -379,12 +472,8 @@
                 <!--Поступления-->
                 <TabItem
                     x:Name="tabReceiptList"
-                    Background="{StaticResource color7Default}">
-                    <TabItem.Header>
-                        <TextBlock 
-                            Text="Поступления"
-                            Style="{StaticResource TabItemHeader_TextBlock}"/>
-                    </TabItem.Header>
+                    Background="{StaticResource color7Default}"
+                    Header="Поступление">
                     <TabItem.ToolTip>
                         <TextBlock
                             Style="{StaticResource ToolTipTextBlock}"
@@ -471,7 +560,7 @@
                                 Background="Transparent"
                                 BorderThickness="0" 
                                 AlternationCount="2"
-                                d:ItemsSource="{d:SampleData ItemCount=5}"                                 
+                                d:ItemsSource="{d:SampleData ItemCount=5}"
                                 HorizontalContentAlignment="Center" 
                                 Grid.IsSharedSizeScope="True">
 
@@ -576,12 +665,8 @@
                 <!--Перемещения-->
                 <TabItem
                     x:Name="tabMoveList"
-                    Background="{StaticResource color1Default}">
-                    <TabItem.Header>
-                        <TextBlock 
-                            Text="Перемещения"
-                            Style="{StaticResource TabItemHeader_TextBlock}"/>
-                    </TabItem.Header>
+                    Background="{StaticResource color1Default}"
+                    Header="Перемещение">
                     <TabItem.ToolTip>
                         <TextBlock
                             Style="{StaticResource ToolTipTextBlock}"

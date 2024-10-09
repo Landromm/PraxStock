@@ -482,7 +482,23 @@ internal class MainViewModel : DialogViewModel
 	#endregion
 
 
+	#region Command ShowActionSelectedDataStockItemCommand - Просмотр действий по выбранной позиции.
+
+	/// <summary>Просмотр действий по выбранной позиции.</summary>
+	private LambdaCommand? _ShowActionSelectedDataStockItemCommand;
+
+	/// <summary>Просмотр действий по выбранной позиции.</summary>
+	public ICommand ShowActionSelectedDataStockItemCommand => _ShowActionSelectedDataStockItemCommand ??= new(ExecutedShowActionSelectedDataStockItemCommand);
+
+	/// <summary>Логика выполнения - Просмотр действий по выбранной позиции.</summary>
+	private void ExecutedShowActionSelectedDataStockItemCommand()
+	{
+
+	}
 	#endregion
+	#endregion
+
+
 
 	/// <summary>
 	/// Метод выборки основного перечня позиций по введенным данным.

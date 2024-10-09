@@ -16,4 +16,6 @@ public class MainListItems : ItemStock
 	//public DateOnly ExpirationDate { get; set; }
 
 	public DateOnly DateReceipt { get; set; }
+
+	public int MinValue { get; set; }
 }
