@@ -422,15 +422,38 @@
                                                                 <Setter Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
                                                                 <Setter Property="Background" Value="{StaticResource color8Default}"/>
                                                                 <Style.Triggers>
-                                                                    <DataTrigger Value="True">
+                                                                    <DataTrigger Value="1">
                                                                         <DataTrigger.Binding>
                                                                             <MultiBinding Converter="{StaticResource UnitConverter}">
                                                                                 <Binding Path="UnitCount"/>
                                                                                 <Binding Path="MinValue"/>
+                                                                                <Binding Path="FlagSett"/>
                                                                             </MultiBinding>
                                                                         </DataTrigger.Binding>
                                                                         <Setter Property="BorderThickness" Value="2"/>
                                                                         <Setter Property="Background" Value="{StaticResource color1Default}"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Value="2">
+                                                                        <DataTrigger.Binding>
+                                                                            <MultiBinding Converter="{StaticResource UnitConverter}">
+                                                                                <Binding Path="UnitCount"/>
+                                                                                <Binding Path="MinValue"/>
+                                                                                <Binding Path="FlagSett"/>
+                                                                            </MultiBinding>
+                                                                        </DataTrigger.Binding>
+                                                                        <Setter Property="BorderThickness" Value="1"/>
+                                                                        <Setter Property="Background" Value="{StaticResource color8Default}"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Value="3">
+                                                                        <DataTrigger.Binding>
+                                                                            <MultiBinding Converter="{StaticResource UnitConverter}">
+                                                                                <Binding Path="UnitCount"/>
+                                                                                <Binding Path="MinValue"/>
+                                                                                <Binding Path="FlagSett"/>
+                                                                            </MultiBinding>
+                                                                        </DataTrigger.Binding>
+                                                                        <Setter Property="BorderThickness" Value="1"/>
+                                                                        <Setter Property="Background" Value="Transparent"/>
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
@@ -450,6 +473,35 @@
                                             <TextBlock
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Дата поступления"/>
+                                        </GridViewColumn>
+                                        <GridViewColumn>
+                                            <TextBlock
+                                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                                Text="  контроль (вкл/выкл)"
+                                                FontSize="10"
+                                                TextWrapping="Wrap"
+                                                Width="70"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border>
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="BorderThickness" Value="1"/>
+                                                                <Setter Property="BorderBrush" Value="{StaticResource BorderColor1Dark}"/>
+                                                                <Setter Property="Background" Value="{StaticResource color2Dark}"/>
+                                                                <Setter Property="Width" Value="12"/>
+                                                                <Setter Property="Height" Value="12"/>
+                                                                <Setter Property="CornerRadius" Value="6"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding FlagSett}" Value="True">
+                                                                        <Setter Property="Background" Value="{StaticResource color8Default}"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
                                     </GridView>
                                 </ListView.View>
