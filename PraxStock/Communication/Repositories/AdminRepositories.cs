@@ -116,7 +116,9 @@ namespace PraxStock.Communication.Repositories
 												 UnitMeasure = items.UnitMeasure,
 												 RemainingStock = dataStock.RemainingStock,
 												 ExpirationDate = receipt.ExprirationDate,
-												 DateReceipt = receipt.DateReceipt
+												 DateReceipt = receipt.DateReceipt,
+												 MinValue = dataStock.MinValue,
+												 FlagSett = dataStock.FlagSett
 											 };
 				foreach (var item in resultSearchCollection)
 					resultCollection.Add(new MainListItems()
@@ -127,7 +129,9 @@ namespace PraxStock.Communication.Repositories
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.RemainingStock,
 						ExpirationDate = item.ExpirationDate,
-						DateReceipt = item.DateReceipt
+						DateReceipt = item.DateReceipt,
+						MinValue = item.MinValue,
+						FlagSett = item.FlagSett
 					});
 				return resultCollection;
 			}
@@ -150,7 +154,9 @@ namespace PraxStock.Communication.Repositories
 												 UnitMeasure = items.UnitMeasure,
 												 RemainingStock = dataStock.RemainingStock,
 												 ExpirationDate = receipt.ExprirationDate,
-												 DateReceipt = receipt.DateReceipt
+												 DateReceipt = receipt.DateReceipt,
+												 MinValue = dataStock.MinValue,
+												 FlagSett = dataStock.FlagSett
 											 };
 				foreach (var item in resultSearchCollection)
 					resultCollection.Add(new MainListItems()
@@ -161,7 +167,9 @@ namespace PraxStock.Communication.Repositories
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.RemainingStock,
 						ExpirationDate = item.ExpirationDate,
-						DateReceipt = item.DateReceipt
+						DateReceipt = item.DateReceipt,
+						MinValue = item.MinValue,
+						FlagSett = item.FlagSett
 					});
 				return resultCollection;
 			}
@@ -184,7 +192,9 @@ namespace PraxStock.Communication.Repositories
 												 UnitMeasure = items.UnitMeasure,
 												 RemainingStock = dataStock.RemainingStock,
 												 ExpirationDate = receipt.ExprirationDate,
-												 DateReceipt = receipt.DateReceipt
+												 DateReceipt = receipt.DateReceipt,
+												 MinValue = dataStock.MinValue,
+												 FlagSett = dataStock.FlagSett
 											 };
 				foreach (var item in resultSearchCollection)
 					resultCollection.Add(new MainListItems()
@@ -195,7 +205,9 @@ namespace PraxStock.Communication.Repositories
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.RemainingStock,
 						ExpirationDate = item.ExpirationDate,
-						DateReceipt = item.DateReceipt
+						DateReceipt = item.DateReceipt,
+						MinValue = item.MinValue,
+						FlagSett = item.FlagSett
 					});
 				return resultCollection;
 			}
@@ -218,7 +230,9 @@ namespace PraxStock.Communication.Repositories
 												 UnitMeasure = items.UnitMeasure,
 												 RemainingStock = dataStock.RemainingStock,
 												 ExpirationDate = receipt.ExprirationDate,
-												 DateReceipt = receipt.DateReceipt
+												 DateReceipt = receipt.DateReceipt,
+												 MinValue = dataStock.MinValue,
+												 FlagSett = dataStock.FlagSett
 											 };
 				foreach (var item in resultSearchCollection)
 					resultCollection.Add(new MainListItems()
@@ -229,7 +243,9 @@ namespace PraxStock.Communication.Repositories
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.RemainingStock,
 						ExpirationDate = item.ExpirationDate,
-						DateReceipt = item.DateReceipt
+						DateReceipt = item.DateReceipt,
+						MinValue = item.MinValue,
+						FlagSett = item.FlagSett
 					});
 				return resultCollection;
 			}
@@ -484,7 +500,9 @@ namespace PraxStock.Communication.Repositories
 								 UnitMeasure = items.UnitMeasure,
 								 RemainingStock = dataStoks.RemainingStock,
 								 ExpirationDate = receipt.ExprirationDate,
-								 DateReceipt = receipt.DateReceipt
+								 DateReceipt = receipt.DateReceipt,
+								 MinValue = dataStoks.MinValue,
+								 FlagSett = dataStoks.FlagSett
 							 };
 				foreach (var item in result)
 				{
@@ -496,7 +514,9 @@ namespace PraxStock.Communication.Repositories
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.RemainingStock,
 						ExpirationDate = item.ExpirationDate,
-						DateReceipt = item.DateReceipt
+						DateReceipt = item.DateReceipt,
+						MinValue = item.MinValue,
+						FlagSett = item.FlagSett
 					});
 				}
 			}
@@ -520,7 +540,9 @@ namespace PraxStock.Communication.Repositories
 												 UnitMeasure = items.UnitMeasure,
 												 RemainingStock = dataStock.RemainingStock,
 												 ExpirationDate = receipt.ExprirationDate,
-												 DateReceipt = receipt.DateReceipt
+												 DateReceipt = receipt.DateReceipt,
+												 MinValue = dataStock.MinValue,
+												 FlagSett = dataStock.FlagSett
 											 };
 				foreach (var item in resultSearchCollection)
 					resultCollection = new MainListItems()
@@ -531,7 +553,9 @@ namespace PraxStock.Communication.Repositories
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.RemainingStock,
 						ExpirationDate = item.ExpirationDate,
-						DateReceipt = item.DateReceipt
+						DateReceipt = item.DateReceipt,
+						MinValue = item.MinValue,
+						FlagSett = item.FlagSett
 					};
 				return resultCollection;
 			}

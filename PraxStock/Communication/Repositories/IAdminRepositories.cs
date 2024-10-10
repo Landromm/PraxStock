@@ -16,10 +16,10 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<Item> GetBySearchNameItem(string searchName);
         ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure);
 
-        ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName);
-        ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock);
-        ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate);
-        ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt);
+        ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName);             //OK new parameters
+        ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock);   //OK new parameters
+		ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate); //OK new parameters
+		ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt);       //OK new parameters
 
 		ObservableCollection<ReceiptListItem> GetBySearchNameItemReceiptList(string searchName);
 		ObservableCollection<ReceiptListItem> GetBySearchUnitCountReceiptList(string unitCount);
@@ -29,14 +29,14 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(DateOnly dateReceipt);
         ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost);
 
-		ObservableCollection<MainListItems> GetDataStockList();
-        ObservableCollection<ReceiptListItem> GetReseiptList();
-        ObservableCollection<MoveListItem> GetMoveInPostList();
+		ObservableCollection<MainListItems> GetDataStockList();                                         //OK new parameters
+		ObservableCollection<ReceiptListItem> GetReseiptList();
+        ObservableCollection<MoveListItem> GetMoveInPostList(); 
 
 
 		List<string> GetAllNameItem();
 		//SortedList<int, string> GetAllNameItemSecond();
-        List<MainListItems> GetAllNameItemSecond();
+        List<MainListItems> GetAllNameItemSecond();                                                     //OK new parameters
 		MainListItems GetBySearchIdStockItem(int searchIdStock);
         int GetBySearchIdItem(string searchName);
 		void AddItemsList(string nameItem, string unitMeasure);
