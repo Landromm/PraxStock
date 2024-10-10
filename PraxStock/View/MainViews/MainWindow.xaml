@@ -3,7 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PraxStock" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:PraxStock" 
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:conv="clr-namespace:PraxStock.Model.Converters"
         mc:Ignorable="d"
         Title="Praxis СКЛАД" Height="500" Width="900"
         WindowStartupLocation="CenterScreen"
@@ -405,10 +408,33 @@
                                                         Padding="5 3">
                                                         <TextBlock 
                                                             Text="{Binding UnitCount}"
-                                                            TextAlignment="Left"
-                                                            VerticalAlignment="Center"
                                                             FontSize="14"
-                                                            FontWeight="DemiBold"/>
+                                                            TextAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            FontWeight="DemiBold">
+                                                        </TextBlock>
+                                                        <Border.Resources>
+                                                            <conv:UnitCountConverter x:Key="UnitConverter"/>
+                                                        </Border.Resources>
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="BorderThickness" Value="1"/>
+                                                                <Setter Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                                                                <Setter Property="Background" Value="{StaticResource color8Default}"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Value="True">
+                                                                        <DataTrigger.Binding>
+                                                                            <MultiBinding Converter="{StaticResource UnitConverter}">
+                                                                                <Binding Path="UnitCount"/>
+                                                                                <Binding Path="MinValue"/>
+                                                                            </MultiBinding>
+                                                                        </DataTrigger.Binding>
+                                                                        <Setter Property="BorderThickness" Value="2"/>
+                                                                        <Setter Property="Background" Value="{StaticResource color1Default}"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
                                                     </Border>
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
