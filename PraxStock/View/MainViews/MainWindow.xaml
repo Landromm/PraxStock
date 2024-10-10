@@ -215,12 +215,18 @@
                                                                FontStyle="Italic"
                                                                FontWeight="Medium"/>
                                                     </StackPanel>
-                                                    
+
+                                                    <Border.ToolTip>
+                                                        <TextBlock
+                                                            Style="{StaticResource ToolTipTextBlock}"
+                                                            Text="Перечень имеющихся позиций на складе."/>
+                                                    </Border.ToolTip>
+
                                                 </Border>
 
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="body" Property="BorderThickness" Value="1 1 0 0"/>
+                                                        <Setter TargetName="body" Property="BorderThickness" Value="1 1 1 0"/>
                                                         <Setter TargetName="body" Property="BorderBrush" Value="Black"/>
                                                         <Setter TargetName="body" Property="RenderTransform">
                                                             <Setter.Value>
@@ -234,7 +240,7 @@
                                                         </Setter>
                                                     </Trigger>
                                                     <Trigger Property="IsSelected" Value="True">
-                                                        <Setter TargetName="body" Property="BorderThickness" Value="1 1 0 0"/>
+                                                        <Setter TargetName="body" Property="BorderThickness" Value="1 1 1 0"/>
                                                         <Setter TargetName="body" Property="BorderBrush" Value="Black"/>
                                                         <Setter TargetName="body" Property="RenderTransform">
                                                             <Setter.Value>
@@ -243,7 +249,7 @@
                                                         </Setter>
                                                         <Setter TargetName="body" Property="RenderTransform">
                                                             <Setter.Value>
-                                                                <TranslateTransform Y="4" X="2"/>
+                                                                <TranslateTransform Y="3" X="2"/>
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Trigger>
@@ -262,11 +268,7 @@
                     x:Name="tabMainList"
                     Background="{StaticResource PraxixColor}"
                     Header="Основной перечень">
-                    <TabItem.ToolTip>
-                        <TextBlock
-                            Style="{StaticResource ToolTipTextBlock}"
-                            Text="Перечень имеющихся позиций на складе."/>
-                    </TabItem.ToolTip>
+
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
@@ -389,11 +391,27 @@
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Ед.измер"/>
                                         </GridViewColumn>
-                                        <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=UnitCount}">
+                                        <GridViewColumn>
                                             <TextBlock
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Остаток"/>
+                                            
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border 
+                                                        BorderThickness="1" 
+                                                        BorderBrush="{StaticResource PraxixColor}" 
+                                                        CornerRadius="3"
+                                                        Padding="5 3">
+                                                        <TextBlock 
+                                                            Text="{Binding UnitCount}"
+                                                            TextAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="14"
+                                                            FontWeight="DemiBold"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=ExpirationDate, StringFormat=dd-MM-yyyy}">
@@ -439,6 +457,11 @@
                                                                           RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                                                     CommandParameter="{Binding}"/>
                                                             </Border.InputBindings>
+                                                        <Border.ToolTip>
+                                                            <TextBlock
+                                                                Style="{StaticResource ToolTipTextBlock}"
+                                                                Text="Перечень поступивших позиций на складе."/>
+                                                        </Border.ToolTip>
                                                     </Border>
                                                 </ControlTemplate>
                                             </Setter.Value>
@@ -474,11 +497,7 @@
                     x:Name="tabReceiptList"
                     Background="{StaticResource color7Default}"
                     Header="Поступление">
-                    <TabItem.ToolTip>
-                        <TextBlock
-                            Style="{StaticResource ToolTipTextBlock}"
-                            Text="Перечень поступивших позиций на складе."/>
-                    </TabItem.ToolTip>
+
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding OnLoadedReceiptTabCommand}" />
@@ -667,11 +686,7 @@
                     x:Name="tabMoveList"
                     Background="{StaticResource color1Default}"
                     Header="Перемещение">
-                    <TabItem.ToolTip>
-                        <TextBlock
-                            Style="{StaticResource ToolTipTextBlock}"
-                            Text="Перечень перемещенных позиций со склада."/>
-                    </TabItem.ToolTip>
+
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding OnLoadedMoveTabCommand}" />
@@ -824,6 +839,11 @@
                                                         BorderThickness="{TemplateBinding BorderThickness}">
                                                         <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
                                                             Content="{TemplateBinding Content}" />
+                                                        <Border.ToolTip>
+                                                            <TextBlock
+                                                                Style="{StaticResource ToolTipTextBlock}"
+                                                                Text="Перечень перемещенных позиций со склада."/>
+                                                        </Border.ToolTip>
                                                     </Border>
                                                 </ControlTemplate>
                                             </Setter.Value>

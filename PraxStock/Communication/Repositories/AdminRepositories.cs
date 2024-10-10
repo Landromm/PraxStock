@@ -669,7 +669,9 @@ namespace PraxStock.Communication.Repositories
 								 UnitMeasure = items.UnitMeasure,
 								 RemainingStock = dataStoks.RemainingStock,
 								 ExpirationDate = receipt.ExprirationDate,
-								 DateReceipt = receipt.DateReceipt
+								 DateReceipt = receipt.DateReceipt,
+								 MinValue = dataStoks.MinValue,
+								 FlagSett = dataStoks.FlagSett
 							 };
 				foreach (var item in result)
 				{
@@ -681,7 +683,9 @@ namespace PraxStock.Communication.Repositories
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.RemainingStock,
 						ExpirationDate= item.ExpirationDate,
-						DateReceipt = item.DateReceipt
+						DateReceipt = item.DateReceipt,
+						MinValue = item.MinValue,
+						FlagSett = item.FlagSett
 					});
 				}
 			}

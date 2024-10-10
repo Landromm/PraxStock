@@ -17,5 +17,7 @@ public class MainListItems : ItemStock
 
 	public DateOnly DateReceipt { get; set; }
 
-	public int MinValue { get; set; }
+	public double? MinValue { get; set; }
+
+	public bool? FlagSett { get; set; }
 }
