@@ -420,7 +420,7 @@
                                                             <Style TargetType="Border">
                                                                 <Setter Property="BorderThickness" Value="1"/>
                                                                 <Setter Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
-                                                                <Setter Property="Background" Value="{StaticResource color8Default}"/>
+                                                                <Setter Property="Background" Value="Transparent"/>
                                                                 <Style.Triggers>
                                                                     <DataTrigger Value="1">
                                                                         <DataTrigger.Binding>
@@ -433,7 +433,7 @@
                                                                         <Setter Property="BorderThickness" Value="2"/>
                                                                         <Setter Property="Background" Value="{StaticResource color1Default}"/>
                                                                     </DataTrigger>
-                                                                    <DataTrigger Value="2">
+                                                                    <!--<DataTrigger Value="2">
                                                                         <DataTrigger.Binding>
                                                                             <MultiBinding Converter="{StaticResource UnitConverter}">
                                                                                 <Binding Path="UnitCount"/>
@@ -443,7 +443,7 @@
                                                                         </DataTrigger.Binding>
                                                                         <Setter Property="BorderThickness" Value="1"/>
                                                                         <Setter Property="Background" Value="{StaticResource color8Default}"/>
-                                                                    </DataTrigger>
+                                                                    </DataTrigger>-->
                                                                     <DataTrigger Value="3">
                                                                         <DataTrigger.Binding>
                                                                             <MultiBinding Converter="{StaticResource UnitConverter}">
