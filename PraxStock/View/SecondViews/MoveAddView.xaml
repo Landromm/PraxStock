@@ -364,7 +364,7 @@
                 
                 <ComboBox 
                     Margin="5 0 0 0"
-                    Height="25" 
+                    Height="30" 
                     Width="175"
                     FontSize="16"
                     IsEditable="True"

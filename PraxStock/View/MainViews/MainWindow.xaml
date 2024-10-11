@@ -411,12 +411,6 @@
                                                                FontWeight="Medium"/>
                                                     </StackPanel>
 
-                                                    <Border.ToolTip>
-                                                        <TextBlock
-                                                            Style="{StaticResource ToolTipTextBlock}"
-                                                            Text="Перечень имеющихся позиций на складе."/>
-                                                    </Border.ToolTip>
-
                                                 </Border>
 
                                                 <ControlTemplate.Triggers>
@@ -733,11 +727,6 @@
                                                                           RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                                                     CommandParameter="{Binding}"/>
                                                             </Border.InputBindings>
-                                                        <Border.ToolTip>
-                                                            <TextBlock
-                                                                Style="{StaticResource ToolTipTextBlock}"
-                                                                Text="Перечень поступивших позиций на складе."/>
-                                                        </Border.ToolTip>
                                                     </Border>
                                                 </ControlTemplate>
                                             </Setter.Value>
@@ -1115,11 +1104,6 @@
                                                         BorderThickness="{TemplateBinding BorderThickness}">
                                                         <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
                                                             Content="{TemplateBinding Content}" />
-                                                        <Border.ToolTip>
-                                                            <TextBlock
-                                                                Style="{StaticResource ToolTipTextBlock}"
-                                                                Text="Перечень перемещенных позиций со склада."/>
-                                                        </Border.ToolTip>
                                                     </Border>
                                                 </ControlTemplate>
                                             </Setter.Value>
