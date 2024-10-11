@@ -35,8 +35,9 @@ namespace PraxStock.Communication.Repositories
 
 
 		List<string> GetAllNameItem();
-		//SortedList<int, string> GetAllNameItemSecond();
-        List<MainListItems> GetAllNameItemSecond();                                                     //OK new parameters
+		List<string> GetAllNamePost();
+
+		List<MainListItems> GetAllNameItemSecond();                                                     //OK new parameters
 		MainListItems GetBySearchIdStockItem(int searchIdStock);
         int GetBySearchIdItem(string searchName);
 		void AddItemsList(string nameItem, string unitMeasure);

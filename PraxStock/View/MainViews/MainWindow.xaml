@@ -521,7 +521,7 @@
                                 </TextBox.Style>
                             </TextBox>
 
-                            <Border Padding="5" Background="Transparent">
+                            <Border Padding="0" Background="Transparent">
                                 <ComboBox 
                                     Grid.Column="1" 
                                     Margin="10 0"

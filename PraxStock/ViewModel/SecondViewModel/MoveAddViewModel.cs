@@ -123,19 +123,36 @@ class MoveAddViewModel : DialogViewModel
 	}
 	#endregion
 
-	#region NamePost : string? -  Наименование места перемещения.
+	#region NamePostList : List<string> - Список наименований мест для перемещения.
 
-	///<summary>Наименование места перемещения. - поле.</summary>
-	private string? _NamePost;
+	/// <summary>Список наименований мест для перемещения. - поле.</summary>
+	private List<string> _NamePostList;
 
-	///<summary>Наименование места перемещения. - свойство.</summary>
-	public string? NamePost
+	/// <summary>Список наименований мест для перемещения. - свойство.</summary>
+	public List<string> NamePostList
 	{
-		get => _NamePost;
+		get => _NamePostList;
 		set
 		{
-			_NamePost = value;
-			OnPropertyChanged(nameof(NamePost));
+			_NamePostList = value;
+			OnPropertyChanged(nameof(NamePostList));
+		}
+	}
+	#endregion
+
+	#region SelectedNamePost : string? -  Наименование выбранного места перемещения.
+
+	///<summary>Наименование места перемещения. - поле.</summary>
+	private string? _SelectedNamePost;
+
+	///<summary>Наименование места перемещения. - свойство.</summary>
+	public string? SelectedNamePost
+	{
+		get => _SelectedNamePost;
+		set
+		{
+			_SelectedNamePost = value;
+			OnPropertyChanged(nameof(SelectedNamePost));
 		}
 	}
 	#endregion
@@ -163,6 +180,7 @@ class MoveAddViewModel : DialogViewModel
 		_repositoriesDB = new AdminRepositories();
 		_subscription = MessageBus.RegisterHandler<CurrentlyMainItemList>(OnReceiveMessage);
 		DateMove = DateTime.Now;
+		NamePostList = _repositoriesDB.GetAllNamePost();
 	}
 
 	private void OnReceiveMessage(CurrentlyMainItemList message)
@@ -189,7 +207,7 @@ class MoveAddViewModel : DialogViewModel
 	private void ExecuteCancelCommand()
 	{
 		UnitCount = 0;
-		NamePost = "";
+		SelectedNamePost = "";
 		DateMove = DateTime.Now;
 	}
 	#endregion
@@ -204,7 +222,7 @@ class MoveAddViewModel : DialogViewModel
 
 	private bool CanExecuteAddMoveCommand()
 	{
-		if (UnitCount > 0 && NamePost is not null)
+		if (UnitCount > 0 && SelectedNamePost is not null)
 			return true;
 		return false;
 	}
@@ -227,7 +245,7 @@ class MoveAddViewModel : DialogViewModel
 			Name = NameItem,
 			UnitMeasure = UnitMeasure,
 			UnitCount = UnitCount,
-			NamePost = NamePost,
+			NamePost = SelectedNamePost,
 			DateMove = DateOnly.FromDateTime(DateMove)
 		};
 		var resultAdd = _repositoriesDB.AddMoveInPost(moveListItem);
@@ -241,7 +259,7 @@ class MoveAddViewModel : DialogViewModel
 			IdDateStock = 0;
 			IdItems = 0;
 			NameItem = "";
-			NamePost = "";
+			SelectedNamePost = "";
 			UnitMeasure = "";
 			RemainingStock = 0;
 			UnitCount = 0;

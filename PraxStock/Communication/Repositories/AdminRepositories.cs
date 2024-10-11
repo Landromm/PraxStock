@@ -465,24 +465,16 @@ namespace PraxStock.Communication.Repositories
 			return result;
 		}
 
-		//public SortedList<int, string> GetAllNameItemSecond()
-		//{
-		//	var result = new SortedList<int, string>();
-		//	using var context = new PraxixSkladContext();
-		//	{
-		//		var tempResult = from dataStock in context.DataStocks
-		//						  join items in context.Items on dataStock.IdItem equals items.IdItem
-		//						  select new
-		//						  {
-		//							  IdItemStock = dataStock.IdItemStock,
-		//							  NameItem = items.NameItem
-		//						  };
-		//		foreach (var item in tempResult)
-		//			result.Add(item.IdItemStock, item.NameItem);
-		//	}
+		public List<string> GetAllNamePost()
+		{
+			var result = new List<string>();
+			using var context = new PraxixSkladContext();
+			{
+				result = [.. context.MoveInPosts.Select(nP => nP.NamePost)];
+			}
 
-		//	return result;
-		//}
+			return result;
+		}
 
 		public List<MainListItems> GetAllNameItemSecond()
 		{
