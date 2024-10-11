@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PraxStock.View.SecondViews"
+        xmlns:local="clr-namespace:PraxStock.View.SecondViews" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
-        Title="MoveAddView" Height="380" Width="300"
+        Title="Перемещение позиции"
+        Height="380" Width="300"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid>
@@ -59,7 +60,7 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="75"/>
+                <ColumnDefinition />
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
@@ -110,7 +111,7 @@
                     FontWeight="DemiBold"/>
 
                 <TextBox
-                    Width="100"
+                    Width="80"
                     Text="{Binding UnitCount}"
                     FontSize="26"
                     HorizontalAlignment="Center"
@@ -122,26 +123,56 @@
 
         </Grid>
 
-        <TextBlock
+        <Grid
+            Grid.Column="0"
             Grid.Row="3"
-            Grid.Column="0"
             Grid.ColumnSpan="2"
-            Text="Введите наименование места перещения:"
-            TextAlignment="Center"
-            VerticalAlignment="Bottom"
-            TextWrapping="Wrap"
-            Margin="10 5"/>
+            Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            Margin="10 5"
-            VerticalContentAlignment="Center"
-            HorizontalContentAlignment="Center"
-            Text="{Binding NamePost}"
-            FontSize="16"
-            FontWeight="DemiBold"/>
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Text="Выберите наименование места перещения:"
+                TextAlignment="Center"
+                VerticalAlignment="Bottom"
+                TextWrapping="Wrap"
+                Margin="10 5"/>
+
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="35 5 2 5"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Text="{Binding NamePost}"
+                FontSize="16"
+                FontWeight="DemiBold"/>
+
+            <Button 
+                Grid.Column="2"
+                Grid.Row="1"
+                Margin="0 0 25 0"
+                Style="{StaticResource iconButtonAddMove}"
+                Tag="{StaticResource color4Default}"
+                Command="{Binding OpenWindowAddNamePostCommand}">
+
+                <fa:IconImage 
+                    Icon="Add"
+                    Style="{StaticResource iconBtnAddMoveIcon}"/>
+            </Button>
+
+        </Grid>
 
         <TextBlock
             Grid.Row="5"

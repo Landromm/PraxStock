@@ -512,7 +512,7 @@
                                 CaretBrush="Gray"
                                 BorderThickness="0,0,0,2"
                                 VerticalContentAlignment="Center"
-                                Margin="0,0,0,0">
+                                Margin="0,4,0,0">
                                 <TextBox.Style>
                                     <Style TargetType="TextBox">
                                         <Setter Property="Foreground" Value="{StaticResource blackFontColorDefault}"/>
@@ -524,6 +524,7 @@
                             <Border Padding="5" Background="Transparent">
                                 <ComboBox 
                                     Grid.Column="1" 
+                                    Margin="10 0"
                                     Height="30" 
                                     Width="Auto"
                                     FontSize="16"
