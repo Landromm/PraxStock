@@ -481,7 +481,6 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 
-
 	#region Command ShowActionSelectedDataStockItemCommand - Просмотр действий по выбранной позиции.
 
 	/// <summary>Просмотр действий по выбранной позиции.</summary>
@@ -496,6 +495,23 @@ internal class MainViewModel : DialogViewModel
 
 	}
 	#endregion
+
+	#region Command SetValueControlCommand - Открытие окна установки ограничения контроля количества позиции.
+
+	/// <summary>Открытие окна установки ограничения контроля количества позиции.</summary>
+	private LambdaCommand? _SetValueControlCommand;
+
+	/// <summary>Открытие окна установки ограничения контроля количества позиции.</summary>
+	public ICommand SetValueControlCommand => _SetValueControlCommand ??= new(ExecutedSetValueControlCommand);
+
+	/// <summary>Логика выполнения - Открытие окна установки ограничения контроля количества позиции.</summary>
+	private void ExecutedSetValueControlCommand()
+	{
+
+	}
+	#endregion
+
+
 	#endregion
 
 

@@ -717,8 +717,15 @@
                                                         Background="{TemplateBinding Background}"
                                                         BorderBrush="{TemplateBinding BorderBrush}"
                                                         BorderThickness="{TemplateBinding BorderThickness}">
-                                                            <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
-                                                                  Content="{TemplateBinding Content}" />
+                                                        <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
+                                                                  Content="{TemplateBinding Content}">
+                                                            <GridViewRowPresenter.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Ограничение" Command="{Binding SetValueControlCommand}"/>
+                                                                    <MenuItem Header="Редактировать"/>
+                                                                </ContextMenu>
+                                                            </GridViewRowPresenter.ContextMenu>
+                                                        </GridViewRowPresenter>
                                                         
                                                             <Border.InputBindings>
                                                                 <MouseBinding 
