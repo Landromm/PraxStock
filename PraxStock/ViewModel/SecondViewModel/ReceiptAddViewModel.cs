@@ -329,6 +329,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 			InicializationMain();
 		}
 
+		private bool CanTestCommandExecute(object p) => true;
 
 		#region Command DropdownSelectionChanged - Раскрытие выпадающего списка наименований.
 
@@ -336,10 +337,10 @@ namespace PraxStock.ViewModel.SecondViewModel
 		private LambdaCommand? _DropdownSelectionChanged;
 
 		/// <summary>Раскрытие выпадающего списка наименований.</summary>
-		public ICommand DropdownSelectionChanged => _DropdownSelectionChanged ??= new(ExecutedDropdownSelectionChanged);
+		public ICommand DropdownSelectionChanged => _DropdownSelectionChanged ??= new(ExecutedDropdownSelectionChanged, CanTestCommandExecute);
 
 		/// <summary>Логика выполнения - Раскрытие выпадающего списка наименований.</summary>
-		private void ExecutedDropdownSelectionChanged()
+		private void ExecutedDropdownSelectionChanged(object p)
 		{
 			NameItemList = _repositoriesDB.GetAllNameItem();
 		}
@@ -351,10 +352,10 @@ namespace PraxStock.ViewModel.SecondViewModel
 		private LambdaCommand? _DropdownSelectionSecondChanged;
 
 		///<summary>Раскрытие выпадающего списка позициий для суммирования. - Реализация интерфейса</summary>
-		public ICommand DropdownSelectionSecondChanged => _DropdownSelectionSecondChanged ??= new(ExecuteDropdownSelectionSecondChanged);
+		public ICommand DropdownSelectionSecondChanged => _DropdownSelectionSecondChanged ??= new(ExecuteDropdownSelectionSecondChanged, CanTestCommandExecute);
 
 		///<summary>Логикак выполнения - Раскрытие выпадающего списка позициий для суммирования</summary>
-		private void ExecuteDropdownSelectionSecondChanged()
+		private void ExecuteDropdownSelectionSecondChanged(object p)
 		{
 			NameItemListSecond = _repositoriesDB.GetAllNameItemSecond();
 		}
@@ -366,10 +367,10 @@ namespace PraxStock.ViewModel.SecondViewModel
 		private LambdaCommand? _AddReceiptCommand;
 
 		/// <summary>Добавление нового поступления позиции.</summary>
-		public ICommand AddReceiptCommand => _AddReceiptCommand ??= new(ExecutedAddReceiptCommand);
+		public ICommand AddReceiptCommand => _AddReceiptCommand ??= new(ExecutedAddReceiptCommand, CanTestCommandExecute);
 
 		/// <summary>Логика выполнения - Добавление нового поступления позиции.</summary>
-		private void ExecutedAddReceiptCommand()
+		private void ExecutedAddReceiptCommand(object p)
 		{
 			ReceiptListItem fullInfoItem = new ReceiptListItem();
 			fullInfoItem.IdItem = _repositoriesDB.GetBySearchIdItem(NameItem!);
@@ -423,10 +424,10 @@ namespace PraxStock.ViewModel.SecondViewModel
 		private LambdaCommand? _ResetCommand;
 
 		/// <summary>Очистить форму для добавления нового поступления позиции.</summary>
-		public ICommand ResetCommand => _ResetCommand ??= new(ExecutedResetCommand);
+		public ICommand ResetCommand => _ResetCommand ??= new(ExecutedResetCommand, CanTestCommandExecute);
 
 		/// <summary>Логика выполнения - Очистить форму для добавления нового поступления позиции.</summary>
-		private void ExecutedResetCommand()
+		private void ExecutedResetCommand(object p)
 		{
 			NameItem = null;
 			UnitMeasure = null;

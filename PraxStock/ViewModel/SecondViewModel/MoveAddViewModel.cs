@@ -194,6 +194,7 @@ class MoveAddViewModel : DialogViewModel
 	}
 	public void Dispose() => _subscription.Dispose();
 
+	private bool CanTestCommandExecute(object p) => true;
 
 	#region Command CancelCommand - Отмена введенных данных.
 
@@ -201,10 +202,10 @@ class MoveAddViewModel : DialogViewModel
 	private LambdaCommand? _CancelCommand;
 
 	///<summary>Отмена введенных данных. - Реализация интерфейса</summary>
-	public ICommand CancelCommand => _CancelCommand ??= new(ExecuteCancelCommand);
+	public ICommand CancelCommand => _CancelCommand ??= new(ExecuteCancelCommand, CanTestCommandExecute);
 
 	///<summary>Логикак выполнения - Отмена введенных данных</summary>
-	private void ExecuteCancelCommand()
+	private void ExecuteCancelCommand(object p)
 	{
 		UnitCount = 0;
 		SelectedNamePost = "";
@@ -220,14 +221,14 @@ class MoveAddViewModel : DialogViewModel
 	///<summary>Подтверждение перемещения при выполнении условий. - Реализация интерфейса</summary>
 	public ICommand AddMoveCommand => _AddMoveCommand ??= new(ExecuteAddMoveCommand, CanExecuteAddMoveCommand);
 
-	private bool CanExecuteAddMoveCommand()
+	private bool CanExecuteAddMoveCommand(object p)
 	{
 		if (UnitCount > 0 && SelectedNamePost is not null)
 			return true;
 		return false;
 	}
 	///<summary>Логикак выполнения - Подтверждение перемещения при выполнении условий</summary>
-	private void ExecuteAddMoveCommand()
+	private void ExecuteAddMoveCommand(object p)
 	{
 		if (UnitCount! > RemainingStock)
 		{

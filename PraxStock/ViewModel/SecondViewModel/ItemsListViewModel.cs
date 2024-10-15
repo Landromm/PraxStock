@@ -168,10 +168,10 @@ namespace PraxStock.ViewModel.SecondViewModel
 		private LambdaCommand? _AddItemCommand;
 
 		///<summary>Добавление новой позиции. - Реализация интерфейса</summary>
-		public ICommand AddItemCommand => _AddItemCommand ??= new(ExecuteAddItemCommand);
+		public ICommand AddItemCommand => _AddItemCommand ??= new(ExecuteAddItemCommand, CanTestCommandExecute);
 
 		///<summary>Логикак выполнения - Добавление новой позиции</summary>
-		private void ExecuteAddItemCommand()
+		private void ExecuteAddItemCommand(object p)
 		{
 			if(NameItemList != null && UnitMeasureList != null && CurrentDataStockList is null)
 			{
@@ -194,16 +194,17 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
+		private bool CanTestCommandExecute(object p) => true;
 		#region Command ResetAddFieldCommand - Очистка полей для добавления новой позиции.
 
 		///<summary>Очистка полей для добавления новой позиции. - поле.</summary>
 		private LambdaCommand? _ResetAddFieldCommand;
 
 		///<summary>Очистка полей для добавления новой позиции. - Реализация интерфейса</summary>
-		public ICommand ResetAddFieldCommand => _ResetAddFieldCommand ??= new(ExecuteResetAddFieldCommand);
+		public ICommand ResetAddFieldCommand => _ResetAddFieldCommand ??= new(ExecuteResetAddFieldCommand, CanTestCommandExecute);
 
 		///<summary>Логикак выполнения - Очистка полей для добавления новой позиции</summary>
-		private void ExecuteResetAddFieldCommand()
+		private void ExecuteResetAddFieldCommand(object p)
 		{
 			if (NameItemList != null)
 				NameItemList = "";

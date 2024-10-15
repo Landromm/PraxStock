@@ -4,6 +4,7 @@ using PraxStock.Model.OtherModel;
 using PraxStock.Services;
 using PraxStock.Services.Implementations;
 using PraxStock.View.Commands;
+using PraxStock.View.SecondViews;
 using PraxStock.ViewModel.Base;
 using System;
 using System.Collections.Generic;
@@ -286,16 +287,18 @@ internal class MainViewModel : DialogViewModel
 	}
 
 	#region Command's - Реализация комманд.
+	private bool CanTestCommandExecute(object p) => true;
+
 	#region Command OpenSecondFrameCommand - открытие окна настроек приложения.
 
 	/// <summary>открытие окна настроек приложения.</summary>
 	private LambdaCommand? _OpenSecondFrameCommand;
 
 	/// <summary>открытие окна настроек приложения.</summary>
-	public ICommand OpenSecondFrameCommand => _OpenSecondFrameCommand ??= new(ExecutedOpenSecondFrameCommand);
+	public ICommand OpenSecondFrameCommand => _OpenSecondFrameCommand ??= new(ExecutedOpenSecondFrameCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - открытие окна настроек приложения.</summary>
-	private void ExecutedOpenSecondFrameCommand()
+	private void ExecutedOpenSecondFrameCommand(object p)
 	{
 		Application.Current.Dispatcher.Invoke(() =>
 		{
@@ -310,10 +313,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OpenItemsListWindowCommand;
 
 	/// <summary>Открытие окна отображения и редактирования списка основных позиций.</summary>
-	public ICommand OpenItemsListWindowCommand => _OpenItemsListWindowCommand ??= new(ExecutedOpenItemsListWindowCommand);
+	public ICommand OpenItemsListWindowCommand => _OpenItemsListWindowCommand ??= new(ExecutedOpenItemsListWindowCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - Открытие окна отображения и редактирования списка основных позиций.</summary>
-	private void ExecutedOpenItemsListWindowCommand()
+	private void ExecutedOpenItemsListWindowCommand(object p)
 	{		
 		_userDialog.OpenItemsListWindow();
 	}
@@ -325,10 +328,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OpenReceiptListWindowCommand;
 
 	/// <summary>Открытие окна добавления поступления.</summary>
-	public ICommand OpenReceiptListWindowCommand => _OpenReceiptListWindowCommand ??= new(ExecutedOpenReceiptListWindowCommand);
+	public ICommand OpenReceiptListWindowCommand => _OpenReceiptListWindowCommand ??= new(ExecutedOpenReceiptListWindowCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - Открытие окна добавления поступления.</summary>
-	private void ExecutedOpenReceiptListWindowCommand()
+	private void ExecutedOpenReceiptListWindowCommand(object p)
 	{		
 		_userDialog.OpenAddReceiptWindow();
 	}
@@ -340,10 +343,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OpenMoveListWindowCommand;
 
 	/// <summary>Открытие окна добавления перемещения позиции.</summary>
-	public ICommand OpenMoveListWindowCommand => _OpenMoveListWindowCommand ??= new(ExecutedOpenMoveListWindowCommand);
+	public ICommand OpenMoveListWindowCommand => _OpenMoveListWindowCommand ??= new(ExecutedOpenMoveListWindowCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - Открытие окна добавления перемещения позиции.</summary>
-	private void ExecutedOpenMoveListWindowCommand()
+	private void ExecutedOpenMoveListWindowCommand(object p)
 	{
 		if(CurrentDataStockList is null)
 		{
@@ -366,10 +369,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _RefreshMainCommand;
 
 	/// <summary>Обновление всей информации во всех собирательных списках.</summary>
-	public ICommand RefreshMainCommand => _RefreshMainCommand ??= new(ExecutedRefreshMainCommand);
+	public ICommand RefreshMainCommand => _RefreshMainCommand ??= new(ExecutedRefreshMainCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - Обновление всей информации во всех собирательных списках.</summary>
-	private void ExecutedRefreshMainCommand()
+	private void ExecutedRefreshMainCommand(object p)
 	{
 		DataStockList.Clear();
 		ReceiptList.Clear();
@@ -386,10 +389,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OnLoadedMainTabCommand;
 
 	/// <summary>Метод вызываемый при загрузке отображения основного перечня позиций.</summary>
-	public ICommand OnLoadedMainTabCommand => _OnLoadedMainTabCommand ??= new(ExecutedOnLoadedMainTabCommand);
+	public ICommand OnLoadedMainTabCommand => _OnLoadedMainTabCommand ??= new(ExecutedOnLoadedMainTabCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - Метод вызываемый при загрузке отображения основного перечня позиций.</summary>
-	private void ExecutedOnLoadedMainTabCommand()
+	private void ExecutedOnLoadedMainTabCommand(object p)
 	{
 		if(VisibleWriteOffButton != true)
 			VisibleWriteOffButton = true;
@@ -402,10 +405,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OnLoadedReceiptTabCommand;
 
 	/// <summary>Метод вызываемой при загрузке отображения перечня поступлений позиций.</summary>
-	public ICommand OnLoadedReceiptTabCommand => _OnLoadedReceiptTabCommand ??= new(ExecutedOnLoadedReceiptTabCommand);
+	public ICommand OnLoadedReceiptTabCommand => _OnLoadedReceiptTabCommand ??= new(ExecutedOnLoadedReceiptTabCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - Метод вызываемой при загрузке отображения перечня поступлений позиций.</summary>
-	private void ExecutedOnLoadedReceiptTabCommand()
+	private void ExecutedOnLoadedReceiptTabCommand(object p)
 	{
 		if(VisibleWriteOffButton)
 			VisibleWriteOffButton = false;
@@ -418,10 +421,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OnLoadedMoveTabCommand;
 
 	/// <summary>Метод вызываемый при загрузке отображения перечня перемещений позициий.</summary>
-	public ICommand OnLoadedMoveTabCommand => _OnLoadedMoveTabCommand ??= new(ExecutedOnLoadedMoveTabCommand);
+	public ICommand OnLoadedMoveTabCommand => _OnLoadedMoveTabCommand ??= new(ExecutedOnLoadedMoveTabCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - Метод вызываемый при загрузке отображения перечня перемещений позициий.</summary>
-	private void ExecutedOnLoadedMoveTabCommand()
+	private void ExecutedOnLoadedMoveTabCommand(object p)
 	{
 		if(VisibleWriteOffButton)
 			VisibleWriteOffButton = false;
@@ -434,10 +437,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _WriteOffCommand;
 
 	/// <summary>Команда списания позиции.</summary>
-	public ICommand WriteOffCommand => _WriteOffCommand ??= new(ExecutedWriteOffCommand);
+	public ICommand WriteOffCommand => _WriteOffCommand ??= new(ExecutedWriteOffCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - Команда списания позиции.</summary>
-	private void ExecutedWriteOffCommand()
+	private void ExecutedWriteOffCommand(object p)
 	{
 		if (CurrentDataStockList is null)
 		{
@@ -487,10 +490,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _ShowActionSelectedDataStockItemCommand;
 
 	/// <summary>Просмотр действий по выбранной позиции.</summary>
-	public ICommand ShowActionSelectedDataStockItemCommand => _ShowActionSelectedDataStockItemCommand ??= new(ExecutedShowActionSelectedDataStockItemCommand);
+	public ICommand ShowActionSelectedDataStockItemCommand => _ShowActionSelectedDataStockItemCommand ??= new(ExecutedShowActionSelectedDataStockItemCommand, CanTestCommandExecute);
 
 	/// <summary>Логика выполнения - Просмотр действий по выбранной позиции.</summary>
-	private void ExecutedShowActionSelectedDataStockItemCommand()
+	private void ExecutedShowActionSelectedDataStockItemCommand(object p)
 	{
 
 	}
@@ -502,12 +505,24 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _SetValueControlCommand;
 
 	/// <summary>Открытие окна установки ограничения контроля количества позиции.</summary>
-	public ICommand SetValueControlCommand => _SetValueControlCommand ??= new(ExecutedSetValueControlCommand);
+	public ICommand SetValueControlCommand => _SetValueControlCommand ??= new(ExecutedSetValueControlCommand, CanExecuteSetValueControlCommand);
+
+	private bool CanExecuteSetValueControlCommand(object p) => p is MainListItems;
 
 	/// <summary>Логика выполнения - Открытие окна установки ограничения контроля количества позиции.</summary>
-	private void ExecutedSetValueControlCommand()
+	private void ExecutedSetValueControlCommand(object p)
 	{
+		var item = (MainListItems)p;
 
+		var dlg = new SetControlValueWindow
+		{
+			ValueControl = item.MinValue.ToString()!
+		};
+
+		if (dlg.ShowDialog() == true)
+			MessageBox.Show("Пользователель выполнил редактирование!");
+		else
+			MessageBox.Show("Пользователь отказался");
 	}
 	#endregion
 

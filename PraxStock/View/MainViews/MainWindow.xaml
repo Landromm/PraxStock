@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PraxStock" 
+        xmlns:local="clr-namespace:PraxStock.ViewModel.MainViewModel" 
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:conv="clr-namespace:PraxStock.Model.Converters"
@@ -260,7 +260,7 @@
             </Setter>
         </Style>
         <!--#endregion-->
-            
+
     </Window.Resources>
 
     <Border>
@@ -289,7 +289,8 @@
                 <Button 
                     Style="{StaticResource iconButtonCatalog}"
                     Tag="{StaticResource color2}"
-                    Command="{Binding OpenItemsListWindowCommand}">
+                    Command="{Binding SetValueControlCommand}"
+                    CommandParameter="{Binding CurrentDataStockList}">
 
                     <fa:IconImage 
                         Icon="FileMedical" 
@@ -717,12 +718,16 @@
                                                         Background="{TemplateBinding Background}"
                                                         BorderBrush="{TemplateBinding BorderBrush}"
                                                         BorderThickness="{TemplateBinding BorderThickness}">
-                                                        <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
-                                                                  Content="{TemplateBinding Content}">
-                                                            <GridViewRowPresenter.ContextMenu>
+                                                        <GridViewRowPresenter 
+                                                            Margin="{TemplateBinding Padding}" 
+                                                            Content="{TemplateBinding Content}"
+                                                            Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                                            <GridViewRowPresenter.ContextMenu >
                                                                 <ContextMenu>
-                                                                    <MenuItem Header="Ограничение" Command="{Binding SetValueControlCommand}"/>
-                                                                    <MenuItem Header="Редактировать"/>
+                                                                    <MenuItem 
+                                                                        Header="Remove" 
+                                                                        CommandParameter="{Binding Path=PlacementTarget.Tag.DataContext.CurrentDataStockList, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                                                                        Command="{Binding Path=PlacementTarget.Tag.DataContext.SetValueControlCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"/>
                                                                 </ContextMenu>
                                                             </GridViewRowPresenter.ContextMenu>
                                                         </GridViewRowPresenter>
