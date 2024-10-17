@@ -528,11 +528,30 @@ internal class MainViewModel : DialogViewModel
 			var itemDataStock = DataStockList.FirstOrDefault(id => id.IdDataStock == item.IdDataStock);
 			if(double.TryParse(dlg.ValueControl, out double valueResult) && itemDataStock != null)
 			{
-				MessageBox.Show($"Значение предела ИЗМЕНЕНО, на {valueResult}");
-				_repositoriesDB.UpdateControlValueDataStock(itemDataStock.IdDataStock, valueResult);
-				itemDataStock.MinValue = valueResult;
-			}
+				if(_repositoriesDB.UpdateControlValueDataStock(itemDataStock.IdDataStock, valueResult))
+				{
+					//DataStockList.FirstOrDefault(id => id.IdDataStock == item.IdDataStock).MinValue = valueResult;
+					//DataStockList.FirstOrDefault(id => id.IdDataStock == item.IdDataStock).FlagSett = valueResult > 0 ? true : false;
+					itemDataStock.MinValue = valueResult;
+					itemDataStock.FlagSett = valueResult > 0 ? true : false;
 
+					MessageBox.Show(
+						$"Значение ограничение ИЗМЕНЕНО, на {valueResult}",
+						"Результат изменения.",
+						MessageBoxButton.OKCancel,
+						MessageBoxImage.Information);
+				}
+				else
+					MessageBox.Show(
+						"Изменения не приняты. Произошла ОШИБКА!",
+						"Результат изменения.",
+						MessageBoxButton.OKCancel,
+						MessageBoxImage.Error);
+			}
+			else
+			{
+				throw new ArgumentNullException($"Ошибка конвертации или NullException объекта MainListItem {nameof(itemDataStock)}");
+			}
 		}
 	}
 	#endregion

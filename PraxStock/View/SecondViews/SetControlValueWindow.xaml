@@ -10,6 +10,7 @@
         Background="Transparent"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     
     <Border>

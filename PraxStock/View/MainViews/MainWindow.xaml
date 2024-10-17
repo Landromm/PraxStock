@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PraxStock.ViewModel.MainViewModel" 
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:conv="clr-namespace:PraxStock.Model.Converters"
+        xmlns:conv="clr-namespace:PraxStock.Model.Converters" 
+        d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
         mc:Ignorable="d"
         Title="Praxis СКЛАД" Height="500" Width="900"
         WindowStartupLocation="CenterScreen"
@@ -542,7 +543,7 @@
 
                             <ListView
                                 Grid.Row="2" 
-                                ItemsSource="{Binding DataStockList}"
+                                ItemsSource="{Binding DataStockList, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedItem="{Binding CurrentDataStockList}"
                                 BorderThickness="0"
                                 HorizontalAlignment="Stretch"
@@ -600,7 +601,7 @@
                                                         CornerRadius="3"
                                                         Padding="5 3">
                                                         <TextBlock 
-                                                            Text="{Binding UnitCount}"
+                                                            Text="{Binding UnitCount, UpdateSourceTrigger=PropertyChanged}"
                                                             FontSize="14"
                                                             TextAlignment="Center"
                                                             VerticalAlignment="Center"
@@ -618,9 +619,9 @@
                                                                     <DataTrigger Value="1">
                                                                         <DataTrigger.Binding>
                                                                             <MultiBinding Converter="{StaticResource UnitConverter}">
-                                                                                <Binding Path="UnitCount"/>
-                                                                                <Binding Path="MinValue"/>
-                                                                                <Binding Path="FlagSett"/>
+                                                                                <Binding Path="UnitCount" UpdateSourceTrigger="PropertyChanged"/>
+                                                                                <Binding Path="MinValue" UpdateSourceTrigger="PropertyChanged"/>
+                                                                                <Binding Path="FlagSett" UpdateSourceTrigger="PropertyChanged"/>
                                                                             </MultiBinding>
                                                                         </DataTrigger.Binding>
                                                                         <Setter Property="BorderThickness" Value="2"/>
@@ -640,9 +641,9 @@
                                                                     <DataTrigger Value="3">
                                                                         <DataTrigger.Binding>
                                                                             <MultiBinding Converter="{StaticResource UnitConverter}">
-                                                                                <Binding Path="UnitCount"/>
-                                                                                <Binding Path="MinValue"/>
-                                                                                <Binding Path="FlagSett"/>
+                                                                                <Binding Path="UnitCount" UpdateSourceTrigger="PropertyChanged"/>
+                                                                                <Binding Path="MinValue" UpdateSourceTrigger="PropertyChanged"/>
+                                                                                <Binding Path="FlagSett" UpdateSourceTrigger="PropertyChanged"/>
                                                                             </MultiBinding>
                                                                         </DataTrigger.Binding>
                                                                         <Setter Property="BorderThickness" Value="1"/>
@@ -686,7 +687,7 @@
                                                                 <Setter Property="Height" Value="12"/>
                                                                 <Setter Property="CornerRadius" Value="6"/>
                                                                 <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding FlagSett}" Value="True">
+                                                                    <DataTrigger Binding="{Binding FlagSett, UpdateSourceTrigger=PropertyChanged}" Value="True">
                                                                         <Setter Property="Background" Value="{StaticResource color8Default}"/>
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
@@ -725,7 +726,7 @@
                                                             <GridViewRowPresenter.ContextMenu >
                                                                 <ContextMenu>
                                                                     <MenuItem 
-                                                                        Header="Remove" 
+                                                                        Header="Ограничение" 
                                                                         CommandParameter="{Binding Path=PlacementTarget.Tag.DataContext.CurrentDataStockList, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
                                                                         Command="{Binding Path=PlacementTarget.Tag.DataContext.SetValueControlCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"/>
                                                                 </ContextMenu>

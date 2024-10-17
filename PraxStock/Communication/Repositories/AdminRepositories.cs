@@ -51,17 +51,43 @@ namespace PraxStock.Communication.Repositories
 			}
 		}
 
-		public void UpdateControlValueDataStock(int idItem, double minValue)
+		public bool UpdateControlValueDataStock(int idItem, double minValue)
 		{
-			using var context = new PraxixSkladContext();
+			try
 			{
-				var item = context.DataStocks.FirstOrDefault(id => id.IdItemStock == idItem);
-				if(item != null)
+				using var context = new PraxixSkladContext();
 				{
-					item.MinValue = minValue;
-					context.DataStocks.Update(item);
-					context.SaveChanges();
+					SqlParameter[] param =
+					{
+					new ()
+					{
+						ParameterName = "@idItemStock",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Value = idItem
+
+					},
+					new ()
+					{
+						ParameterName = "@minValue",
+						SqlDbType = System.Data.SqlDbType.Float,
+						Value = minValue
+					},
+					new ()
+					{
+						ParameterName = "@result",
+						SqlDbType = System.Data.SqlDbType.Int,
+						Direction = System.Data.ParameterDirection.Output
+					}
+				};
+					context.Database.ExecuteSqlRaw(
+						"update_dataStockMinValue @idItemStock, @minValue, @result output", param);
+
+					return Convert.ToInt32(param[2].Value) == 1 ? true : false;
 				}
+			}
+			catch (Exception ex)
+			{
+				return false;
 			}
 		}
 
