@@ -42,6 +42,7 @@ namespace PraxStock.Communication.Repositories
         int GetBySearchIdItem(string searchName);
 		void AddItemsList(string nameItem, string unitMeasure);
         void ChangedItemList(string nameItem, string unitMeasure, int idItem);
+        void UpdateControlValueDataStock(int idItem, double minValue);
 
         void AddReceiptItem(ReceiptListItem receiptListItem);
         bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem);

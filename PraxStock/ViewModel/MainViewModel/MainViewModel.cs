@@ -1,4 +1,5 @@
 ﻿using PraxStock.Communication.Repositories;
+using PraxStock.Model.DBModels;
 using PraxStock.Model.Message;
 using PraxStock.Model.OtherModel;
 using PraxStock.Services;
@@ -287,7 +288,7 @@ internal class MainViewModel : DialogViewModel
 	}
 
 	#region Command's - Реализация комманд.
-	private bool CanTestCommandExecute(object p) => true;
+	//private bool CanTestCommandExecute(object p) => true;
 
 	#region Command OpenSecondFrameCommand - открытие окна настроек приложения.
 
@@ -295,10 +296,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OpenSecondFrameCommand;
 
 	/// <summary>открытие окна настроек приложения.</summary>
-	public ICommand OpenSecondFrameCommand => _OpenSecondFrameCommand ??= new(ExecutedOpenSecondFrameCommand, CanTestCommandExecute);
+	public ICommand OpenSecondFrameCommand => _OpenSecondFrameCommand ??= new(ExecutedOpenSecondFrameCommand);
 
 	/// <summary>Логика выполнения - открытие окна настроек приложения.</summary>
-	private void ExecutedOpenSecondFrameCommand(object p)
+	private void ExecutedOpenSecondFrameCommand()
 	{
 		Application.Current.Dispatcher.Invoke(() =>
 		{
@@ -313,10 +314,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OpenItemsListWindowCommand;
 
 	/// <summary>Открытие окна отображения и редактирования списка основных позиций.</summary>
-	public ICommand OpenItemsListWindowCommand => _OpenItemsListWindowCommand ??= new(ExecutedOpenItemsListWindowCommand, CanTestCommandExecute);
+	public ICommand OpenItemsListWindowCommand => _OpenItemsListWindowCommand ??= new(ExecutedOpenItemsListWindowCommand);
 
 	/// <summary>Логика выполнения - Открытие окна отображения и редактирования списка основных позиций.</summary>
-	private void ExecutedOpenItemsListWindowCommand(object p)
+	private void ExecutedOpenItemsListWindowCommand()
 	{		
 		_userDialog.OpenItemsListWindow();
 	}
@@ -328,10 +329,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OpenReceiptListWindowCommand;
 
 	/// <summary>Открытие окна добавления поступления.</summary>
-	public ICommand OpenReceiptListWindowCommand => _OpenReceiptListWindowCommand ??= new(ExecutedOpenReceiptListWindowCommand, CanTestCommandExecute);
+	public ICommand OpenReceiptListWindowCommand => _OpenReceiptListWindowCommand ??= new(ExecutedOpenReceiptListWindowCommand);
 
 	/// <summary>Логика выполнения - Открытие окна добавления поступления.</summary>
-	private void ExecutedOpenReceiptListWindowCommand(object p)
+	private void ExecutedOpenReceiptListWindowCommand()
 	{		
 		_userDialog.OpenAddReceiptWindow();
 	}
@@ -343,10 +344,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OpenMoveListWindowCommand;
 
 	/// <summary>Открытие окна добавления перемещения позиции.</summary>
-	public ICommand OpenMoveListWindowCommand => _OpenMoveListWindowCommand ??= new(ExecutedOpenMoveListWindowCommand, CanTestCommandExecute);
+	public ICommand OpenMoveListWindowCommand => _OpenMoveListWindowCommand ??= new(ExecutedOpenMoveListWindowCommand);
 
 	/// <summary>Логика выполнения - Открытие окна добавления перемещения позиции.</summary>
-	private void ExecutedOpenMoveListWindowCommand(object p)
+	private void ExecutedOpenMoveListWindowCommand()
 	{
 		if(CurrentDataStockList is null)
 		{
@@ -369,10 +370,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _RefreshMainCommand;
 
 	/// <summary>Обновление всей информации во всех собирательных списках.</summary>
-	public ICommand RefreshMainCommand => _RefreshMainCommand ??= new(ExecutedRefreshMainCommand, CanTestCommandExecute);
+	public ICommand RefreshMainCommand => _RefreshMainCommand ??= new(ExecutedRefreshMainCommand);
 
 	/// <summary>Логика выполнения - Обновление всей информации во всех собирательных списках.</summary>
-	private void ExecutedRefreshMainCommand(object p)
+	private void ExecutedRefreshMainCommand()
 	{
 		DataStockList.Clear();
 		ReceiptList.Clear();
@@ -389,10 +390,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OnLoadedMainTabCommand;
 
 	/// <summary>Метод вызываемый при загрузке отображения основного перечня позиций.</summary>
-	public ICommand OnLoadedMainTabCommand => _OnLoadedMainTabCommand ??= new(ExecutedOnLoadedMainTabCommand, CanTestCommandExecute);
+	public ICommand OnLoadedMainTabCommand => _OnLoadedMainTabCommand ??= new(ExecutedOnLoadedMainTabCommand);
 
 	/// <summary>Логика выполнения - Метод вызываемый при загрузке отображения основного перечня позиций.</summary>
-	private void ExecutedOnLoadedMainTabCommand(object p)
+	private void ExecutedOnLoadedMainTabCommand()
 	{
 		if(VisibleWriteOffButton != true)
 			VisibleWriteOffButton = true;
@@ -405,10 +406,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OnLoadedReceiptTabCommand;
 
 	/// <summary>Метод вызываемой при загрузке отображения перечня поступлений позиций.</summary>
-	public ICommand OnLoadedReceiptTabCommand => _OnLoadedReceiptTabCommand ??= new(ExecutedOnLoadedReceiptTabCommand, CanTestCommandExecute);
+	public ICommand OnLoadedReceiptTabCommand => _OnLoadedReceiptTabCommand ??= new(ExecutedOnLoadedReceiptTabCommand);
 
 	/// <summary>Логика выполнения - Метод вызываемой при загрузке отображения перечня поступлений позиций.</summary>
-	private void ExecutedOnLoadedReceiptTabCommand(object p)
+	private void ExecutedOnLoadedReceiptTabCommand()
 	{
 		if(VisibleWriteOffButton)
 			VisibleWriteOffButton = false;
@@ -421,10 +422,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _OnLoadedMoveTabCommand;
 
 	/// <summary>Метод вызываемый при загрузке отображения перечня перемещений позициий.</summary>
-	public ICommand OnLoadedMoveTabCommand => _OnLoadedMoveTabCommand ??= new(ExecutedOnLoadedMoveTabCommand, CanTestCommandExecute);
+	public ICommand OnLoadedMoveTabCommand => _OnLoadedMoveTabCommand ??= new(ExecutedOnLoadedMoveTabCommand);
 
 	/// <summary>Логика выполнения - Метод вызываемый при загрузке отображения перечня перемещений позициий.</summary>
-	private void ExecutedOnLoadedMoveTabCommand(object p)
+	private void ExecutedOnLoadedMoveTabCommand()
 	{
 		if(VisibleWriteOffButton)
 			VisibleWriteOffButton = false;
@@ -437,10 +438,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _WriteOffCommand;
 
 	/// <summary>Команда списания позиции.</summary>
-	public ICommand WriteOffCommand => _WriteOffCommand ??= new(ExecutedWriteOffCommand, CanTestCommandExecute);
+	public ICommand WriteOffCommand => _WriteOffCommand ??= new(ExecutedWriteOffCommand);
 
 	/// <summary>Логика выполнения - Команда списания позиции.</summary>
-	private void ExecutedWriteOffCommand(object p)
+	private void ExecutedWriteOffCommand()
 	{
 		if (CurrentDataStockList is null)
 		{
@@ -490,10 +491,10 @@ internal class MainViewModel : DialogViewModel
 	private LambdaCommand? _ShowActionSelectedDataStockItemCommand;
 
 	/// <summary>Просмотр действий по выбранной позиции.</summary>
-	public ICommand ShowActionSelectedDataStockItemCommand => _ShowActionSelectedDataStockItemCommand ??= new(ExecutedShowActionSelectedDataStockItemCommand, CanTestCommandExecute);
+	public ICommand ShowActionSelectedDataStockItemCommand => _ShowActionSelectedDataStockItemCommand ??= new(ExecutedShowActionSelectedDataStockItemCommand);
 
 	/// <summary>Логика выполнения - Просмотр действий по выбранной позиции.</summary>
-	private void ExecutedShowActionSelectedDataStockItemCommand(object p)
+	private void ExecutedShowActionSelectedDataStockItemCommand()
 	{
 
 	}
@@ -519,14 +520,22 @@ internal class MainViewModel : DialogViewModel
 			ValueControl = item.MinValue.ToString()!
 		};
 
-		if (dlg.ShowDialog() == true)
-			MessageBox.Show("Пользователель выполнил редактирование!");
+		if (dlg.ShowDialog() != true)
+			MessageBox.Show("Изменения не приняты.");
 		else
-			MessageBox.Show("Пользователь отказался");
+		{
+			//double.TryParse(dlg.ValueControl, out double valueResult);
+			var itemDataStock = DataStockList.FirstOrDefault(id => id.IdDataStock == item.IdDataStock);
+			if(double.TryParse(dlg.ValueControl, out double valueResult) && itemDataStock != null)
+			{
+				MessageBox.Show($"Значение предела ИЗМЕНЕНО, на {valueResult}");
+				_repositoriesDB.UpdateControlValueDataStock(itemDataStock.IdDataStock, valueResult);
+				itemDataStock.MinValue = valueResult;
+			}
+
+		}
 	}
 	#endregion
-
-
 	#endregion
 
 

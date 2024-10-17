@@ -51,6 +51,21 @@ namespace PraxStock.Communication.Repositories
 			}
 		}
 
+		public void UpdateControlValueDataStock(int idItem, double minValue)
+		{
+			using var context = new PraxixSkladContext();
+			{
+				var item = context.DataStocks.FirstOrDefault(id => id.IdItemStock == idItem);
+				if(item != null)
+				{
+					item.MinValue = minValue;
+					context.DataStocks.Update(item);
+					context.SaveChanges();
+				}
+			}
+		}
+
+
 		public ObservableCollection<Item> GetBySearchNumberItem(string searchNumber)
 		{
 			ObservableCollection<Item> resultCollection = [];
@@ -896,7 +911,5 @@ namespace PraxStock.Communication.Repositories
 				return false;
 			}
 		}
-
-
 	}
 }
