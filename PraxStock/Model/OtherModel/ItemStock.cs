@@ -1,11 +1,12 @@
-﻿using System;
+﻿using PraxStock.ViewModel.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PraxStock.Model.OtherModel;
-public class ItemStock
+public class ItemStock : DialogViewModel
 {
 	public int IdDataStock { get; set; }
 

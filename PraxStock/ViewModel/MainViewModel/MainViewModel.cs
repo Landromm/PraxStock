@@ -530,8 +530,6 @@ internal class MainViewModel : DialogViewModel
 			{
 				if(_repositoriesDB.UpdateControlValueDataStock(itemDataStock.IdDataStock, valueResult))
 				{
-					//DataStockList.FirstOrDefault(id => id.IdDataStock == item.IdDataStock).MinValue = valueResult;
-					//DataStockList.FirstOrDefault(id => id.IdDataStock == item.IdDataStock).FlagSett = valueResult > 0 ? true : false;
 					itemDataStock.MinValue = valueResult;
 					itemDataStock.FlagSett = valueResult > 0 ? true : false;
 
