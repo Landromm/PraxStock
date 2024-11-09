@@ -290,8 +290,7 @@
                 <Button 
                     Style="{StaticResource iconButtonCatalog}"
                     Tag="{StaticResource color2}"
-                    Command="{Binding SetValueControlCommand}"
-                    CommandParameter="{Binding CurrentDataStockList}">
+                    Command="{Binding OpenItemsListWindowCommand}">
 
                     <fa:IconImage 
                         Icon="FileMedical" 
