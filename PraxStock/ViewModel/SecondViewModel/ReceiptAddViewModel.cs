@@ -409,52 +409,66 @@ namespace PraxStock.ViewModel.SecondViewModel
 		/// <summary>Логика выполнения - Добавление нового поступления позиции.</summary>
 		private void ExecutedAddReceiptCommand(object p)
 		{
-			ReceiptListItem fullInfoItem = new ReceiptListItem();
-			fullInfoItem.IdItem = _repositoriesDB.GetBySearchIdItem(NameItem!);
-			fullInfoItem.Name = NameItem;
-			fullInfoItem.UnitMeasure = UnitMeasure;
-			fullInfoItem.UnitCount = QuantityReceipt;
-			if(ExpirationDate is not null)
-				fullInfoItem.ExpirationDate = DateOnly.FromDateTime((DateTime)ExpirationDate);
-			fullInfoItem.DateReceipt = DateOnly.FromDateTime(DateReceipt);
+			
+				ReceiptListItem fullInfoItem = new ReceiptListItem();
+				fullInfoItem.IdItem = _repositoriesDB.GetBySearchIdItem(NameItem!);
+				fullInfoItem.Name = NameItem;
+				fullInfoItem.UnitMeasure = UnitMeasure;
+				fullInfoItem.UnitCount = QuantityReceipt;
+				if (ExpirationDate is not null)
+					fullInfoItem.ExpirationDate = DateOnly.FromDateTime((DateTime)ExpirationDate);
+				fullInfoItem.DateReceipt = DateOnly.FromDateTime(DateReceipt);
 
-			if(!ShowSecretPanel)
-				_repositoriesDB.AddReceiptItem(fullInfoItem);
-			else
+
+			try
 			{
-				var resultReceipt = _repositoriesDB.AddReceiptItemSecond(fullInfoItem, SelectedNameItemSecond.IdDataStock);
-				if (resultReceipt)
-				{
-					MessageBox.Show(
-						"Позиция добавлена УСПЕШНО!",
-						"Результат добавления",
-						MessageBoxButton.OK,
-						MessageBoxImage.Information);
-				}
+				if (!ShowSecretPanel)
+					_repositoriesDB.AddReceiptItem(fullInfoItem);
 				else
 				{
-					MessageBox.Show(
-						"В процессе добавления произошла ОШИБКА!",
-						"Результат добавления",
-						MessageBoxButton.OK,
-						MessageBoxImage.Warning);
+					var resultReceipt = _repositoriesDB.AddReceiptItemSecond(fullInfoItem, SelectedNameItemSecond.IdDataStock);
+					if (resultReceipt)
+					{
+						MessageBox.Show(
+							"Позиция добавлена УСПЕШНО!",
+							"Результат добавления",
+							MessageBoxButton.OK,
+							MessageBoxImage.Information);
+					}
+					else
+					{
+						MessageBox.Show(
+							"В процессе добавления произошла ОШИБКА!",
+							"Результат добавления",
+							MessageBoxButton.OK,
+							MessageBoxImage.Warning);
+					}
 				}
 			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(
+					"Добавление перемещение прошло с ошибкой. Проверьте правильность последних действий.",
+					"Ошибка!",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
+			}
 
-			NameItem = null;
-			UnitMeasure = null;
-			QuantityReceipt = 0;
-			ItemListCollection = null!;
-			ItemListCollectionSecond = null!;
-			SelectedNameItem = null;
-			SelectedNameItemSecond = null!;
-			ShowSecretPanel = false;
-			NameItemSecond = null;
-			UnitMeasureSecond = null;
-			QuantityReceiptSecond = 0;
-			ExpirationDate = null;
-			ExpirationDateSecond = null;
-			ShowCheckBoxSecretPanel = false;
+				NameItem = null;
+				UnitMeasure = null;
+				QuantityReceipt = 0;
+				ItemListCollection = null!;
+				ItemListCollectionSecond = null!;
+				SelectedNameItem = null;
+				SelectedNameItemSecond = null!;
+				ShowSecretPanel = false;
+				NameItemSecond = null;
+				UnitMeasureSecond = null;
+				QuantityReceiptSecond = 0;
+				ExpirationDate = null;
+				ExpirationDateSecond = null;
+				ShowCheckBoxSecretPanel = false;
+					
 		}
 		#endregion
 

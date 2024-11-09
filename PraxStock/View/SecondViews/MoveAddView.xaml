@@ -338,7 +338,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="3"
-                Text="Выберите наименование места перещения:"
+                Text="Выберите наименование места перемещения:"
                 TextAlignment="Center"
                 VerticalAlignment="Bottom"
                 TextWrapping="Wrap"
