@@ -46,7 +46,6 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
-
 		#region NameItemList : List<string> - Список наименований.
 
 		/// <summary>Список наименований. - поле.</summary>
@@ -115,6 +114,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 				OnPropertyChanged(nameof(SelectedNameItem));
 				if(value is not null)
 				{
+					ShowCheckBoxSecretPanel = true;
 					ItemListCollection?.Clear();
 					ItemListCollection = _repositoriesDB.GetBySearchNameItem(value);
 					foreach (var item in ItemListCollection)
@@ -322,6 +322,43 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
+		#region ShowSecretPanel : bool -  Флаг отображения скрытой панели.
+
+		///<summary>Флаг отображения скрытой панели. - поле.</summary>
+		private bool _ShowSecretPanel;
+
+		///<summary>Флаг отображения скрытой панели. - свойство.</summary>
+		public bool ShowSecretPanel
+		{
+			get => _ShowSecretPanel;
+			set
+			{
+
+				_ShowSecretPanel = value;
+				OnPropertyChanged(nameof(ShowSecretPanel));
+			}
+		}
+		#endregion
+
+		#region ShowCheckBoxSecretPanel : bool -  Флаг отображения checkbox-активации скрытой панели.
+
+		///<summary>Флаг отображения checkbox-активации скрытой панели. - поле.</summary>
+		private bool _ShowCheckBoxSecretPanel;
+
+		///<summary>Флаг отображения checkbox-активации скрытой панели. - свойство.</summary>
+		public bool ShowCheckBoxSecretPanel
+		{
+			get => _ShowCheckBoxSecretPanel;
+			set
+			{
+				_ShowCheckBoxSecretPanel = value;
+				OnPropertyChanged(nameof(ShowCheckBoxSecretPanel));
+			}
+		}
+		#endregion
+
+
+
 
 		public ReceiptAddViewModel()
 		{
@@ -390,7 +427,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 				{
 					MessageBox.Show(
 						"Позиция добавлена УСПЕШНО!",
-						"Результат удаления",
+						"Результат добавления",
 						MessageBoxButton.OK,
 						MessageBoxImage.Information);
 				}
@@ -398,7 +435,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 				{
 					MessageBox.Show(
 						"В процессе добавления произошла ОШИБКА!",
-						"Результат удаления",
+						"Результат добавления",
 						MessageBoxButton.OK,
 						MessageBoxImage.Warning);
 				}
@@ -415,6 +452,9 @@ namespace PraxStock.ViewModel.SecondViewModel
 			NameItemSecond = null;
 			UnitMeasureSecond = null;
 			QuantityReceiptSecond = 0;
+			ExpirationDate = null;
+			ExpirationDateSecond = null;
+			ShowCheckBoxSecretPanel = false;
 		}
 		#endregion
 
@@ -441,26 +481,13 @@ namespace PraxStock.ViewModel.SecondViewModel
 			UnitMeasureSecond = null;
 			QuantityReceiptSecond = 0;
 			DateReceipt = DateTime.Now;
+			ExpirationDate = null;
+			ExpirationDateSecond = null;
+			ShowCheckBoxSecretPanel = false;
 		}
 		#endregion
 
-		#region ShowSecretPanel : bool -  Флаг отображения скрытой панели.
 
-		///<summary>Флаг отображения скрытой панели. - поле.</summary>
-		private bool _ShowSecretPanel;
-
-		///<summary>Флаг отображения скрытой панели. - свойство.</summary>
-		public bool ShowSecretPanel
-		{
-			get => _ShowSecretPanel;
-			set
-			{
-
-				_ShowSecretPanel = value;
-				OnPropertyChanged(nameof(ShowSecretPanel));
-			}
-		}
-		#endregion
 
 
 		private void InicializationMain()

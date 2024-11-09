@@ -118,7 +118,18 @@
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="14"
-                    IsChecked="{Binding ShowSecretPanel}"/>
+                    IsChecked="{Binding ShowSecretPanel}">
+                    <CheckBox.Style>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowCheckBoxSecretPanel}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger> 
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+                </CheckBox>
             </Grid>
 
             <DockPanel
