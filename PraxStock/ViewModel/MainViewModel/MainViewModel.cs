@@ -351,7 +351,7 @@ internal class MainViewModel : DialogViewModel
 	{
 		if(CurrentDataStockList is null)
 		{
-			MessageBox.Show("Выберите позицию из ОСНОВНОГО СПИСКА, чтобы открылось окно перемещения позиций.",
+			MessageBox.Show("Выберите позицию из ОСНОВНОГО ПЕРЕЧНЯ, чтобы открылось окно перемещения позиций.",
 				"Совет!",
 				MessageBoxButton.OK,
 				MessageBoxImage.Exclamation);
@@ -533,11 +533,6 @@ internal class MainViewModel : DialogViewModel
 					itemDataStock.MinValue = valueResult;
 					itemDataStock.FlagSett = valueResult > 0 ? true : false;
 
-					MessageBox.Show(
-						$"Значение ограничение ИЗМЕНЕНО, на {valueResult}",
-						"Результат изменения.",
-						MessageBoxButton.OKCancel,
-						MessageBoxImage.Information);
 				}
 				else
 					MessageBox.Show(

@@ -498,20 +498,20 @@
 
                             <TextBox
                                 Text="{Binding SearchMainList, UpdateSourceTrigger=PropertyChanged}"
-                                FontSize="14"
                                 Height="24"
                                 Width="175"
-                                Background="Transparent"
-                                FontWeight="Medium"
-                                FontFamily="Montserrat"
-                                CaretBrush="Gray"
-                                BorderThickness="0,0,0,2"
-                                VerticalContentAlignment="Center"
-                                Margin="0,4,0,0">
+                                Margin="0,2,0,0">
                                 <TextBox.Style>
                                     <Style TargetType="TextBox">
+                                        <Setter Property="Background" Value="Transparent"/>
                                         <Setter Property="Foreground" Value="{StaticResource blackFontColorDefault}"/>
                                         <Setter Property="BorderBrush" Value="{StaticResource blackFontColorDefault}"/>
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="FontWeight" Value="Medium"/>
+                                        <Setter Property="FontFamily" Value="Montserrat"/>
+                                        <Setter Property="BorderThickness" Value="0 0 0 2"/>
+                                        <Setter Property="CaretBrush" Value="Gray"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Center"/>
                                     </Style>
                                 </TextBox.Style>
                             </TextBox>
@@ -626,17 +626,6 @@
                                                                         <Setter Property="BorderThickness" Value="2"/>
                                                                         <Setter Property="Background" Value="{StaticResource color1Default}"/>
                                                                     </DataTrigger>
-                                                                    <!--<DataTrigger Value="2">
-                                                                        <DataTrigger.Binding>
-                                                                            <MultiBinding Converter="{StaticResource UnitConverter}">
-                                                                                <Binding Path="UnitCount"/>
-                                                                                <Binding Path="MinValue"/>
-                                                                                <Binding Path="FlagSett"/>
-                                                                            </MultiBinding>
-                                                                        </DataTrigger.Binding>
-                                                                        <Setter Property="BorderThickness" Value="1"/>
-                                                                        <Setter Property="Background" Value="{StaticResource color8Default}"/>
-                                                                    </DataTrigger>-->
                                                                     <DataTrigger Value="3">
                                                                         <DataTrigger.Binding>
                                                                             <MultiBinding Converter="{StaticResource UnitConverter}">
@@ -813,18 +802,23 @@
 
                             <TextBox
                                 Text="{Binding SearchReceiptList, UpdateSourceTrigger=PropertyChanged}"
-                                FontSize="14"
                                 Height="24"
                                 Width="175"
-                                Background="Transparent"
-                                FontWeight="Medium"
-                                FontFamily="Montserrat"
-                                Foreground="Gray"
-                                CaretBrush="Gray"
-                                BorderBrush="Gray"
-                                BorderThickness="0,0,0,2"
-                                VerticalContentAlignment="Center"
-                                Margin="0,0,0,0"/>
+                                Margin="0,2,0,0">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{StaticResource blackFontColorDefault}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource blackFontColorDefault}"/>
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="FontWeight" Value="Medium"/>
+                                        <Setter Property="FontFamily" Value="Montserrat"/>
+                                        <Setter Property="BorderThickness" Value="0 0 0 2"/>
+                                        <Setter Property="CaretBrush" Value="Gray"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
 
                             <Border Padding="5" Background="Transparent">
                                 <ComboBox 
@@ -868,11 +862,26 @@
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="№"/>
                                         </GridViewColumn>
-                                        <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=Name}">
+                                        <GridViewColumn>
                                             <TextBlock
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Наименование"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border 
+                                                        BorderThickness="1" 
+                                                        BorderBrush="{StaticResource panelActiveColorDark}" 
+                                                        CornerRadius="3"
+                                                        Padding="5 3">
+                                                        <TextBlock 
+                                                            Text="{Binding Name}"
+                                                            TextAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="14"
+                                                            FontWeight="DemiBold"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=UnitMeasure}">
@@ -1002,18 +1011,23 @@
 
                             <TextBox
                                 Text="{Binding SearchMoveList, UpdateSourceTrigger=PropertyChanged}"
-                                FontSize="14"
                                 Height="24"
                                 Width="175"
-                                Background="Transparent"
-                                FontWeight="Medium"
-                                FontFamily="Montserrat"
-                                Foreground="Gray"
-                                CaretBrush="Gray"
-                                BorderBrush="Gray"
-                                BorderThickness="0,0,0,2"
-                                VerticalContentAlignment="Center"
-                                Margin="0,0,0,0"/>
+                                Margin="0,2,0,0">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{StaticResource blackFontColorDefault}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource blackFontColorDefault}"/>
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="FontWeight" Value="Medium"/>
+                                        <Setter Property="FontFamily" Value="Montserrat"/>
+                                        <Setter Property="BorderThickness" Value="0 0 0 2"/>
+                                        <Setter Property="CaretBrush" Value="Gray"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
 
                             <Border Padding="5" Background="Transparent">
                                 <ComboBox 
@@ -1058,11 +1072,26 @@
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="№"/>
                                         </GridViewColumn>
-                                        <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=Name}">
+                                        <GridViewColumn>
                                             <TextBlock
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Наименование"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border 
+                                                        BorderThickness="1" 
+                                                        BorderBrush="{StaticResource panelActiveColorDark}" 
+                                                        CornerRadius="3"
+                                                        Padding="5 3">
+                                                        <TextBlock 
+                                                            Text="{Binding Name}"
+                                                            TextAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="14"
+                                                            FontWeight="DemiBold"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=UnitMeasure}">
