@@ -24,7 +24,7 @@ namespace PraxStock.Model.Converters
 				if(System.Convert.ToBoolean(values[2])) 
 				{
 					if (System.Convert.ToDouble(values[0]) <= System.Convert.ToDouble(values[1])
-						&& System.Convert.ToDouble(values[0]) > 0)
+						&& System.Convert.ToDouble(values[0]) >= 0)
 						return MyEnum.Green;
 					return MyEnum.Red;
 				}

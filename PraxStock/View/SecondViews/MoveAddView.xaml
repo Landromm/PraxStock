@@ -414,6 +414,7 @@
             Content="Подтвердить"
             Margin="10"
             Command="{Binding AddMoveCommand}"
+            Click="btnCancel_Click"
             IsCancel="True"/>
 
     </Grid>

@@ -26,6 +26,7 @@ namespace PraxStock.View.SecondViews
 
 		private void btnCancel_Click(object sender, RoutedEventArgs e)
 		{
+            Thread.Sleep(500);
             this.Close();
 		}
 	}
