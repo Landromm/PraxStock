@@ -55,6 +55,7 @@
     <SolidColorBrush x:Key="mainFontColorDark" Color="#FAFAFA"/>
     <SolidColorBrush x:Key="secondFontColorDark" Color="#63BECE"/>
     <SolidColorBrush x:Key="blackFontColorDark" Color="Black"/>
+    <SolidColorBrush x:Key="grayFontColorDark" Color="#3D3D3D"/>
     <!--Panel Colors-->
     <SolidColorBrush x:Key="panelColorDefault" Color="#094D74"/>
     <SolidColorBrush x:Key="panelOverColorDefault" Color="#063b59"/>

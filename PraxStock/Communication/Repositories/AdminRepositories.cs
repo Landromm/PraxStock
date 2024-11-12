@@ -499,6 +499,7 @@ namespace PraxStock.Communication.Repositories
 			using var context = new PraxixSkladContext();
 			{
 				result = context.Items
+					.OrderBy(x => x.NameItem)
 					.Select(n =>  n.NameItem)
 					.ToList();
 			}
@@ -719,6 +720,7 @@ namespace PraxStock.Communication.Repositories
 				var result = from dataStoks in context.DataStocks
 							 join items in context.Items on dataStoks.IdItem equals items.IdItem
 							 join receipt in context.Receipts on dataStoks.IdItemStock equals receipt.IdReceipt
+							 orderby items.NameItem
 							 select new
 							 {
 								 IdItemStock = dataStoks.IdItemStock,

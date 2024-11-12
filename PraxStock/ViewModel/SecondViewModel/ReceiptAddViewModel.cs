@@ -401,7 +401,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 		///<summary>Логикак выполнения - Раскрытие выпадающего списка позициий для суммирования</summary>
 		private void ExecuteDropdownSelectionSecondChanged(object p)
 		{
-			NameItemListSecond = _repositoriesDB.GetAllNameItemSecond(NameItem);
+			NameItemListSecond = _repositoriesDB.GetAllNameItemSecond(NameItem!);
 		}
 		#endregion
 
