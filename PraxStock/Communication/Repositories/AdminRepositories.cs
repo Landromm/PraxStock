@@ -517,7 +517,7 @@ namespace PraxStock.Communication.Repositories
 			return result;
 		}
 
-		public List<MainListItems> GetAllNameItemSecond()
+		public List<MainListItems> GetAllNameItemSecond(string nameItem)
 		{
 			var mainCollection = new List<MainListItems>();
 			using var context = new PraxixSkladContext();
@@ -525,6 +525,7 @@ namespace PraxStock.Communication.Repositories
 				var result = from dataStoks in context.DataStocks
 							 join items in context.Items on dataStoks.IdItem equals items.IdItem
 							 join receipt in context.Receipts on dataStoks.IdItemStock equals receipt.IdReceipt
+							 where items.NameItem == nameItem
 							 select new
 							 {
 								 IdItemStock = dataStoks.IdItemStock,

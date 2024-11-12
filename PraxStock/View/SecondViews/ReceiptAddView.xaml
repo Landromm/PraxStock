@@ -132,9 +132,8 @@
                 </CheckBox>
             </Grid>
 
-            <DockPanel
+            <DockPanel 
                 Visibility="{Binding ElementName=cbShowSecret, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-
                 <Label
                     DockPanel.Dock="Top"
                     Content="Позиция:"

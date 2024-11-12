@@ -122,6 +122,13 @@ namespace PraxStock.ViewModel.SecondViewModel
 						NameItem = item.NameItem;
 						UnitMeasure = item.UnitMeasure;
 					}
+					ItemListCollectionSecond = null!;
+					SelectedNameItemSecond = null!;
+					ShowSecretPanel = false;
+					NameItemSecond = null;
+					UnitMeasureSecond = null;
+					QuantityReceiptSecond = 0;
+					ExpirationDateSecond = null;
 				}
 			}
 		}
@@ -394,7 +401,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 		///<summary>Логикак выполнения - Раскрытие выпадающего списка позициий для суммирования</summary>
 		private void ExecuteDropdownSelectionSecondChanged(object p)
 		{
-			NameItemListSecond = _repositoriesDB.GetAllNameItemSecond();
+			NameItemListSecond = _repositoriesDB.GetAllNameItemSecond(NameItem);
 		}
 		#endregion
 
