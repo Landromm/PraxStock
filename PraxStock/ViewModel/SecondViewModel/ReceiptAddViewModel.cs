@@ -426,30 +426,43 @@ namespace PraxStock.ViewModel.SecondViewModel
 					fullInfoItem.ExpirationDate = DateOnly.FromDateTime((DateTime)ExpirationDate);
 				fullInfoItem.DateReceipt = DateOnly.FromDateTime(DateReceipt);
 
-
 			try
 			{
 				if (!ShowSecretPanel)
 					_repositoriesDB.AddReceiptItem(fullInfoItem);
 				else
 				{
-					var resultReceipt = _repositoriesDB.AddReceiptItemSecond(fullInfoItem, SelectedNameItemSecond.IdDataStock);
-					if (resultReceipt)
+					if(ShowSecretPanel && SelectedNameItemSecond != null)
 					{
-						MessageBox.Show(
-							"Позиция добавлена УСПЕШНО!",
-							"Результат добавления",
-							MessageBoxButton.OK,
-							MessageBoxImage.Information);
+						var resultReceipt = _repositoriesDB.AddReceiptItemSecond(fullInfoItem, SelectedNameItemSecond.IdDataStock);
+						if (resultReceipt)
+						{
+							MessageBox.Show(
+								"Позиция добавлена УСПЕШНО!",
+								"Результат добавления",
+								MessageBoxButton.OK,
+								MessageBoxImage.Information);
+						}
+						else
+						{
+							MessageBox.Show(
+								"В процессе добавления произошла ОШИБКА!",
+								"Результат добавления",
+								MessageBoxButton.OK,
+								MessageBoxImage.Warning);
+						}
+						
 					}
 					else
 					{
 						MessageBox.Show(
-							"В процессе добавления произошла ОШИБКА!",
+							"Не выбрана существующая позиция.\n" +
+							"Если ее нет, рекумендуется убрать галочку 'Добавить к существующей позиции'.",
 							"Результат добавления",
 							MessageBoxButton.OK,
 							MessageBoxImage.Warning);
 					}
+
 				}
 			}
 			catch (Exception ex)
@@ -461,21 +474,20 @@ namespace PraxStock.ViewModel.SecondViewModel
 					MessageBoxImage.Error);
 			}
 
-				NameItem = null;
-				UnitMeasure = null;
-				QuantityReceipt = 0;
-				ItemListCollection = null!;
-				ItemListCollectionSecond = null!;
-				SelectedNameItem = null;
-				SelectedNameItemSecond = null!;
-				ShowSecretPanel = false;
-				NameItemSecond = null;
-				UnitMeasureSecond = null;
-				QuantityReceiptSecond = 0;
-				ExpirationDate = null;
-				ExpirationDateSecond = null;
-				ShowCheckBoxSecretPanel = false;
-					
+			NameItem = null;
+			UnitMeasure = null;
+			QuantityReceipt = 0;
+			ItemListCollection = null!;
+			ItemListCollectionSecond = null!;
+			SelectedNameItem = null;
+			SelectedNameItemSecond = null!;
+			ShowSecretPanel = false;
+			NameItemSecond = null;
+			UnitMeasureSecond = null;
+			QuantityReceiptSecond = 0;
+			ExpirationDate = null;
+			ExpirationDateSecond = null;
+			ShowCheckBoxSecretPanel = false;
 		}
 		#endregion
 
