@@ -62,25 +62,6 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
-
-		//Если к ComboBox'у привяжеться коллекция объектов то этот список надо удалить.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//#region NameItemListSecond : List<string, int> -  Список наименований для суммирования.
-
-		/////<summary>Список наименований для суммирования. - поле.</summary>
-		//private SortedList<int, string> _NameItemListSecond;
-
-		/////<summary>Список наименований для суммирования. - свойство.</summary>
-		//public SortedList<int, string> NameItemListSecond
-		//{
-		//	get => _NameItemListSecond;
-		//	set
-		//	{
-		//		_NameItemListSecond = value;
-		//		OnPropertyChanged(nameof(NameItemListSecond));
-		//	}
-		//}
-		//#endregion
-
 		#region NameItemListSecond : List<MainListItems> -  Список наименований для суммирования.
 
 		///<summary>Список наименований для суммирования. - поле.</summary>
@@ -97,7 +78,6 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
-
 
 		#region SelectedNameItem : string? - Выбранное наименование позиции.
 
@@ -161,8 +141,6 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
-
-
 
 		#region NameItem : string? - Наименование позиции.
 
@@ -365,8 +343,6 @@ namespace PraxStock.ViewModel.SecondViewModel
 		#endregion
 
 
-
-
 		public ReceiptAddViewModel()
 		{
 			_repositoriesDB = new AdminRepositories();
@@ -437,41 +413,23 @@ namespace PraxStock.ViewModel.SecondViewModel
 						var resultReceipt = _repositoriesDB.AddReceiptItemSecond(fullInfoItem, SelectedNameItemSecond.IdDataStock);
 						if (resultReceipt)
 						{
-							MessageBox.Show(
-								"Позиция добавлена УСПЕШНО!",
-								"Результат добавления",
-								MessageBoxButton.OK,
-								MessageBoxImage.Information);
+							MessageBox.Show("Позиция добавлена УСПЕШНО!", "Результат добавления", MessageBoxButton.OK, MessageBoxImage.Information);
 						}
 						else
 						{
-							MessageBox.Show(
-								"В процессе добавления произошла ОШИБКА!",
-								"Результат добавления",
-								MessageBoxButton.OK,
-								MessageBoxImage.Warning);
-						}
-						
+							MessageBox.Show("В процессе добавления произошла ОШИБКА!", "Результат добавления", MessageBoxButton.OK, MessageBoxImage.Warning);
+						}						
 					}
 					else
 					{
-						MessageBox.Show(
-							"Не выбрана существующая позиция.\n" +
-							"Если ее нет, рекумендуется убрать галочку 'Добавить к существующей позиции'.",
-							"Результат добавления",
-							MessageBoxButton.OK,
-							MessageBoxImage.Warning);
+						MessageBox.Show("Не выбрана существующая позиция.\n" +
+							"Если ее нет, рекумендуется убрать галочку 'Добавить к существующей позиции'.", "Результат добавления", MessageBoxButton.OK, MessageBoxImage.Warning);
 					}
-
 				}
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(
-					"Добавление перемещение прошло с ошибкой. Проверьте правильность последних действий.",
-					"Ошибка!",
-					MessageBoxButton.OK,
-					MessageBoxImage.Error);
+				MessageBox.Show("Добавление перемещение прошло с ошибкой. Проверьте правильность последних действий.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 
 			NameItem = null;
@@ -519,9 +477,6 @@ namespace PraxStock.ViewModel.SecondViewModel
 			ShowCheckBoxSecretPanel = false;
 		}
 		#endregion
-
-
-
 
 		private void InicializationMain()
 		{

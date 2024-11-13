@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PraxStock.View.SecondViews"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Поступление"
         Width="360"
@@ -279,6 +280,113 @@
             </Setter>
         </Style>
         <!--#endregion-->
+        
+        <!--#region Стиль для Button-->
+        <Style x:Key="btnOK" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="5"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                                VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color7Default}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color4Default}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="btnCANCEL" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="5"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color1Dark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color2Dark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+
+        <!--#region Стиль для DatePickerTextBox-->
+        <Thickness x:Key="BaseErrorBorderThickness">1</Thickness>
+        
+        <SolidColorBrush x:Key="ErrorBorderBrush" Color="Red"/>
+        <SolidColorBrush x:Key="ErrorPolygonFillBrush" Color="Red"/>
+
+        <Style TargetType="{x:Type DatePicker}" x:Key="BaseDatePickerStyle">
+            <Setter Property="Padding" Value="5 2" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <AdornedElementPlaceholder x:Name="adorner">
+                                <Border 
+                                    BorderBrush="{StaticResource ErrorBorderBrush}"
+                                    BorderThickness="{StaticResource BaseErrorBorderThickness}" />
+                            </AdornedElementPlaceholder>
+                            <Polygon Fill="{StaticResource ErrorPolygonFillBrush}"
+                                 Margin="0,2,2,0"
+                                 Points="10,10 10,0 0,0"
+                                 VerticalAlignment="Top"
+                                 HorizontalAlignment="Right" >
+                            </Polygon>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="BorderBrush" Value="Black" />
+                </Style>
+
+                <Style x:Key="{x:Type ToolTip}" TargetType="{x:Type ToolTip}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="{StaticResource ErrorPolygonFillBrush}"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="{StaticResource BaseErrorBorderThickness}"/>
+                </Style>
+            </Style.Resources>
+
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+        <!--#endregion-->
 
     </Window.Resources>
     
@@ -369,7 +477,8 @@
                     Grid.Row="3"
                     Margin="10 0"
                     SelectedDate="{Binding ExpirationDate, UpdateSourceTrigger=PropertyChanged}"
-                    FontSize="16"/>
+                    FontSize="16"
+                    Style="{StaticResource BaseDatePickerStyle}"/>
                 <Label
                     Grid.Column="1"
                     Grid.Row="2"
@@ -381,7 +490,8 @@
                     Margin="10 0"
                     SelectedDate="{Binding DateReceipt, UpdateSourceTrigger=PropertyChanged}"
                     DisplayDate="{Binding DateReceipt}"
-                    FontSize="16"/>
+                    FontSize="16"
+                    Style="{StaticResource BaseDatePickerStyle}"/>
 
                 <CheckBox
                     Grid.Column="0"
@@ -509,7 +619,8 @@
                         DisplayDate="{Binding ExpirationDateSecond}"
                         FontSize="16"
                         FontWeight="DemiBold"
-                        IsEnabled="False"/>
+                        IsEnabled="False"
+                        Style="{StaticResource BaseDatePickerStyle}"/>
 
                     <Label
                         Grid.Column="1"
@@ -524,14 +635,13 @@
                         DisplayDate="{Binding DateReceiptSecond}"
                         FontSize="16"
                         FontWeight="DemiBold"
-                        IsEnabled="False"/>
+                        IsEnabled="False"
+                        Style="{StaticResource BaseDatePickerStyle}"/>
 
                 </Grid>
 
-
             </DockPanel>
             
-
             <Grid
                 Margin="10 15 10 5">
 
@@ -543,17 +653,21 @@
                 <Button
                     Grid.Column="0"
                     Content="Очистить"
-                    Width="100"
+                    Width="120"
                     Height="30"
-                    Margin="0"
-                    Command="{Binding ResetCommand}"/>
+                    Command="{Binding ResetCommand}"
+                    Style="{StaticResource btnCANCEL}"
+                    HorizontalAlignment="Right"
+                    Margin="0 0 10 0"/>
                 <Button
                     Grid.Column="1"
                     Content="Добавить"
-                    Width="100"
+                    Width="120"
                     Height="30"
-                    Margin="0"
-                    Command="{Binding AddReceiptCommand}"/>
+                    Command="{Binding AddReceiptCommand}"
+                    Style="{StaticResource btnOK}"
+                    HorizontalAlignment="Left"
+                    Margin="10 0 0 0"/>
             </Grid>
         </StackPanel>
     </Grid>

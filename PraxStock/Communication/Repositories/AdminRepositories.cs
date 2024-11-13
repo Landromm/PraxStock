@@ -598,13 +598,21 @@ namespace PraxStock.Communication.Repositories
 
 		public int GetBySearchIdItem(string searchName)
 		{
+
 			using var context = new PraxixSkladContext();
 			{
-				var idItem = (from item in context.Items
-							  where item.NameItem == searchName
-							  select item.IdItem).First();
+				try
+				{
+					var idItem = (from item in context.Items
+								  where item.NameItem == searchName
+								  select item.IdItem).First();
 
-				return idItem;
+					return idItem;
+				}
+				catch (Exception ex)
+				{
+					return 0;
+				}
 			}
 		}
 
