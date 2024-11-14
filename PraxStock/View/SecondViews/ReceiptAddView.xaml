@@ -344,6 +344,7 @@
             <Setter Property="Padding" Value="5 2" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Focusable" Value="True" />
+            <Setter Property="Background" Value="White"/>
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
                     <ControlTemplate>
@@ -389,8 +390,8 @@
         <!--#endregion-->
 
     </Window.Resources>
-    
-    <Grid>
+
+    <Grid Background="{StaticResource color9Default}">
         <StackPanel
             Orientation="Vertical"
             Margin="5">
@@ -532,6 +533,7 @@
                 <ComboBox
                     DockPanel.Dock="Top"
                     IsEditable="False"
+                    Height="35" 
                     Margin="10 0"
                     FontSize="16"
                     ItemsSource="{Binding NameItemListSecond}"

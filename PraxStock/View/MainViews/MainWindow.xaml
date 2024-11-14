@@ -1111,11 +1111,26 @@
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Дата перемещения на пост"/>
                                         </GridViewColumn>
-                                        <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=NamePost}">
+                                        <GridViewColumn>
                                             <TextBlock
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Пост"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border 
+                                                        BorderThickness="1" 
+                                                        BorderBrush="{StaticResource panelActiveColorDark}" 
+                                                        CornerRadius="3"
+                                                        Padding="5 3">
+                                                        <TextBlock 
+                                                            Text="{Binding Path=NamePost}"
+                                                            TextAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="14"
+                                                            FontWeight="DemiBold"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
                                     </GridView>
                                 </ListView.View>
