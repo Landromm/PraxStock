@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PraxStock.View.SecondViews" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
         Title="Перемещение позиции"
-        Height="390" Width="320"
+        Height="390" Width="330"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
@@ -390,7 +390,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="40"/>
@@ -404,30 +404,31 @@
             Grid.Column="0"
             Text="Наименование:"
             FontSize="14"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
+            Margin="10 0"
             VerticalAlignment="Center"/>
 
         <TextBox
             Grid.Row="0"
-            Grid.Column="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
             Text="{Binding NameItem, UpdateSourceTrigger=PropertyChanged}"
             FontSize="14"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
             VerticalAlignment="Center"
             IsEnabled="False"
-            Margin="5"
-            Padding="10 2"
+            Margin="120 0 0 0"
             Style="{StaticResource TextBoxStyle}"/>
 
         <TextBlock
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            Text="Введите необходимое количество для перемещения."
-            VerticalAlignment="Center"
-            TextAlignment="Center"
+            Text="Введите необходимое количество для перемещения:"
+            VerticalAlignment="Bottom"
+            TextAlignment="Left"
             TextWrapping="Wrap"
-            Margin="10 5"
+            Margin="10 2"
             FontStyle="Italic"/>
 
         <Grid
@@ -448,14 +449,19 @@
 
                 <Label
                     Content="В наличии:"
-                    Foreground="Green"
+                    Foreground="{StaticResource color7Default}"
                     FontWeight="Bold"/>
 
-                <TextBlock
+                <TextBox
                     Text="{Binding RemainingStock}"
-                    FontSize="24"
+                    FontSize="20"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"/>
+                    VerticalAlignment="Center"
+                    BorderThickness="2"
+                    FontWeight="DemiBold"
+                    IsReadOnly="True"
+                    BorderBrush="{StaticResource color7Default}"
+                    Style="{StaticResource TextBoxStyle}"/>
 
             </StackPanel>
 
@@ -471,7 +477,7 @@
 
                 <TextBlock
                     Text="{Binding UnitMeasure}"
-                    FontSize="20"
+                    FontSize="18"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
 
@@ -486,7 +492,7 @@
                 <Label
                     Content="Переместить:"
                     HorizontalAlignment="Center"
-                    Foreground="Blue"
+                    Foreground="{StaticResource color2}"
                     FontWeight="DemiBold"/>
 
                 <TextBox
@@ -500,7 +506,7 @@
                     FontWeight="DemiBold"
                     Foreground="Black"
                     BorderThickness="2"
-                    BorderBrush="{StaticResource color7Default}"
+                    BorderBrush="{StaticResource color2}"
                     Style="{StaticResource TextBoxStyle}"/>
 
             </StackPanel>

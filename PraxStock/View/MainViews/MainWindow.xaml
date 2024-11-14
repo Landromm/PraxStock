@@ -889,11 +889,26 @@
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Ед.измер."/>
                                         </GridViewColumn>
-                                        <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=UnitCount}">
+                                        <GridViewColumn>
                                             <TextBlock
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Количество"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                        <Border 
+                                                            BorderThickness="1" 
+                                                            BorderBrush="{StaticResource panelActiveColorDark}" 
+                                                            CornerRadius="3"
+                                                            Padding="5 3">
+                                                        <TextBlock 
+                                                            Text="{Binding Path=UnitCount}"
+                                                            TextAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="14"
+                                                            FontWeight="DemiBold"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=ExpirationDate, StringFormat=dd-MM-yyyy}">
@@ -1099,11 +1114,26 @@
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Ед.измер."/>
                                         </GridViewColumn>
-                                        <GridViewColumn 
-                                            DisplayMemberBinding="{Binding Path=UnitCount}">
+                                        <GridViewColumn>
                                             <TextBlock
                                                 Style="{StaticResource gridViewCollumnTextBlock}"
                                                 Text="Количество"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border 
+                                                        BorderThickness="1" 
+                                                        BorderBrush="{StaticResource panelActiveColorDark}" 
+                                                        CornerRadius="3"
+                                                        Padding="5 3">
+                                                        <TextBlock 
+                                                            Text="{Binding Path=UnitCount}"
+                                                            TextAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="14"
+                                                            FontWeight="DemiBold"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
                                         <GridViewColumn 
                                             DisplayMemberBinding="{Binding Path=DateMove, StringFormat=dd-MM-yyyy}">
