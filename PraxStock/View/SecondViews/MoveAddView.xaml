@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PraxStock.View.SecondViews" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
         Title="Перемещение позиции"
-        Height="390" Width="330"
+        Height="380" Width="330"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
