@@ -17,7 +17,7 @@ namespace PraxStock.ViewModel.SecondViewModel
     class ReceiptAddViewModel : DialogViewModel
     {
 		private readonly IAdminRepositories _repositoriesDB = null!;
-
+		private List<string> _tempList;
 		private ObservableCollection<Item> _ItemListCollection;
 		public ObservableCollection<Item> ItemListCollection
 		{
@@ -76,7 +76,9 @@ namespace PraxStock.ViewModel.SecondViewModel
 			{
 				_NameItemSearch = value;
 				OnPropertyChanged(nameof(NameItemSearch));
-				var _tempList = new List<string>();
+				
+				if(_tempList != null) 
+					_tempList.Clear();
 
 				if(value != "") 
 				{
@@ -399,6 +401,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 		public ReceiptAddViewModel()
 		{
 			_repositoriesDB = new AdminRepositories();
+			_tempList = [];
 			OriginalNameItemList = [];
 			NameItemList = [];
 			InicializationMain();

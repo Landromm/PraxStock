@@ -20,6 +20,8 @@ class MoveAddViewModel : DialogViewModel
 	private readonly IMessageBus _messageBus = null!;
 	private readonly IDisposable _subscription = null!;
 	private readonly IAdminRepositories _repositoriesDB = null!;
+	private List<string> _tempList;
+
 
 	#region IdDateStock : int - Id позиции на складе.
 
@@ -172,8 +174,8 @@ class MoveAddViewModel : DialogViewModel
 		{
 			_NamePostSearch = value;
 			OnPropertyChanged(nameof(NamePostSearch));
-			var _tempList = new List<string>();
-			
+			if(_tempList != null)
+				_tempList.Clear();
 			if (value != "")
 			{
 				var result = OriginalNamePostList.Where(x => x.StartsWith(value!)).ToList();
@@ -234,6 +236,7 @@ class MoveAddViewModel : DialogViewModel
 		_messageBus = MessageBus;
 		_repositoriesDB = new AdminRepositories();
 		_subscription = MessageBus.RegisterHandler<CurrentlyMainItemList>(OnReceiveMessage);
+		_tempList = [];
 		NamePostList = new List<string>();
 		DateMove = DateTime.Now;
 		OriginalNamePostList = _repositoriesDB.GetAllNamePost();
