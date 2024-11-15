@@ -123,6 +123,25 @@ class MoveAddViewModel : DialogViewModel
 	}
 	#endregion
 
+	#region OriginalNamePostList : List<string> - Оригинальный список наименований мест для перемещения.
+
+	/// <summary>Оригинальный список наименований мест для перемещения. - поле.</summary>
+	private List<string> _OriginalNamePostList;
+
+	/// <summary>Оригинальный список наименований мест для перемещения. - свойство.</summary>
+	public List<string> OriginalNamePostList
+	{
+		get => _OriginalNamePostList;
+		set
+		{
+			_OriginalNamePostList = value;
+			OnPropertyChanged(nameof(OriginalNamePostList));
+		}
+	}
+	#endregion
+
+
+
 	#region NamePostList : List<string> - Список наименований мест для перемещения.
 
 	/// <summary>Список наименований мест для перемещения. - поле.</summary>
@@ -139,6 +158,48 @@ class MoveAddViewModel : DialogViewModel
 		}
 	}
 	#endregion
+
+	#region NamePostSearch : string? - Вводимое наименование поста.
+
+	/// <summary>Вводимое наименование поста. - поле.</summary>
+	private string? _NamePostSearch;
+
+	/// <summary>Вводимое наименование поста. - свойство.</summary>
+	public string? NamePostSearch
+	{
+		get => _NamePostSearch;
+		set
+		{
+			_NamePostSearch = value;
+			OnPropertyChanged(nameof(NamePostSearch));
+			var _tempList = new List<string>();
+			
+			if (value != "")
+			{
+				var result = OriginalNamePostList.Where(x => x.StartsWith(value!));
+				if(_tempList is  not null) 
+					_tempList.Clear();
+				
+				NamePostList.Clear();
+				foreach (var item in result)
+					_tempList.Add(item);
+				
+				NamePostList = _tempList;
+				SelectedNamePost = NamePostSearch;
+			}
+			else
+			{
+				if (_tempList is not null)
+					_tempList.Clear();
+				foreach (var item in OriginalNamePostList)
+					_tempList.Add(item);
+				NamePostList = _tempList;
+			}
+		}
+	}
+	#endregion
+
+
 
 	#region SelectedNamePost : string? -  Наименование выбранного места перемещения.
 
@@ -179,8 +240,11 @@ class MoveAddViewModel : DialogViewModel
 		_messageBus = MessageBus;
 		_repositoriesDB = new AdminRepositories();
 		_subscription = MessageBus.RegisterHandler<CurrentlyMainItemList>(OnReceiveMessage);
+		NamePostList = new List<string>();
 		DateMove = DateTime.Now;
-		NamePostList = _repositoriesDB.GetAllNamePost();
+		OriginalNamePostList = _repositoriesDB.GetAllNamePost();
+		foreach (var item in OriginalNamePostList)
+			NamePostList.Add(item);
 	}
 
 	private void OnReceiveMessage(CurrentlyMainItemList message)
@@ -272,8 +336,5 @@ class MoveAddViewModel : DialogViewModel
 				MessageBoxImage.Warning);
 	}
 	#endregion
-
-
-
 }
 

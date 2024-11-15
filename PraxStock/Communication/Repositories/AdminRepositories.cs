@@ -512,7 +512,7 @@ namespace PraxStock.Communication.Repositories
 			var result = new List<string>();
 			using var context = new PraxixSkladContext();
 			{
-				result = [.. context.MoveInPosts.Select(nP => nP.NamePost)];
+				result = [.. context.MoveInPosts.Select(nP => nP.NamePost).Distinct()];
 			}
 
 			return result;

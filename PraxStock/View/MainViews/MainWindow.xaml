@@ -985,7 +985,7 @@
                 <!--Перемещения-->
                 <TabItem
                     x:Name="tabMoveList"
-                    Background="{StaticResource color1Default}"
+                    Background="{StaticResource color16}"
                     Header="Перемещение">
 
                     <i:Interaction.Triggers>
@@ -1075,7 +1075,7 @@
                                 Background="Transparent"
                                 BorderThickness="0" 
                                 AlternationCount="2"
-                                d:ItemsSource="{d:SampleData ItemCount=5}"                                 
+                                d:ItemsSource="{d:SampleData ItemCount=5}"
                                 HorizontalContentAlignment="Center" 
                                 Grid.IsSharedSizeScope="True">
 
@@ -1196,10 +1196,10 @@
                                         </Setter>
                                         <Style.Triggers>
                                             <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                                <Setter Property="Background" Value="{StaticResource color1_1Default}" />
+                                                <Setter Property="Background" Value="{StaticResource color15}" />
                                             </Trigger>
                                             <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                                <Setter Property="Background" Value="{StaticResource color1_2Default}" />
+                                                <Setter Property="Background" Value="{StaticResource color14}" />
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
                                                 <Setter Property="Background" Value="{StaticResource color8}" />

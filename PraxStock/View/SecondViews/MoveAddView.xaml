@@ -383,13 +383,13 @@
         <!--#endregion-->
     </Window.Resources>
 
-    <Grid  Background="{StaticResource color1_2Default}">
+    <Grid  Background="{StaticResource color14}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>    
             <RowDefinition Height="30"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="30"/>
@@ -539,17 +539,6 @@
                 FontStyle="Italic"
                 Margin="10 5 10 2"/>
 
-            <!--<TextBox
-                Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="35 5 2 5"
-                VerticalContentAlignment="Center"
-                HorizontalContentAlignment="Center"
-                Text="{Binding NamePost}"
-                FontSize="16"
-                FontWeight="DemiBold"/>-->
-
             <StackPanel
                 Orientation="Horizontal"
                 HorizontalAlignment="Center"
@@ -563,9 +552,9 @@
                     Width="175"
                     FontSize="16"
                     IsEditable="True"
-                    ItemsSource="{Binding NamePostList}"
+                    ItemsSource="{Binding NamePostList, UpdateSourceTrigger=PropertyChanged}"
                     SelectedIndex="0"
-                    Text="{Binding SelectedNamePost}"
+                    Text="{Binding NamePostSearch}"
                     SelectedItem="{Binding SelectedNamePost}">
                 </ComboBox>
 

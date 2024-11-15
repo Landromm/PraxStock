@@ -47,6 +47,9 @@
     <SolidColorBrush x:Key="color11" Color="#e8e1ed"/>
     <SolidColorBrush x:Key="color12" Color="#302f2f"/>
     <SolidColorBrush x:Key="color13" Color="#4dde43"/>
+    <SolidColorBrush x:Key="color14" Color="#f0e0ff"/>
+    <SolidColorBrush x:Key="color15" Color="#d7b7f7"/>
+    <SolidColorBrush x:Key="color16" Color="#d2a6ff"/>
 
     <!--Font Colors-->
     <SolidColorBrush x:Key="mainFontColorDefault" Color="#CFDAEC"/>
