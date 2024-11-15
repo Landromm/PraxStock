@@ -176,21 +176,15 @@ class MoveAddViewModel : DialogViewModel
 			
 			if (value != "")
 			{
-				var result = OriginalNamePostList.Where(x => x.StartsWith(value!));
-				if(_tempList is  not null) 
-					_tempList.Clear();
+				var result = OriginalNamePostList.Where(x => x.StartsWith(value!)).ToList();
+
+				if (result != null)
+					NamePostList = result;
 				
-				NamePostList.Clear();
-				foreach (var item in result)
-					_tempList.Add(item);
-				
-				NamePostList = _tempList;
 				SelectedNamePost = NamePostSearch;
 			}
 			else
 			{
-				if (_tempList is not null)
-					_tempList.Clear();
 				foreach (var item in OriginalNamePostList)
 					_tempList.Add(item);
 				NamePostList = _tempList;

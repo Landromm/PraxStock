@@ -406,6 +406,9 @@
                 FontSize="16"
                 ItemsSource="{Binding NameItemList}"
                 SelectedIndex="0"
+                IsEditable="True"
+                IsTextSearchEnabled="False"
+                Text="{Binding NameItemSearch}"
                 SelectedItem="{Binding SelectedNameItem}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="DropDownOpened">

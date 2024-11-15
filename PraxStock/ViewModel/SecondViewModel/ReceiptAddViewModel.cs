@@ -46,6 +46,59 @@ namespace PraxStock.ViewModel.SecondViewModel
 		}
 		#endregion
 
+		#region OriginalNameItemList : List<string> - Оригинальный список наименований.
+
+		/// <summary>Оригинальный список наименований. - поле.</summary>
+		private List<string> _OriginalNameItemList;
+
+		/// <summary>Оригинальный список наименований. - свойство.</summary>
+		public List<string> OriginalNameItemList
+		{
+			get => _OriginalNameItemList;
+			set
+			{
+				_OriginalNameItemList = value;
+				OnPropertyChanged(nameof(OriginalNameItemList));
+			}
+		}
+		#endregion
+
+		#region NameItemSearch : string? - Вводимое наименование позиции.
+
+		/// <summary>Вводимое наименование позиции. - поле.</summary>
+		private string? _NameItemSearch;
+
+		/// <summary>Вводимое наименование позиции. - свойство.</summary>
+		public string? NameItemSearch
+		{
+			get => _NameItemSearch;
+			set
+			{
+				_NameItemSearch = value;
+				OnPropertyChanged(nameof(NameItemSearch));
+				var _tempList = new List<string>();
+
+				if(value != "") 
+				{
+					var result = OriginalNameItemList.Where(x => x.StartsWith(value)).ToList();
+
+					if(result != null)
+						NameItemList = result;
+
+					SelectedNameItem = NameItemSearch;
+				}
+				else
+				{
+					foreach(var item in OriginalNameItemList)
+						_tempList.Add(item);
+					NameItemList = _tempList;
+				}
+            }
+		}
+		#endregion
+
+
+
 		#region NameItemList : List<string> - Список наименований.
 
 		/// <summary>Список наименований. - поле.</summary>
@@ -346,6 +399,8 @@ namespace PraxStock.ViewModel.SecondViewModel
 		public ReceiptAddViewModel()
 		{
 			_repositoriesDB = new AdminRepositories();
+			OriginalNameItemList = [];
+			NameItemList = [];
 			InicializationMain();
 		}
 
@@ -480,8 +535,10 @@ namespace PraxStock.ViewModel.SecondViewModel
 
 		private void InicializationMain()
 		{
-			NameItemList = _repositoriesDB.GetAllNameItem();
-			NameItemList = [];
+			OriginalNameItemList = _repositoriesDB.GetAllNameItem();
+			foreach (var originalNameItem in OriginalNameItemList)
+				NameItemList.Add(originalNameItem);
+
 			ItemListCollection = [];
 			DateReceipt = DateTime.Now;
 		}
