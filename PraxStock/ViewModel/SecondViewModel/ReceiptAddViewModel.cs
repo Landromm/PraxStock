@@ -82,7 +82,7 @@ namespace PraxStock.ViewModel.SecondViewModel
 
 				if(value != "") 
 				{
-					var result = OriginalNameItemList.Where(x => x.StartsWith(value)).ToList();
+					var result = OriginalNameItemList.Where(x => x.StartsWith(value!)).ToList();
 
 					if(result != null)
 						NameItemList = result;
