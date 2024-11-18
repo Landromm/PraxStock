@@ -96,5 +96,19 @@ internal class UserDialogServices : IUserDialog
 		window.Show();
 	}
 
+	//Открытие окна статистики.
+	private StatisticMainView? _statisticMainView = null;
+	public void OpenStatisticsMainWindow()
+	{
+		if(_statisticMainView is { } window)
+		{
+			window.ShowDialog();
+			return;
+		}
+		window = _service.GetRequiredService<StatisticMainView>();
+		window.Closed += (_, _) => _statisticMainView = null;
+		_statisticMainView = window;
+		window.ShowDialog();
+	}
 
 }

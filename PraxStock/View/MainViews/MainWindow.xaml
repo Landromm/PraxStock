@@ -284,7 +284,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="3"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Stretch"
                 Margin="10 5" Cursor="Hand">
 
                 <Button 
@@ -365,6 +365,25 @@
                         <TextBlock
                             Style="{StaticResource ToolTipTextBlock}"
                             Text="Удалить выбранную позицию."/>
+                    </Button.ToolTip>
+                </Button>
+
+                <Button 
+                    x:Name="iconButtonStatistics"
+                    DockPanel.Dock="Right"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource iconButtonCatalog}"
+                    Tag="{StaticResource color6}"
+                    Command="{Binding OpenStatisticsWindowCommand}">
+
+                    <fa:IconImage 
+                        Icon="ChartPie" 
+                        Style="{StaticResource iconButtonCatalogIcon}"/>
+
+                    <Button.ToolTip>
+                        <TextBlock
+                            Style="{StaticResource ToolTipTextBlock}"
+                            Text="Открыть окно статистики."/>
                     </Button.ToolTip>
                 </Button>
 

@@ -364,6 +364,22 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 
+	#region Command OpenStatisticsWindowCommand - Открытие окна статистики.
+
+	/// <summary>Открытие окна статистики.</summary>
+	private LambdaCommand? _OpenStatisticsWindowCommand;
+
+	/// <summary>Открытие окна статистики.</summary>
+	public ICommand OpenStatisticsWindowCommand => _OpenStatisticsWindowCommand ??= new(ExecutedOpenStatisticsWindowCommand);
+
+	/// <summary>Логика выполнения - Открытие окна статистики.</summary>
+	private void ExecutedOpenStatisticsWindowCommand()
+	{
+		_userDialog.OpenStatisticsMainWindow();
+	}
+	#endregion
+
+
 	#region Command RefreshMainCommand - Обновление всей информации во всех собирательных списках.
 
 	/// <summary>Обновление всей информации во всех собирательных списках.</summary>
@@ -532,7 +548,6 @@ internal class MainViewModel : DialogViewModel
 				{
 					itemDataStock.MinValue = valueResult;
 					itemDataStock.FlagSett = valueResult > 0 ? true : false;
-
 				}
 				else
 					MessageBox.Show(
