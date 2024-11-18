@@ -102,13 +102,13 @@ internal class UserDialogServices : IUserDialog
 	{
 		if(_statisticMainView is { } window)
 		{
-			window.ShowDialog();
+			window.Show();
 			return;
 		}
 		window = _service.GetRequiredService<StatisticMainView>();
 		window.Closed += (_, _) => _statisticMainView = null;
 		_statisticMainView = window;
-		window.ShowDialog();
+		window.Show();
 	}
 
 }

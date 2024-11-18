@@ -30,7 +30,7 @@ public partial class App
 		services.AddScoped<ItemsListViewModel>();
 		services.AddSingleton<ReceiptAddViewModel>();
 		services.AddScoped<MoveAddViewModel>();
-		services.AddSingleton<StatisticMainViewModel>();
+		services.AddScoped<StatisticMainViewModel>();
 
 		services.AddSingleton<IUserDialog, UserDialogServices>();
 		services.AddSingleton<IMessageBus, MessageBusServices>();
@@ -89,9 +89,11 @@ public partial class App
 		services.AddTransient(
 			s =>
 			{
-				var model = s.GetRequiredService<StatisticMainViewModel>();
+				var scope = s.CreateScope();
+				var model = scope.ServiceProvider.GetRequiredService<StatisticMainViewModel>();
 				var window = new StatisticMainView { DataContext = model };
-				model.DialogComplete += (_, _) => window.Close();
+					model.DialogComplete += (_, _) => window.Close();
+					window.Closed += (_, _) => scope.Dispose();
 
 				return window;
 			});
