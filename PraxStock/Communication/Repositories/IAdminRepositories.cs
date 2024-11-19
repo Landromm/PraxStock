@@ -1,5 +1,6 @@
 ﻿using PraxStock.Model.DBModels;
 using PraxStock.Model.OtherModel;
+using PraxStock.Model.OtherModel.StatisticsModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,10 +17,10 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<Item> GetBySearchNameItem(string searchName);
         ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure);
 
-        ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName);             //OK new parameters
-        ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock);   //OK new parameters
-		ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate); //OK new parameters
-		ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt);       //OK new parameters
+        ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName);
+        ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock);
+		ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate);
+		ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt);
 
 		ObservableCollection<ReceiptListItem> GetBySearchNameItemReceiptList(string searchName);
 		ObservableCollection<ReceiptListItem> GetBySearchUnitCountReceiptList(string unitCount);
@@ -29,15 +30,17 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(DateOnly dateReceipt);
         ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost);
 
-		ObservableCollection<MainListItems> GetDataStockList();                                         //OK new parameters
+		ObservableCollection<MainListItems> GetDataStockList();
 		ObservableCollection<ReceiptListItem> GetReseiptList();
-        ObservableCollection<MoveListItem> GetMoveInPostList(); 
+        ObservableCollection<MoveListItem> GetMoveInPostList();
+
+        ObservableCollection<ExpenseStatisticModel> GetExpenseStatisticModels(DateOnly startDate, DateOnly endDate);
 
 
 		List<string> GetAllNameItem();
 		List<string> GetAllNamePost();
 
-		List<MainListItems> GetAllNameItemSecond(string nameItem);                                      //OK new parameters
+		List<MainListItems> GetAllNameItemSecond(string nameItem);
 		MainListItems GetBySearchIdStockItem(int searchIdStock);
         int GetBySearchIdItem(string searchName);
 		void AddItemsList(string nameItem, string unitMeasure);
