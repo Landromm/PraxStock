@@ -21,6 +21,14 @@
             <local:CalculationStatisticsView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodel:ExpenseStatisticsViewModel}">
+            <local:ExpenseStatisticsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodel:GraphicalStatisticsViewModel}">
+            <local:GraphicalStatisticsView/>
+        </DataTemplate>
+
         <!--#region Стиль для CHECKBO'а выбора параметра поиска-->
         <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
             <Grid>

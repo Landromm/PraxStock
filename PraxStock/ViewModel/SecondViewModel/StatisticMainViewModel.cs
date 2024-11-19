@@ -44,7 +44,7 @@ internal class StatisticMainViewModel : DialogViewModel
 		{
 			_SelectedItemsTypeStatisticsList = value;
 			OnPropertyChanged(nameof(SelectedItemsTypeStatisticsList));
-			ExecutedTestCommand();
+			ExecutedLoadedFrameCommand();
 		}
 	}
 	#endregion
@@ -74,24 +74,38 @@ internal class StatisticMainViewModel : DialogViewModel
 	}
 
 
-	#region Command TestCommand - test
+	#region Command LoadedFrameCommand - Загрузка выбранного фрэйма.
 
-	/// <summary>test</summary>
-	private LambdaCommand? _TestCommand;
+	/// <summary>Загрузка выбранного фрэйма.</summary>
+	private LambdaCommand? _LoadedFrameCommand;
 
-	/// <summary>test</summary>
-	public ICommand TestCommand => _TestCommand ??= new(ExecutedTestCommand);
+	/// <summary>Загрузка выбранного фрэйма.</summary>
+	public ICommand LoadedFrameCommand => _LoadedFrameCommand ??= new(ExecutedLoadedFrameCommand);
 
-	/// <summary>Логика выполнения - test</summary>
-	private void ExecutedTestCommand()
+	/// <summary>Логика выполнения - Загрузка выбранного фрэйма.</summary>
+	private void ExecutedLoadedFrameCommand()
 	{
-		CurrentChildView = new CalculationStatisticsViewModel();
+		switch(SelectedItemsTypeStatisticsList)
+		{
+			case "Расходная": 
+				{ 
+					CurrentChildView = new ExpenseStatisticsViewModel();
+					break; 
+				};
+			case "Рассчетная": 
+				{ 
+					CurrentChildView = new CalculationStatisticsViewModel();
+					break; 
+				};
+			case "Графическая": 
+				{ 
+					CurrentChildView = new GraphicalStatisticsViewModel();
+					break; 
+				};
+		}
 	}
 	#endregion
 
 
-	private void OpenChildView()
-	{
-		
-	}
+
 }
