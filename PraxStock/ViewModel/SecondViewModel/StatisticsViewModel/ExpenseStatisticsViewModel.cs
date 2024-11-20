@@ -1,11 +1,13 @@
 ﻿using PraxStock.Communication.Repositories;
 using PraxStock.Model.OtherModel.StatisticsModel;
+using PraxStock.View.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PraxStock.ViewModel.SecondViewModel.StatisticsViewModel;
 internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
@@ -15,10 +17,10 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	#region StartDateStatistic : DateOnly - Начальная дата формирования отчета.
 
 	/// <summary>Начальная дата формирования отчета. - поле.</summary>
-	private DateOnly _StartDateStatistic;
+	private DateTime _StartDateStatistic;
 
 	/// <summary>Начальная дата формирования отчета. - свойство.</summary>
-	public DateOnly StartDateStatistic
+	public DateTime StartDateStatistic
 	{
 		get => _StartDateStatistic;
 		set
@@ -32,10 +34,10 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	#region EndDateStatistic : DateOnly - Конечная дата формирования отчета.
 
 	/// <summary>Конечная дата формирования отчета. - поле.</summary>
-	private DateOnly _EndDateStatistic;
+	private DateTime _EndDateStatistic;
 
 	/// <summary>Конечная дата формирования отчета. - свойство.</summary>
-	public DateOnly EndDateStatistic
+	public DateTime EndDateStatistic
 	{
 		get => _EndDateStatistic;
 		set
@@ -61,21 +63,62 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 			OnPropertyChanged(nameof(StatisticMainCollection));
 		}
 	}
-    #endregion
+	#endregion
 
-    public ExpenseStatisticsViewModel()
-    {
+	#region SelectedStatisticMainCollection : ExpenseStatisticModel - Выбранный элемент основной коллекции.
+
+	/// <summary>Выбранный элемент основной коллекции. - поле.</summary>
+	private ExpenseStatisticModel _SelectedStatisticMainCollection;
+
+	/// <summary>Выбранный элемент основной коллекции. - свойство.</summary>
+	public ExpenseStatisticModel SelectedStatisticMainCollection
+	{
+		get => _SelectedStatisticMainCollection;
+		set
+		{
+			_SelectedStatisticMainCollection = value;
+			OnPropertyChanged(nameof(SelectedStatisticMainCollection));
+		}
+	}
+	#endregion
+
+
+	public ExpenseStatisticsViewModel()
+	{
 		_repositoriesDB = new AdminRepositories();
 
-		StatisticMainCollection = [];
 
+		StatisticMainCollection = [];
 		GetAllStatisticData();
 	}
 
+
+	#region Command GenerationStatisticsCommand - Генерация и отображение статистики по заданным датам.
+
+	/// <summary>Генерация и отображение статистики по заданным датам.</summary>
+	private LambdaCommand? _GenerationStatisticsCommand;
+
+	/// <summary>Генерация и отображение статистики по заданным датам.</summary>
+	public ICommand GenerationStatisticsCommand => _GenerationStatisticsCommand ??= new(ExecutedGenerationStatisticsCommand);
+
+	/// <summary>Логика выполнения - Генерация и отображение статистики по заданным датам.</summary>
+	private void ExecutedGenerationStatisticsCommand()
+	{
+		var tempResultCollection = new ObservableCollection<ExpenseStatisticModel>();
+		var tempCollection= _repositoriesDB.GetExpenseStatisticModels(DateOnly.FromDateTime(StartDateStatistic), DateOnly.FromDateTime(EndDateStatistic));
+		
+		foreach (var model in tempCollection)
+			if(model.MoveInPostSumm != 0)
+				tempResultCollection.Add(model);
+		StatisticMainCollection = tempResultCollection;
+	}
+	#endregion
+
+
 	private void GetAllStatisticData()
 	{
-		DateOnly start = DateOnly.Parse("2023-09-01");
-		DateOnly end = DateOnly.Parse("2025-11-01");
-		StatisticMainCollection = _repositoriesDB.GetExpenseStatisticModels(start, end);
+		StartDateStatistic = DateTime.Now.AddDays(-30);
+		EndDateStatistic = DateTime.Now;
+		StatisticMainCollection = _repositoriesDB.GetExpenseStatisticModels(DateOnly.FromDateTime(StartDateStatistic), DateOnly.FromDateTime(EndDateStatistic));
 	}
 }

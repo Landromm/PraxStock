@@ -830,81 +830,35 @@ namespace PraxStock.Communication.Repositories
 		public ObservableCollection<ExpenseStatisticModel> GetExpenseStatisticModels(DateOnly startDate, DateOnly endDate)
 		{
 			ObservableCollection<ExpenseStatisticModel> originList = new();
-			var dataStoksCollection = new List<MainListItems>();
-			var receiptCollection = new List<ReceiptListItem>();
-			var moveCollection = new List<MoveListItem>();
+			List<Tuple<int, string, string>> idMoveItems = new();
+
 			try
 			{
 				using var context = new PraxixSkladContext();
 				{
-					var result = from dataStoks in context.DataStocks
-								 join items in context.Items on dataStoks.IdItem equals items.IdItem
-								 join receipt in context.Receipts on dataStoks.IdItemStock equals receipt.IdReceipt
-								 orderby items.NameItem
+					var result = (from moveInPost in context.MoveInPosts
+								 join items in context.Items on moveInPost.IdItem equals items.IdItem
 								 select new
 								 {
-									 IdItemStock = dataStoks.IdItemStock,
-									 IdItem = dataStoks.IdItem,
+									 IdItem = moveInPost.IdItem,
 									 NameItem = items.NameItem,
-									 UnitMeasure = items.UnitMeasure,
-									 RemainingStock = dataStoks.RemainingStock,
-									 ExpirationDate = receipt.ExprirationDate,
-									 DateReceipt = receipt.DateReceipt
-								 };
+									 UnitMeasure = items.UnitMeasure
+								 }).Distinct();
+
 					foreach (var item in result)
-					{
-						dataStoksCollection.Add(new MainListItems()
-						{
-							IdDataStock = item.IdItemStock,
-							IdItem = item.IdItem,
-							Name = item.NameItem,
-							UnitMeasure = item.UnitMeasure,
-							UnitCount = item.RemainingStock,
-							ExpirationDate = item.ExpirationDate,
-							DateReceipt = item.DateReceipt
-						});
-					}
+						idMoveItems.Add( Tuple.Create(item.IdItem, item.NameItem, item.UnitMeasure) );
 				}
-				foreach (var itemDataStocks in dataStoksCollection)
+
+				foreach (var itemMove in idMoveItems)
 				{
-					if(receiptCollection is not null || receiptCollection.Count > 0)
-						receiptCollection.Clear();
-					if(moveCollection is not null || moveCollection.Count > 0)
-						moveCollection.Clear();
+					List<MoveListItem> moveList = new();
 
-					using var contextRec = new PraxixSkladContext();
+					using var context1 = new PraxixSkladContext();
 					{
-						var result = from receipt in contextRec.Receipts
-									 join items in contextRec.Items on receipt.IdItem equals items.IdItem
-									 where receipt.IdItem == itemDataStocks.IdItem
-									 select new
-									 {
-										 IdReceipt = receipt.IdReceipt,
-										 NameItem = items.NameItem,
-										 UnitMeasure = items.UnitMeasure,
-										 QuantityReceipt = receipt.QuantityReceipt,
-										 ExpirationDate = receipt.ExprirationDate,
-										 DateReceipt = receipt.DateReceipt
-									 };
-						foreach (var item in result)
-						{
-							receiptCollection.Add(new ReceiptListItem()
-							{
-								IdReceipt = item.IdReceipt,
-								Name = item.NameItem,
-								UnitMeasure = item.UnitMeasure,
-								UnitCount = item.QuantityReceipt,
-								ExpirationDate = item.ExpirationDate,
-								DateReceipt = item.DateReceipt
-							});
-						}
-					}
-
-					using var contextMov = new PraxixSkladContext();
-					{
-						var result = from moveInPost in contextMov.MoveInPosts
-									 join items in contextMov.Items on moveInPost.IdItem equals items.IdItem
-									 where moveInPost.IdItem == itemDataStocks.IdItem
+						var result = from moveInPost in context1.MoveInPosts
+									 join items in context1.Items on moveInPost.IdItem equals items.IdItem
+									 where moveInPost.IdItem == itemMove.Item1 &&
+									 (moveInPost.DateMove >= startDate && moveInPost.DateMove <= endDate)
 									 select new
 									 {
 										 IdMove = moveInPost.IdMove,
@@ -915,8 +869,9 @@ namespace PraxStock.Communication.Repositories
 										 DateMove = moveInPost.DateMove,
 										 NamePost = moveInPost.NamePost
 									 };
+
 						foreach (var item in result)
-							moveCollection.Add(new MoveListItem
+							moveList.Add(new MoveListItem
 							{
 								IdMove = item.IdMove,
 								IdItem = item.IdItem,
@@ -928,22 +883,14 @@ namespace PraxStock.Communication.Repositories
 							});
 					}
 
-					var tempReceiptList = new List<ReceiptListItem>();
-					var tempMoveInPostList = new List<MoveListItem>();
-					
-					foreach (var item in receiptCollection)
-						tempReceiptList.Add(item);
-					foreach (var item in moveCollection)
-						tempMoveInPostList.Add(item);
-
 					originList.Add(new ExpenseStatisticModel()
 					{
-						NamePosition = itemDataStocks.Name!,
-						UnitMeasure = itemDataStocks.UnitMeasure!,
-						ReceiptListItems = tempReceiptList,
-						MoveListItems = tempMoveInPostList
+						NamePosition = itemMove.Item2,
+						UnitMeasure = itemMove.Item3,
+						MoveListItems = moveList
 					});
 				}
+				return originList;
 			}
 			catch (Exception ex)
 			{

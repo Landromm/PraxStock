@@ -11,7 +11,11 @@
     <Color x:Key="gradientBackColor1Default">#EEF0F6</Color>
     <Color x:Key="gradientBackColor2Default">#CFDAEC</Color>
     <Color x:Key="gradientBackColor1Dark">#383838</Color>
-
+    <Color x:Key="gradientGreenColor1Default">#90fca0</Color>
+    <Color x:Key="gradientGreenColor2Default">#4CD661</Color>
+    <Color x:Key="gradientGreenColor1White">#EEF0F6</Color>
+    
+    
     <!--Border Colors-->
     <SolidColorBrush x:Key="BorderColor1Default" Color="#094D74"/>
     <SolidColorBrush x:Key="BorderColor1Dark" Color="#3D3D3D"/>

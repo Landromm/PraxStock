@@ -4,16 +4,362 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PraxStock.View.SecondViews.StatisticsFrame"
-             xmlns:viewmodel="clr-namespace:PraxStock.ViewModel.SecondViewModel.StatisticsViewModel"
+             xmlns:viewmodel="clr-namespace:PraxStock.ViewModel.SecondViewModel.StatisticsViewModel" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              d:DataContext="{d:DesignInstance Type=viewmodel:ExpenseStatisticsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <Style x:Key="gridViewCollumnTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Padding" Value="5 2"/>
+        </Style>
+
+        <Style x:Key="ToolTipTextBlock" TargetType="TextBlock">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Background" Value="{StaticResource color5Dark}"/>
+        </Style>
+
+        <Style x:Name="ListViewItemBase" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border
+                            Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
+                                      Content="{TemplateBinding Content}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="{StaticResource color5Default}" />
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="{StaticResource color6Default}" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource color8}" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PraxixColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TabItemHeader_TextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Padding" Value="10 3"/>
+        </Style>
+
+        <!--#region Стиль для Label-->
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <!--#region Стиль для DatePickerTextBox-->
+        <Thickness x:Key="BaseErrorBorderThickness">1</Thickness>
+
+        <SolidColorBrush x:Key="ErrorBorderBrush" Color="Red"/>
+        <SolidColorBrush x:Key="ErrorPolygonFillBrush" Color="Red"/>
+
+        <Style TargetType="{x:Type DatePicker}" x:Key="BaseDatePickerStyle">
+            <Setter Property="Padding" Value="5 2" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <AdornedElementPlaceholder x:Name="adorner">
+                                <Border 
+                                    BorderBrush="{StaticResource ErrorBorderBrush}"
+                                    BorderThickness="{StaticResource BaseErrorBorderThickness}" />
+                            </AdornedElementPlaceholder>
+                            <Polygon Fill="{StaticResource ErrorPolygonFillBrush}"
+                                 Margin="0,2,2,0"
+                                 Points="10,10 10,0 0,0"
+                                 VerticalAlignment="Top"
+                                 HorizontalAlignment="Right" >
+                            </Polygon>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="BorderBrush" Value="Black" />
+                </Style>
+
+                <Style x:Key="{x:Type ToolTip}" TargetType="{x:Type ToolTip}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="{StaticResource ErrorPolygonFillBrush}"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="{StaticResource BaseErrorBorderThickness}"/>
+                </Style>
+            </Style.Resources>
+
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+        <!--#endregion-->
+    </UserControl.Resources>
+    
     <Grid>
 
-        <TextBlock
-            FontSize="35"
-            Foreground="Black"
-            Margin="10"
-            Text="Окно расходной статистики."/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Панель выбора дат промежутка отчетности-->
+        <DockPanel
+            Grid.Row="0"
+            HorizontalAlignment="Left">
+
+            <Label
+                Content="Промежуток отчетности - "
+                VerticalAlignment="Bottom"
+                Margin="5 0"/>
+
+            <Label
+                Margin="0 0 5 0"
+                Content="c:"
+                VerticalAlignment="Bottom"
+                FontWeight="Bold"/>
+
+            <DatePicker
+                SelectedDate="{Binding StartDateStatistic, UpdateSourceTrigger=PropertyChanged}"
+                FontSize="16"
+                VerticalContentAlignment="Bottom"
+                Height="30"
+                Width="150"
+                Style="{StaticResource BaseDatePickerStyle}"/>
+
+            <Label
+                Margin="10 0 5 0"
+                Content="по:"
+                VerticalAlignment="Bottom"
+                FontWeight="Bold"/>
+            
+            <DatePicker
+                SelectedDate="{Binding EndDateStatistic, UpdateSourceTrigger=PropertyChanged}"
+                FontSize="16"
+                VerticalContentAlignment="Bottom"
+                Height="30"
+                Width="150"
+                Style="{StaticResource BaseDatePickerStyle}"/>
+
+            <Button 
+                Margin="10 0"
+                Style="{StaticResource iconButtonCatalog}"
+                Tag="{StaticResource color2}"
+                Command="{Binding GenerationStatisticsCommand}">
+
+                <fa:IconImage 
+                    Icon="Search" 
+                    Style="{StaticResource iconButtonCatalogIcon}"/>
+
+                <Button.ToolTip>
+                    <TextBlock
+                        Style="{StaticResource ToolTipTextBlock}"
+                        Text="Обновить списки."/>
+                </Button.ToolTip>
+            </Button>
+        </DockPanel>
+
+        <!--Body-->
+        <ListView   
+            Grid.Row="1" 
+            ItemsSource="{Binding StatisticMainCollection}"
+            SelectedItem="{Binding SelectedStatisticMainCollection}"
+            HorizontalAlignment="Stretch"
+            Background="Transparent"
+            BorderThickness="0" d:ItemsSource="{d:SampleData ItemCount=5}">
+
+            <ListView.Resources>
+
+                <DataTemplate x:Key="DefaultTemplateItem">
+
+                    <Border 
+                        x:Name="BorderItemListView"
+                        BorderThickness="2"
+                        CornerRadius="5"
+                        HorizontalAlignment="Stretch">
+
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="{StaticResource gradientGreenColor1Default}" Offset="0"/>
+                                            <GradientStop Color="{StaticResource gradientGreenColor2Default}" Offset="0.75"/>
+                                            <GradientStop Color="{StaticResource gradientGreenColor1White}" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                            <GradientStop Color="{StaticResource gradientGreenColor1White}" Offset="0"/>
+                                            <GradientStop Color="{StaticResource gradientGreenColor1Default}" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CheckAvailability, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                                    <GradientStop Color="#5b5b5c" Offset="0"/>
+                                                    <GradientStop Color="#232324" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Label
+                                Content="Наименование:"
+                                Grid.Column="0"
+                                Grid.Row="0"/>
+
+                            <Border
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource PraxixColor}" 
+                                CornerRadius="3"
+                                Padding="5 3"
+                                Margin="5 5 10 5">
+                                <TextBlock 
+                                    Text="{Binding NamePosition}"
+                                    TextAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    FontWeight="DemiBold"/>
+                            </Border>
+
+                            <Label
+                                Content="Ед.изм."
+                                Grid.Column="1"
+                                Grid.Row="0"/>
+
+                            <TextBlock 
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                Margin="5"
+                                Text="{Binding UnitMeasure}"
+                                TextAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                FontWeight="DemiBold"/>
+                            
+                            <Label
+                                Content="Списано:"
+                                Grid.Column="2"
+                                Grid.Row="0"/>
+
+                            <TextBlock 
+                                Grid.Column="2"
+                                Grid.Row="1"
+                                Margin="5"
+                                Text="{Binding MoveInPostSumm}"
+                                TextAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                FontWeight="DemiBold"/>
+
+                        </Grid>
+                        
+                    </Border>
+
+                </DataTemplate>
+
+                <DataTemplate x:Key="SelectedTemplateItem">
+
+                    <!--Таблица-список.-->
+                    <Border
+                        Visibility="Visible"
+                        Grid.ColumnSpan="3"
+                        BorderThickness="3"
+                        CornerRadius="3"
+                        BorderBrush="{StaticResource PraxixColor}">
+
+                        <ListView
+                            ItemsSource="{Binding StatisticMainCollection}"
+                            SelectedItem="{Binding SelectedStatisticMainCollection}"
+                            HorizontalAlignment="Stretch"
+                            Background="Transparent"
+                            BorderThickness="0" 
+                            AlternationCount="2"
+                            d:ItemsSource="{d:SampleData ItemCount=5}"
+                            HorizontalContentAlignment="Center" 
+                            Grid.IsSharedSizeScope="True">
+                            
+                        </ListView>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </ListView.Resources>
+
+            <ListView.ItemContainerStyle>
+
+                <Style TargetType="ListViewItem">
+
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="ContentTemplate" Value="{StaticResource DefaultTemplateItem}"/>
+
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="ContentTemplate" Value="{StaticResource SelectedTemplateItem}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+
+                </Style>
+
+            </ListView.ItemContainerStyle>
+
+        </ListView>
+
     </Grid>
 </UserControl>
