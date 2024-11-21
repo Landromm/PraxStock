@@ -405,7 +405,7 @@
                                                     FontWeight="DemiBold"/>
 
                                                 <Label
-                                                    Content="Подробная информация:"
+                                                    Content="Подробная информация по списаниям:"
                                                     Grid.Column="0"
                                                     Grid.Row="2"
                                                     FontSize="12"/>
