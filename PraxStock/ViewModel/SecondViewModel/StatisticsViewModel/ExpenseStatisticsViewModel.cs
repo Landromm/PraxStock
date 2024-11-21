@@ -1,5 +1,6 @@
 ﻿using PraxStock.Communication.Repositories;
 using PraxStock.Model.OtherModel.StatisticsModel;
+using PraxStock.Services;
 using PraxStock.View.Commands;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace PraxStock.ViewModel.SecondViewModel.StatisticsViewModel;
 internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 {
 	private readonly IAdminRepositories _repositoriesDB = null!;
+	private readonly IReportExcel _reportExcel = null!;
 
 	#region StartDateStatistic : DateOnly - Начальная дата формирования отчета.
 
@@ -86,7 +88,7 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	public ExpenseStatisticsViewModel()
 	{
 		_repositoriesDB = new AdminRepositories();
-
+		_reportExcel = new ReportExcel();
 		StatisticMainCollection = [];
 		GetAllStatisticData();
 	}
@@ -110,6 +112,25 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 			if(model.MoveInPostSumm != 0)
 				tempResultCollection.Add(model);
 		StatisticMainCollection = tempResultCollection;
+	}
+	#endregion
+
+	#region Command GenerationReportCommand - Экспорт текущих данных в файл EXCEL с последующим сохранением.
+
+	/// <summary>Экспорт текущих данных в файл EXCEL с последующим сохранением.</summary>
+	private LambdaCommand? _GenerationReportCommand;
+
+	/// <summary>Экспорт текущих данных в файл EXCEL с последующим сохранением.</summary>
+	public ICommand GenerationReportCommand => _GenerationReportCommand ??= new(ExecutedGenerationReportCommand);
+
+	/// <summary>Логика выполнения - Экспорт текущих данных в файл EXCEL с последующим сохранением.</summary>
+	private void ExecutedGenerationReportCommand()
+	{
+		var path = _reportExcel.PathFolderSaveFile();
+		if(path != null && !path.Equals(""))
+		{
+
+		}
 	}
 	#endregion
 

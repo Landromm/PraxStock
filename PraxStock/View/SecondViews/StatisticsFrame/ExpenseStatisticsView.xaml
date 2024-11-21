@@ -137,20 +137,23 @@
         <!--Панель выбора дат промежутка отчетности-->
         <DockPanel
             Grid.Row="0"
-            HorizontalAlignment="Left">
+            HorizontalAlignment="Stretch">
 
             <Label
+                DockPanel.Dock="Left"
                 Content="Промежуток отчетности - "
                 VerticalAlignment="Bottom"
                 Margin="5 0"/>
 
             <Label
+                DockPanel.Dock="Left"
                 Margin="0 0 5 0"
                 Content="c:"
                 VerticalAlignment="Bottom"
                 FontWeight="Bold"/>
 
             <DatePicker
+                DockPanel.Dock="Left"
                 SelectedDate="{Binding StartDateStatistic, UpdateSourceTrigger=PropertyChanged}"
                 FontSize="16"
                 VerticalContentAlignment="Bottom"
@@ -159,12 +162,14 @@
                 Style="{StaticResource BaseDatePickerStyle}"/>
 
             <Label
+                DockPanel.Dock="Left"
                 Margin="10 0 5 0"
                 Content="по:"
                 VerticalAlignment="Bottom"
                 FontWeight="Bold"/>
             
             <DatePicker
+                DockPanel.Dock="Left"
                 SelectedDate="{Binding EndDateStatistic, UpdateSourceTrigger=PropertyChanged}"
                 FontSize="16"
                 VerticalContentAlignment="Bottom"
@@ -173,6 +178,7 @@
                 Style="{StaticResource BaseDatePickerStyle}"/>
 
             <Button 
+                DockPanel.Dock="Left"
                 Margin="10 0"
                 Style="{StaticResource iconButtonCatalog}"
                 Tag="{StaticResource color2}"
@@ -185,9 +191,30 @@
                 <Button.ToolTip>
                     <TextBlock
                         Style="{StaticResource ToolTipTextBlock}"
-                        Text="Обновить списки."/>
+                        Text="Поиск по заданным датам."/>
                 </Button.ToolTip>
             </Button>
+            
+            <Button 
+                DockPanel.Dock="Right"
+                HorizontalAlignment="Right"
+                Margin="10 0"
+                Style="{StaticResource iconButtonCatalog}"
+                Tag="{StaticResource color6}"
+                Command="{Binding GenerationReportCommand}">
+
+                <fa:IconImage 
+                    Icon="FileExcel"
+                    IconFont="Solid"
+                    Style="{StaticResource iconButtonCatalogIcon}"/>
+
+                <Button.ToolTip>
+                    <TextBlock
+                        Style="{StaticResource ToolTipTextBlock}"
+                        Text="Экспорт данных в Excel"/>
+                </Button.ToolTip>
+            </Button>
+
         </DockPanel>
 
         <!--Body-->
@@ -423,7 +450,7 @@
                                                     <ListView 
                                                         Grid.Row="2" 
                                                         ItemsSource="{Binding MoveListItems}"
-                                                        IsEnabled="False"
+                                                        SelectionMode="Extended"
                                                         HorizontalAlignment="Stretch"
                                                         Background="{StaticResource color6Default}"
                                                         BorderThickness="0" 
@@ -547,9 +574,9 @@
                                                                     <Trigger Property="ItemsControl.AlternationIndex" Value="1">
                                                                         <Setter Property="Background" Value="{StaticResource color14}" />
                                                                     </Trigger>
-                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                    <!--<Trigger Property="IsSelected" Value="True">
                                                                         <Setter Property="Background" Value="{StaticResource color8}" />
-                                                                    </Trigger>
+                                                                    </Trigger>-->
                                                                     <Trigger Property="IsMouseOver" Value="True">
                                                                         <Setter Property="Background" Value="{StaticResource PraxixColor}"/>
                                                                     </Trigger>
