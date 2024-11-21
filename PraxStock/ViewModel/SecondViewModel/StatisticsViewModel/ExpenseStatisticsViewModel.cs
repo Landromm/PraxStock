@@ -87,7 +87,6 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	{
 		_repositoriesDB = new AdminRepositories();
 
-
 		StatisticMainCollection = [];
 		GetAllStatisticData();
 	}

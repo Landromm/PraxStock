@@ -708,13 +708,7 @@
                                         </GridViewColumn>
                                     </GridView>
                                 </ListView.View>
-                                <ListView.Resources>
-
-                                    <DataTemplate x:Key="DefaultTemplateItem">
-                                        
-                                    </DataTemplate>
-
-                                </ListView.Resources>
+                                
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

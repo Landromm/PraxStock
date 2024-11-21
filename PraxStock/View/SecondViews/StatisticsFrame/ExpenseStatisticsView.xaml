@@ -70,6 +70,7 @@
             <Setter Property="FontStyle" Value="Italic"/>
             <Setter Property="FontSize" Value="14"/>
         </Style>
+        <!--#endregion-->
         <!--#region Стиль для DatePickerTextBox-->
         <Thickness x:Key="BaseErrorBorderThickness">1</Thickness>
 
@@ -198,160 +199,377 @@
             Background="Transparent"
             BorderThickness="0" d:ItemsSource="{d:SampleData ItemCount=5}">
 
-            <ListView.Resources>
-
-                <DataTemplate x:Key="DefaultTemplateItem">
-
-                    <Border 
-                        x:Name="BorderItemListView"
-                        BorderThickness="2"
-                        CornerRadius="5"
-                        HorizontalAlignment="Stretch">
-
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush">
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                            <GradientStop Color="{StaticResource gradientGreenColor1Default}" Offset="0"/>
-                                            <GradientStop Color="{StaticResource gradientGreenColor2Default}" Offset="0.75"/>
-                                            <GradientStop Color="{StaticResource gradientGreenColor1White}" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                                            <GradientStop Color="{StaticResource gradientGreenColor1White}" Offset="0"/>
-                                            <GradientStop Color="{StaticResource gradientGreenColor1Default}" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CheckAvailability, UpdateSourceTrigger=PropertyChanged}" Value="False">
-                                        <Setter Property="Background">
-                                            <Setter.Value>
-                                                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                                                    <GradientStop Color="#5b5b5c" Offset="0"/>
-                                                    <GradientStop Color="#232324" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-
-                            <Label
-                                Content="Наименование:"
-                                Grid.Column="0"
-                                Grid.Row="0"/>
-
-                            <Border
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                BorderThickness="1" 
-                                BorderBrush="{StaticResource PraxixColor}" 
-                                CornerRadius="3"
-                                Padding="5 3"
-                                Margin="5 5 10 5">
-                                <TextBlock 
-                                    Text="{Binding NamePosition}"
-                                    TextAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    FontWeight="DemiBold"/>
-                            </Border>
-
-                            <Label
-                                Content="Ед.изм."
-                                Grid.Column="1"
-                                Grid.Row="0"/>
-
-                            <TextBlock 
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                Margin="5"
-                                Text="{Binding UnitMeasure}"
-                                TextAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="DemiBold"/>
-                            
-                            <Label
-                                Content="Списано:"
-                                Grid.Column="2"
-                                Grid.Row="0"/>
-
-                            <TextBlock 
-                                Grid.Column="2"
-                                Grid.Row="1"
-                                Margin="5"
-                                Text="{Binding MoveInPostSumm}"
-                                TextAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="DemiBold"/>
-
-                        </Grid>
-                        
-                    </Border>
-
-                </DataTemplate>
-
-                <DataTemplate x:Key="SelectedTemplateItem">
-
-                    <!--Таблица-список.-->
-                    <Border
-                        Visibility="Visible"
-                        Grid.ColumnSpan="3"
-                        BorderThickness="3"
-                        CornerRadius="3"
-                        BorderBrush="{StaticResource PraxixColor}">
-
-                        <ListView
-                            ItemsSource="{Binding StatisticMainCollection}"
-                            SelectedItem="{Binding SelectedStatisticMainCollection}"
-                            HorizontalAlignment="Stretch"
-                            Background="Transparent"
-                            BorderThickness="0" 
-                            AlternationCount="2"
-                            d:ItemsSource="{d:SampleData ItemCount=5}"
-                            HorizontalContentAlignment="Center" 
-                            Grid.IsSharedSizeScope="True">
-                            
-                        </ListView>
-
-                    </Border>
-
-                </DataTemplate>
-
-            </ListView.Resources>
-
             <ListView.ItemContainerStyle>
-
+                
                 <Style TargetType="ListViewItem">
 
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Setter Property="ContentTemplate" Value="{StaticResource DefaultTemplateItem}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                <Border 
+                                    x:Name="BorderItemListView"
+                                    BorderThickness="1"
+                                    CornerRadius="5"
+                                    HorizontalAlignment="Stretch"
+                                    Margin="5 1">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="BorderBrush">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                        <GradientStop Color="{StaticResource gradientGreenColor1Default}" Offset="0"/>
+                                                        <GradientStop Color="{StaticResource gradientGreenColor2Default}" Offset="0.75"/>
+                                                        <GradientStop Color="{StaticResource gradientGreenColor1White}" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                                        <GradientStop Color="{StaticResource gradientGreenColor1White}" Offset="0"/>
+                                                        <GradientStop Color="{StaticResource gradientGreenColor1Default}" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
 
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource color6Default}"/>
+                                                    <Setter Property="BorderBrush" Value="{StaticResource panelColorDark}"/>
+                                                </Trigger>
+
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <!--#region Основная информация по позиции-->
+                                        <Label
+                                            Content="Наименование:"
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            FontSize="12"/>
+
+                                        <Border
+                                            Grid.Column="0"
+                                            Grid.Row="1"
+                                            BorderThickness="1" 
+                                            BorderBrush="{StaticResource PraxixColor}" 
+                                            CornerRadius="3"
+                                            Padding="5 3"
+                                            Margin="5 5 10 5"
+                                            HorizontalAlignment="Left">
+                                            <TextBlock 
+                                                Text="{Binding NamePosition}"
+                                                TextAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                FontWeight="DemiBold"/>
+                                        </Border>
+
+                                        <Label
+                                            Content="Ед.изм."
+                                            Grid.Column="1"
+                                            Grid.Row="0"
+                                            FontSize="12"/>
+
+                                        <TextBlock 
+                                            Grid.Column="1"
+                                            Grid.Row="1"
+                                            Margin="5"
+                                            Text="{Binding UnitMeasure}"
+                                            TextAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="DemiBold"/>
+
+                                        <Label
+                                            Content="Списано (Сумма):"
+                                            Grid.Column="2"
+                                            Grid.Row="0"
+                                            FontSize="12"/>
+
+                                        <TextBlock 
+                                            Grid.Column="2"
+                                            Grid.Row="1"
+                                            Margin="5"
+                                            Text="{Binding MoveInPostSumm}"
+                                            TextAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="DemiBold"/>
+                                        <!--#endregion-->
+                                        
+                                    </Grid>
+
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="ContentTemplate" Value="{StaticResource SelectedTemplateItem}"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <Border 
+                                            x:Name="BorderItemListView"
+                                            BorderThickness="2"
+                                            CornerRadius="5"
+                                            HorizontalAlignment="Stretch"
+                                            Margin="5 1">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{StaticResource panelColorDark}"/>
+                                                    <Setter Property="Background" Value="{StaticResource color5Default}"/>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+
+                                                <!--#region Основная информация по позиции-->
+                                                <Label
+                                                    Content="Наименование:"
+                                                    Grid.Column="0"
+                                                    Grid.Row="0"
+                                                    FontSize="12"/>
+
+                                                <Border
+                                                    Grid.Column="0"
+                                                    Grid.Row="1"
+                                                    BorderThickness="1" 
+                                                    BorderBrush="{StaticResource PraxixColor}" 
+                                                    CornerRadius="3"
+                                                    Padding="5 3"
+                                                    Margin="5 5 10 5"
+                                                    HorizontalAlignment="Left">
+                                                    <TextBlock 
+                                                        Text="{Binding NamePosition}"
+                                                        TextAlignment="Left"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="DemiBold"/>
+                                                </Border>
+
+                                                <Label
+                                                    Content="Ед.изм."
+                                                    Grid.Column="1"
+                                                    Grid.Row="0"
+                                                    FontSize="12"/>
+
+                                                <TextBlock 
+                                                    Grid.Column="1"
+                                                    Grid.Row="1"
+                                                    Margin="5"
+                                                    Text="{Binding UnitMeasure}"
+                                                    TextAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    FontWeight="DemiBold"/>
+
+                                                <Label
+                                                    Content="Списано (Сумма):"
+                                                    Grid.Column="2"
+                                                    Grid.Row="0"
+                                                    FontSize="12"/>
+
+                                                <TextBlock 
+                                                    Grid.Column="2"
+                                                    Grid.Row="1"
+                                                    Margin="5"
+                                                    Text="{Binding MoveInPostSumm}"
+                                                    TextAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    FontWeight="DemiBold"/>
+
+                                                <Label
+                                                    Content="Подробная информация:"
+                                                    Grid.Column="0"
+                                                    Grid.Row="2"
+                                                    FontSize="12"/>
+                                                <!--#endregion-->
+                                                
+                                                <!--#region Таблица подробной информации-->
+                                                <Border
+                                                    Grid.ColumnSpan="3"
+                                                    Grid.Row="3"
+                                                    BorderThickness="1"
+                                                    CornerRadius="5"
+                                                    BorderBrush="{StaticResource PraxixColor}"
+                                                    Margin="5 3">
+
+                                                    <ListView 
+                                                        Grid.Row="2" 
+                                                        ItemsSource="{Binding MoveListItems}"
+                                                        IsEnabled="False"
+                                                        HorizontalAlignment="Stretch"
+                                                        Background="{StaticResource color6Default}"
+                                                        BorderThickness="0" 
+                                                        AlternationCount="2"
+                                                        Margin="2"
+                                                        d:ItemsSource="{d:SampleData ItemCount=5}"
+                                                        HorizontalContentAlignment="Center" 
+                                                        Grid.IsSharedSizeScope="True">
+
+                                                        <ListView.View>
+                                                            <GridView>
+                                                                <GridViewColumn 
+                                                                    DisplayMemberBinding="{Binding Path=IdMove}">
+                                                                    <TextBlock
+                                                                        Style="{StaticResource gridViewCollumnTextBlock}"
+                                                                        Text="№"/>
+                                                                </GridViewColumn>
+                                                                <GridViewColumn>
+                                                                    <TextBlock
+                                                                        Style="{StaticResource gridViewCollumnTextBlock}"
+                                                                        Text="Наименование"/>
+                                                                    <GridViewColumn.CellTemplate>
+                                                                        <DataTemplate>
+                                                                            <Border 
+                                                                                BorderThickness="1" 
+                                                                                BorderBrush="{StaticResource panelActiveColorDark}" 
+                                                                                CornerRadius="3"
+                                                                                Padding="5 3">
+                                                                                <TextBlock 
+                                                                                    Text="{Binding Name}"
+                                                                                    TextAlignment="Left"
+                                                                                    VerticalAlignment="Center"
+                                                                                    FontSize="14"
+                                                                                    FontWeight="DemiBold"/>
+                                                                            </Border>
+                                                                        </DataTemplate>
+                                                                    </GridViewColumn.CellTemplate>
+                                                                </GridViewColumn>
+                                                                <GridViewColumn 
+                                                                    DisplayMemberBinding="{Binding Path=UnitMeasure}">
+                                                                    <TextBlock
+                                                                        Style="{StaticResource gridViewCollumnTextBlock}"
+                                                                        Text="Ед.измер."/>
+                                                                </GridViewColumn>
+                                                                <GridViewColumn>
+                                                                    <TextBlock
+                                                                        Style="{StaticResource gridViewCollumnTextBlock}"
+                                                                        Text="Количество"/>
+                                                                    <GridViewColumn.CellTemplate>
+                                                                        <DataTemplate>
+                                                                            <Border 
+                                                                                BorderThickness="1" 
+                                                                                BorderBrush="{StaticResource panelActiveColorDark}" 
+                                                                                CornerRadius="3"
+                                                                                Padding="5 3"
+                                                                                HorizontalAlignment="Left">
+                                                                                <TextBlock 
+                                                                                    Text="{Binding Path=UnitCount}"
+                                                                                    TextAlignment="Left"
+                                                                                    VerticalAlignment="Center"
+                                                                                    FontSize="14"
+                                                                                    FontWeight="DemiBold"/>
+                                                                            </Border>
+                                                                        </DataTemplate>
+                                                                    </GridViewColumn.CellTemplate>
+                                                                </GridViewColumn>
+                                                                <GridViewColumn 
+                                                                    DisplayMemberBinding="{Binding Path=DateMove, StringFormat=dd-MM-yyyy}">
+                                                                    <TextBlock
+                                                                        Style="{StaticResource gridViewCollumnTextBlock}"
+                                                                        Text="Дата перемещения на пост"/>
+                                                                </GridViewColumn>
+                                                                <GridViewColumn>
+                                                                    <TextBlock
+                                                                        Style="{StaticResource gridViewCollumnTextBlock}"
+                                                                        Text="Пост"/>
+                                                                    <GridViewColumn.CellTemplate>
+                                                                        <DataTemplate>
+                                                                            <Border 
+                                                                                BorderThickness="1" 
+                                                                                BorderBrush="{StaticResource panelActiveColorDark}" 
+                                                                                CornerRadius="3"
+                                                                                Padding="5 3">
+                                                                                <TextBlock 
+                                                                                    Text="{Binding Path=NamePost}"
+                                                                                    TextAlignment="Left"
+                                                                                    VerticalAlignment="Center"
+                                                                                    FontSize="14"
+                                                                                    FontWeight="DemiBold"/>
+                                                                            </Border>
+                                                                        </DataTemplate>
+                                                                    </GridViewColumn.CellTemplate>
+                                                                </GridViewColumn>
+                                                            </GridView>
+                                                        </ListView.View>
+
+                                                        <ListView.ItemContainerStyle>
+
+                                                            <Style TargetType="ListViewItem">
+                                                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                                <Setter Property="Foreground" Value="Black" />
+                                                                <Setter Property="FontSize" Value="14"/>
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                                            <Border
+                                                                                Name="Border"
+                                                                                Background="{TemplateBinding Background}"
+                                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                                                                <GridViewRowPresenter Margin="{TemplateBinding Padding}" 
+                                                                                    Content="{TemplateBinding Content}" />
+                                                                            </Border>
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                                                        <Setter Property="Background" Value="{StaticResource color15}" />
+                                                                    </Trigger>
+                                                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                                                        <Setter Property="Background" Value="{StaticResource color14}" />
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter Property="Background" Value="{StaticResource color8}" />
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="{StaticResource PraxixColor}"/>
+                                                                    </Trigger>
+
+                                                                </Style.Triggers>
+                                                            </Style>
+
+                                                        </ListView.ItemContainerStyle>
+
+                                                    </ListView>
+
+                                                </Border>
+                                                <!--#endregion-->
+
+                                            </Grid>
+
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </Style.Triggers>
 

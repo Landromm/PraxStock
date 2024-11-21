@@ -15,6 +15,7 @@
             Foreground="Black"
             Margin="10"
             Text="Окно Графической статистики."/>
+        
 
     </Grid>
 </UserControl>

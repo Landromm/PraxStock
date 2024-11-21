@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:PraxStock.ViewModel.SecondViewModel"
         mc:Ignorable="d"
         Title="Статистика" 
-        Height="450" Width="800"
+        Height="450" Width="750"
         MinHeight="400" MinWidth="660"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
