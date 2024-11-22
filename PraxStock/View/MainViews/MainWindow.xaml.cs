@@ -35,9 +35,7 @@ public partial class MainWindow : Window
 	private void dataStockListMain_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 	{
 		if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.C)
-		{
 			CopyToCsv();
-		}
 	}
 
 	private void CopyToCsv()
@@ -45,13 +43,11 @@ public partial class MainWindow : Window
 		if (dataStockListMain.SelectedItems != null)
 		{
 			System.Windows.Clipboard.Clear();
-			var exportList = new List<List<string>>();
-			var subExportList = new List<string>();
 			string? str = "";
 			for (int i = 0; i < dataStockListMain.SelectedItems.Count; i++)
 			{
-				var convertObject = (MainListItems)dataStockListMain.SelectedItems[i];
-				str += convertObject.Name;
+				var convertObject = (MainListItems)dataStockListMain.SelectedItems[i]!;
+				str += convertObject!.Name;
 				str += "\t";
 				str += convertObject.UnitCount;
 				str += "\t";

@@ -14,8 +14,14 @@
     <Color x:Key="gradientGreenColor1Default">#90fca0</Color>
     <Color x:Key="gradientGreenColor2Default">#4CD661</Color>
     <Color x:Key="gradientGreenColor1White">#EEF0F6</Color>
-    
-    
+    <SolidColorBrush x:Key="gradientYellowColor1">#ebfc7c</SolidColorBrush>
+    <SolidColorBrush x:Key="gradientYellowColor2">#f5ffb8</SolidColorBrush>
+    <SolidColorBrush x:Key="gradientPurpleColor1">#d2a6ff</SolidColorBrush>
+    <SolidColorBrush x:Key="gradientPurpleColor2">#d7b7f7</SolidColorBrush>
+    <SolidColorBrush x:Key="gradientPurpleColor3">#f0e0ff</SolidColorBrush>
+
+
+
     <!--Border Colors-->
     <SolidColorBrush x:Key="BorderColor1Default" Color="#094D74"/>
     <SolidColorBrush x:Key="BorderColor1Dark" Color="#3D3D3D"/>

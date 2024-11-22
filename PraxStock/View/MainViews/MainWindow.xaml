@@ -268,7 +268,7 @@
 
     <Border>
 
-        <Grid>
+        <Grid Cursor="Hand">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -779,7 +779,7 @@
                 <!--Поступления-->
                 <TabItem
                     x:Name="tabReceiptList"
-                    Background="{StaticResource color7Default}"
+                    Background="{StaticResource gradientYellowColor1}"
                     Header="Поступление">
 
                     <i:Interaction.Triggers>
@@ -974,10 +974,10 @@
                                         </Setter>
                                         <Style.Triggers>
                                             <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                                <Setter Property="Background" Value="{StaticResource color8Default}" />
+                                                <Setter Property="Background" Value="{StaticResource gradientYellowColor1}" />
                                             </Trigger>
                                             <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                                <Setter Property="Background" Value="{StaticResource color9Default}" />
+                                                <Setter Property="Background" Value="{StaticResource gradientYellowColor2}" />
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
                                                 <Setter Property="Background" Value="{StaticResource color8}" />
@@ -1003,7 +1003,7 @@
                 <!--Перемещения-->
                 <TabItem
                     x:Name="tabMoveList"
-                    Background="{StaticResource color16}"
+                    Background="{StaticResource gradientPurpleColor1}"
                     Header="Перемещение">
 
                     <i:Interaction.Triggers>
@@ -1214,10 +1214,10 @@
                                         </Setter>
                                         <Style.Triggers>
                                             <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                                <Setter Property="Background" Value="{StaticResource color15}" />
+                                                <Setter Property="Background" Value="{StaticResource gradientPurpleColor2}" />
                                             </Trigger>
                                             <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                                <Setter Property="Background" Value="{StaticResource color14}" />
+                                                <Setter Property="Background" Value="{StaticResource gradientPurpleColor3}" />
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
                                                 <Setter Property="Background" Value="{StaticResource color8}" />

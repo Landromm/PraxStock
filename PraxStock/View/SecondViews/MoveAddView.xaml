@@ -383,7 +383,7 @@
         <!--#endregion-->
     </Window.Resources>
 
-    <Grid  Background="{StaticResource color14}">
+    <Grid  Background="{StaticResource gradientPurpleColor3}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>

@@ -391,7 +391,7 @@
 
     </Window.Resources>
 
-    <Grid Background="{StaticResource color9Default}">
+    <Grid Background="{StaticResource gradientYellowColor2}">
         <StackPanel
             Orientation="Vertical"
             Margin="5">
