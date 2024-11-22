@@ -562,6 +562,7 @@
                             BorderBrush="{StaticResource PraxixColor}">
 
                             <ListView
+                                x:Name="dataStockListMain"
                                 Grid.Row="2" 
                                 ItemsSource="{Binding DataStockList, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedItem="{Binding CurrentDataStockList}"
@@ -571,7 +572,8 @@
                                 AlternationCount="2"
                                 d:ItemsSource="{d:SampleData ItemCount=8}" 
                                 HorizontalContentAlignment="Center" 
-                                Grid.IsSharedSizeScope="True">
+                                Grid.IsSharedSizeScope="True" 
+                                KeyDown="dataStockListMain_KeyDown">
 
                                 <ListView.View>
                                     <GridView>
@@ -732,6 +734,7 @@
                                                                         Header="Ограничение" 
                                                                         CommandParameter="{Binding Path=PlacementTarget.Tag.DataContext.CurrentDataStockList, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
                                                                         Command="{Binding Path=PlacementTarget.Tag.DataContext.SetValueControlCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"/>
+                                                                    <MenuItem Header="Скопировать в буфер обмена" Click="CopyInBuffer_Click"/>
                                                                 </ContextMenu>
                                                             </GridViewRowPresenter.ContextMenu>
                                                         </GridViewRowPresenter>
