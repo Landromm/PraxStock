@@ -8,4 +8,8 @@ namespace PraxStock.Services;
 internal interface IReportExcel
 {
 	string? PathFolderSaveFile();
+	/// <summary>
+	/// Проверка существования директории. Если директории НЕТ, то создает её.
+	/// </summary>
+	void CheckExistsFile();
 }

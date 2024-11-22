@@ -14,7 +14,7 @@ namespace PraxStock.ViewModel.SecondViewModel.StatisticsViewModel;
 internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 {
 	private readonly IAdminRepositories _repositoriesDB = null!;
-	private readonly IReportExcel _reportExcel = null!;
+	private IReportExcel _reportExcel = null!;
 
 	#region StartDateStatistic : DateOnly - Начальная дата формирования отчета.
 
@@ -88,7 +88,6 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	public ExpenseStatisticsViewModel()
 	{
 		_repositoriesDB = new AdminRepositories();
-		_reportExcel = new ReportExcel();
 		StatisticMainCollection = [];
 		GetAllStatisticData();
 	}
@@ -126,10 +125,11 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	/// <summary>Логика выполнения - Экспорт текущих данных в файл EXCEL с последующим сохранением.</summary>
 	private void ExecutedGenerationReportCommand()
 	{
+		_reportExcel = new ReportExcel(StartDateStatistic, EndDateStatistic);
 		var path = _reportExcel.PathFolderSaveFile();
 		if(path != null && !path.Equals(""))
 		{
-
+			_reportExcel.CheckExistsFile();
 		}
 	}
 	#endregion
