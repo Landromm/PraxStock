@@ -83,7 +83,6 @@ internal class ExpenseStatisticModel : DialogViewModel
 	#endregion
 
 
-
 	//public List<ReceiptListItem>? ReceiptListItems { get; set; }
 	//public List<MoveListItem>? MoveListItems { get; set; }
 

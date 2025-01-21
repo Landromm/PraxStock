@@ -389,6 +389,7 @@
                     </Button.ToolTip>
                 </Button>
 
+
             </DockPanel>
 
             <!--Контейнер списков-->
@@ -491,10 +492,10 @@
                         Margin="5">
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="231*"/>
-                            <ColumnDefinition Width="50*"/>
-                            <ColumnDefinition Width="181*"/>
-                            <ColumnDefinition Width="231*"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50"/>
@@ -506,9 +507,10 @@
                         <StackPanel 
                             Grid.Column="0"
                             Grid.ColumnSpan="4"
+                            Grid.Row="0"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
-                            Margin="5,0,231,0">
+                            Margin="5,0,0,0">
 
                             <fa:IconImage 
                                 Icon="Search" 
@@ -549,6 +551,26 @@
                                     SelectedItem="{Binding SelectedSearchMainList}">
                                 </ComboBox>
                             </Border>
+
+                            <Button 
+                                DockPanel.Dock="Right"
+                                HorizontalAlignment="Right"
+                                Margin="0"
+                                Style="{StaticResource iconButtonCatalog}"
+                                Tag="{StaticResource color6}"
+                                Command="{Binding OpenDataStocksReportCommand}">
+
+                                <fa:IconImage 
+                                    Icon="FileExcel"
+                                    IconFont="Solid"
+                                    Style="{StaticResource iconButtonCatalogIcon}"/>
+
+                                <Button.ToolTip>
+                                    <TextBlock
+                                        Style="{StaticResource ToolTipTextBlock}"
+                                        Text="Экспорт данных в Excel"/>
+                                </Button.ToolTip>
+                            </Button>
 
                         </StackPanel>
 
@@ -805,7 +827,7 @@
                         <!--Поисковая строка-->
                         <StackPanel 
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
+                            Grid.ColumnSpan="4"
                             Grid.Row="0"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
@@ -838,10 +860,11 @@
                                 </TextBox.Style>
                             </TextBox>
 
-                            <Border Padding="5" Background="Transparent">
+                            <Border Padding="0" Background="Transparent">
                                 <ComboBox 
                                     Grid.Column="1" 
                                     Height="30" 
+                                    Margin="10 0"
                                     Width="Auto"
                                     FontSize="16"
                                     ItemsSource="{Binding ItemCBReceiptList}"
@@ -1029,7 +1052,7 @@
                         <!--Поисковая строка-->
                         <StackPanel 
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
+                            Grid.ColumnSpan="4"
                             Grid.Row="0"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
@@ -1062,11 +1085,12 @@
                                 </TextBox.Style>
                             </TextBox>
 
-                            <Border Padding="5" Background="Transparent">
+                            <Border Padding="0" Background="Transparent">
                                 <ComboBox 
                                     Grid.Column="1" 
                                     Height="30" 
                                     Width="Auto"
+                                    Margin="10 0"
                                     FontSize="16"
                                     ItemsSource="{Binding ItemCBMoveList}"
                                     SelectedItem="{Binding SelectedSearchMoveList}"

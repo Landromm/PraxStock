@@ -20,7 +20,6 @@ public class MainListItems : ItemStock
 
 	public DateOnly DateReceipt { get; set; }
 
-
 	#region MinValue : double? - Значение ограничения.
 
 	/// <summary>Значение ограничения. - поле.</summary>
