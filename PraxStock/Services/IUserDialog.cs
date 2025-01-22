@@ -13,4 +13,5 @@ public interface IUserDialog
 	void OpenAddReceiptWindow();
 	void OpenMoveAddWindow();
 	void OpenStatisticsMainWindow();
+	void OpenDataStocksStatisticsWindow();
 }

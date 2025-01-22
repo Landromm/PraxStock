@@ -18,7 +18,7 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-        <!--#region Стиль для CHECKBO'а выбора параметра поиска-->
+        <!--#region Стиль для CHECKBOX'а выбора параметра поиска-->
         <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
             <Grid>
 

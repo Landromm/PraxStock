@@ -380,6 +380,22 @@ internal class MainViewModel : DialogViewModel
 	#endregion
 
 
+	#region Command OpenDataStocksReportCommand - Открытие окна подготовки отчета по остаткам.
+
+	/// <summary>Открытие окна подготовки отчета по остаткам.</summary>
+	private LambdaCommand? _OpenDataStocksReportCommand;
+
+	/// <summary>Открытие окна подготовки отчета по остаткам.</summary>
+	public ICommand OpenDataStocksReportCommand => _OpenDataStocksReportCommand ??= new(ExecutedOpenDataStocksReportCommand);
+
+	/// <summary>Логика выполнения - Открытие окна подготовки отчета по остаткам.</summary>
+	private void ExecutedOpenDataStocksReportCommand()
+	{
+		_userDialog.OpenDataStocksStatisticsWindow();
+	}
+	#endregion
+
+
 	#region Command RefreshMainCommand - Обновление всей информации во всех собирательных списках.
 
 	/// <summary>Обновление всей информации во всех собирательных списках.</summary>

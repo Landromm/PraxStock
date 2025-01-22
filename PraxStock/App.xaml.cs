@@ -4,8 +4,10 @@ using PraxStock.Services;
 using PraxStock.Services.Implementations;
 using PraxStock.View.MainViews;
 using PraxStock.View.SecondViews;
+using PraxStock.View.SecondViews.StatisticsWindow;
 using PraxStock.ViewModel.MainViewModel;
 using PraxStock.ViewModel.SecondViewModel;
+using PraxStock.ViewModel.SecondViewModel.StatisticsViewModel;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -31,6 +33,7 @@ public partial class App
 		services.AddSingleton<ReceiptAddViewModel>();
 		services.AddScoped<MoveAddViewModel>();
 		services.AddScoped<StatisticMainViewModel>();
+		services.AddScoped<DataStocksStatisticsViewModel>();
 
 		services.AddSingleton<IUserDialog, UserDialogServices>();
 		services.AddSingleton<IMessageBus, MessageBusServices>();
@@ -92,6 +95,17 @@ public partial class App
 				var scope = s.CreateScope();
 				var model = scope.ServiceProvider.GetRequiredService<StatisticMainViewModel>();
 				var window = new StatisticMainView { DataContext = model };
+					model.DialogComplete += (_, _) => window.Close();
+					window.Closed += (_, _) => scope.Dispose();
+
+				return window;
+			});
+		services.AddTransient(
+			s =>
+			{
+				var scope = s.CreateScope();
+				var model = scope.ServiceProvider.GetRequiredService<DataStocksStatisticsViewModel>();
+				var window = new DataStocksStatisticsView { DataContext = model };
 					model.DialogComplete += (_, _) => window.Close();
 					window.Closed += (_, _) => scope.Dispose();
 
