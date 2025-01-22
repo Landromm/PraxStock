@@ -106,6 +106,4 @@ internal class StatisticMainViewModel : DialogViewModel
 	}
 	#endregion
 
-
-
 }

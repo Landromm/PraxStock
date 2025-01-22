@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PraxStock.View.SecondViews.StatisticsWindow"
         xmlns:viewmodel="clr-namespace:PraxStock.ViewModel.SecondViewModel.StatisticsViewModel" 
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        xmlns:conv="clr-namespace:PraxStock.Model.Converters" 
         mc:Ignorable="d"
         Title="Составление отчета по остаткам" 
         Height="450" Width="750"
@@ -23,198 +24,8 @@
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-        <!--#region Стиль для CHECKBOX'а выбора параметра поиска-->
-        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
-            <Grid>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="20" />
-                </Grid.ColumnDefinitions>
-
-                <Border 
-                x:Name="Border" 
-                Grid.ColumnSpan="2"
-                Background="Transparent"
-                BorderBrush="{StaticResource activeSecondaryBackColorDark}"
-                BorderThickness="1" 
-                CornerRadius="3"/>
-
-                <Border 
-                x:Name="BorderToggle"
-                Grid.Column="0"
-                CornerRadius="0" 
-                Margin="1" 
-                Background="Transparent" 
-                BorderBrush="{StaticResource activeSecondaryBackColorDark}"
-                BorderThickness="0,0,1,0" />
-
-                <Path 
-              x:Name="Arrow"
-              Grid.Column="1"
-              Fill="{StaticResource activeSecondaryBackColorDark}"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"/>
-            </Grid>
-
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
-                    <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
-                    <Setter TargetName="BorderToggle" Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
-                    <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource PraxixColor}"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-
-        </ControlTemplate>
-
-        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
-            <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
-        </ControlTemplate>
-
-        <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
-            <Setter Property="SnapsToDevicePixels" Value="true"/>
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-            <Setter Property="MinWidth" Value="170"/>
-            <Setter Property="MinHeight" Value="20"/>
-            <Setter Property="Foreground" Value="{StaticResource secondaryBackColorDark}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ComboBox}">
-
-                        <Grid>
-
-                            <ToggleButton 
-                            Name="ToggleButton" 
-                            Template="{StaticResource ComboBoxToggleButton}" 
-                            Grid.Column="2" 
-                            Focusable="false"
-                            IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
-                            ClickMode="Press">
-                            </ToggleButton>
-
-                            <ContentPresenter   
-                            Name="ContentSite" 
-                            IsHitTestVisible="False"  
-                            Content="{TemplateBinding SelectionBoxItem}"
-                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                            Margin="10 3 30 3"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left" />
-
-                            <TextBox    
-                            x:Name="PART_EditableTextBox"
-                            Style="{x:Null}" 
-                            Template="{StaticResource ComboBoxTextBox}" 
-                            HorizontalAlignment="Left" 
-                            VerticalAlignment="Center" 
-                            Margin="5 3 30 3"
-                            Focusable="True" 
-                            Background="Transparent"
-                            Visibility="Hidden"
-                            IsReadOnly="{TemplateBinding IsReadOnly}"/>
-
-                            <Popup  
-                            Name="Popup"
-                            Placement="Bottom"
-                            IsOpen="{TemplateBinding IsDropDownOpen}"
-                            AllowsTransparency="True" 
-                            Focusable="False"
-                            PopupAnimation="Slide">
-
-                                <Grid 
-                                Name="DropDown"
-                                SnapsToDevicePixels="True"
-                                MinWidth="{TemplateBinding ActualWidth}"
-                                MaxHeight="{TemplateBinding MaxDropDownHeight}">
-
-                                    <Border 
-                                    x:Name="DropDownBorder"
-                                    Background="{StaticResource primaryBackColorDefault}"
-                                    BorderThickness="1"
-                                    CornerRadius="5"
-                                    BorderBrush="{StaticResource PraxixColor}"/>
-
-                                    <ScrollViewer Margin="5 6 4 6" SnapsToDevicePixels="True" MaxHeight="195">
-
-                                        <StackPanel IsItemsHost="True" 
-                                        KeyboardNavigation.DirectionalNavigation="Contained" />
-
-                                    </ScrollViewer>
-
-                                </Grid>
-
-                            </Popup>
-
-                        </Grid>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="HasItems" Value="false">
-                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="#888888"/>
-                            </Trigger>
-                            <Trigger Property="IsGrouping" Value="true">
-                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
-                            </Trigger>
-                            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
-                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="5"/>
-                                <Setter TargetName="DropDownBorder" Property="Margin" Value="0 2 0 0"/>
-                            </Trigger>
-                            <Trigger Property="IsEditable"  Value="true">
-                                <Setter Property="IsTabStop" Value="false"/>
-                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
-                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-
-                    </ControlTemplate>
-                </Setter.Value>
-
-            </Setter>
-            <Style.Triggers>
-            </Style.Triggers>
-        </Style>
-
-        <!-- SimpleStyles: ComboBoxItem -->
-        <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
-            <Setter Property="SnapsToDevicePixels" Value="true"/>
-            <Setter Property="Foreground" Value="{StaticResource blackFontColorDark}"/>
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                        <Border 
-                        Name="Border"
-                        Margin="0 0 0 0"
-                        Padding="5,3,5,3"
-                        SnapsToDevicePixels="true"
-                        CornerRadius="0 3 3 0"
-                        BorderBrush="{StaticResource BorderColor1Dark}">
-                            <ContentPresenter 
-                            Margin="5 0"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsHighlighted" Value="true">
-                                <Setter TargetName="Border" Property="Background" Value="{StaticResource PraxixColor}"/>
-                                <Setter TargetName="Border" Property="BorderThickness" Value="2 0 0 0"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="{StaticResource blackFontColorDark}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <!--#endregion-->
-
+        
+        
         <Style x:Key="gridViewCollumnTextBlock" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="DemiBold"/>
@@ -276,6 +87,125 @@
             <Setter Property="FontSize" Value="14"/>
         </Style>
         <!--#endregion-->
+        
+        <!--#region Стиль CheckBox-->
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="OptionMarkFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="14,0,0,0" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#FFF3F9FF"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#FFD9ECFF"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#FF3C77DD"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#FFE6E6E6"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#FFBCBCBC"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#FF707070"/>
+
+
+        <Style x:Key="CheckBoxStatusStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource OptionMark.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border 
+                                x:Name="checkBoxBorder" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                CornerRadius="4"
+                                Margin="2" 
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Grid x:Name="markGrid">
+                                    <Path 
+                                        x:Name="optionMark" 
+                                        Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " 
+                                        Fill="{StaticResource OptionMark.Static.Glyph}" 
+                                        Margin="3" 
+                                        Opacity="0" 
+                                        Stretch="None"/>
+                                    <Rectangle x:Name="indeterminateMark" Fill="{StaticResource OptionMark.Static.Glyph}" Margin="2" Opacity="0"/>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter 
+                                x:Name="contentPresenter" 
+                                Grid.Column="1" 
+                                Focusable="False" 
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                Margin="{TemplateBinding Padding}" 
+                                RecognizesAccessKey="True" 
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasContent" Value="true">
+                                <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
+                                <Setter Property="Padding" Value="4,-1,0,0"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Disabled.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Disabled.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Disabled.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark" Value="0"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource color4Dark}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="0"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="BorderBrush" Value="{StaticResource color1Dark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
 
     </Window.Resources>
 
@@ -297,12 +227,12 @@
             Grid.Row="1"
             HorizontalAlignment="Stretch">
 
-            <CheckBox
+            <CheckBox 
+                Style="{DynamicResource CheckBoxStatusStyle}"
                 DockPanel.Dock="Left"
                 x:Name="cbShowSecret"
                 Content="Выбрать все."
-                Margin="10"
-                Padding="7 0"
+                Margin="10 5"
                 VerticalContentAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="14"
@@ -329,6 +259,205 @@
             </Button>
 
         </DockPanel>
+
+        <!--Таблица-список.-->
+        <Border
+            Grid.Row="2"
+            BorderThickness="3"
+            CornerRadius="3"
+            BorderBrush="{StaticResource PraxixColor}">
+
+            <ListView
+                x:Name="dataStockListMain"
+                Grid.Row="2" 
+                ItemsSource="{Binding DataStocksList, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding CurrentDataStockList}"
+                BorderThickness="0"
+                HorizontalAlignment="Stretch"
+                Background="Transparent"
+                AlternationCount="2"
+                d:ItemsSource="{d:SampleData ItemCount=8}" 
+                HorizontalContentAlignment="Center" 
+                Grid.IsSharedSizeScope="True">
+
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn>
+                            <TextBlock
+                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                Text="Добавить"/>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox
+                                        Style="{DynamicResource CheckBoxStatusStyle}"
+                                        Margin="10 0 5 0"
+                                        Padding="0"
+                                        FontSize="14"
+                                        HorizontalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        IsChecked="{Binding Path=StatusExport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn 
+                            DisplayMemberBinding="{Binding Path=IdDataStock}">
+                            <TextBlock
+                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                Text="№"/>
+                        </GridViewColumn>
+                        <GridViewColumn>
+                            <TextBlock
+                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                Text="Наименование"/>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border 
+                                        BorderThickness="1" 
+                                        BorderBrush="{StaticResource PraxixColor}" 
+                                        CornerRadius="3"
+                                        Padding="5 3">
+                                        <TextBlock 
+                                            Text="{Binding Name}"
+                                            TextAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            FontWeight="DemiBold"/>
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn 
+                            DisplayMemberBinding="{Binding Path=UnitMeasure}">
+                            <TextBlock
+                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                Text="Ед.измер"/>
+                        </GridViewColumn>
+                        <GridViewColumn>
+                            <TextBlock
+                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                Text="Остаток"/>
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border 
+                                        BorderThickness="1" 
+                                        BorderBrush="{StaticResource PraxixColor}" 
+                                        CornerRadius="3"
+                                        Padding="5 3">
+                                        <TextBlock 
+                                            Text="{Binding UnitCount}"
+                                            FontSize="14"
+                                            TextAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontWeight="DemiBold">
+                                        </TextBlock>
+                                        <Border.Resources>
+                                            <conv:UnitCountConverter x:Key="UnitConverter"/>
+                                        </Border.Resources>
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="BorderThickness" Value="1"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Value="1">
+                                                        <DataTrigger.Binding>
+                                                            <MultiBinding Converter="{StaticResource UnitConverter}">
+                                                                <Binding Path="UnitCount" UpdateSourceTrigger="PropertyChanged"/>
+                                                                <Binding Path="MinValue" UpdateSourceTrigger="PropertyChanged"/>
+                                                                <Binding Path="FlagSett" UpdateSourceTrigger="PropertyChanged"/>
+                                                            </MultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="BorderThickness" Value="2"/>
+                                                        <Setter Property="Background" Value="{StaticResource color1Default}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Value="3">
+                                                        <DataTrigger.Binding>
+                                                            <MultiBinding Converter="{StaticResource UnitConverter}">
+                                                                <Binding Path="UnitCount" UpdateSourceTrigger="PropertyChanged"/>
+                                                                <Binding Path="MinValue" UpdateSourceTrigger="PropertyChanged"/>
+                                                                <Binding Path="FlagSett" UpdateSourceTrigger="PropertyChanged"/>
+                                                            </MultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="BorderThickness" Value="1"/>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn 
+                            DisplayMemberBinding="{Binding Path=ExpirationDate, StringFormat=dd-MM-yyyy}">
+                            <TextBlock
+                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                Text="Срок годности"/>
+                        </GridViewColumn>
+                        <GridViewColumn 
+                            DisplayMemberBinding="{Binding Path=DateReceipt, StringFormat=dd-MM-yyyy}">
+                            <TextBlock
+                                Style="{StaticResource gridViewCollumnTextBlock}"
+                                Text="Дата поступления"/>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Foreground" Value="Black" />
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                    <Border
+                                        Name="Border"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                        <GridViewRowPresenter 
+                                            Margin="{TemplateBinding Padding}" 
+                                            Content="{TemplateBinding Content}"
+                                            Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                            
+                                        </GridViewRowPresenter>
+
+                                        <Border.InputBindings>
+                                            <MouseBinding 
+                                            Gesture="LeftDoubleClick"
+                                            Command="{Binding DataContext.ShowActionSelectedDataStockItemCommand,
+                                                  RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                            CommandParameter="{Binding}"/>
+                                        </Border.InputBindings>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="{StaticResource color5Default}" />
+                            </Trigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="{StaticResource color6Default}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color8}" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PraxixColor}"/>
+                            </Trigger>
+
+                        </Style.Triggers>
+                    </Style>
+
+                </ListView.ItemContainerStyle>
+
+            </ListView>
+
+        </Border>
 
     </Grid>
 </Window>

@@ -23,6 +23,5 @@ internal class DataStocksStatisticModel : MainListItems
 			OnPropertyChanged(nameof(StatusExport));
 		}
 	}
-	#endregion
-	
+	#endregion	
 }
