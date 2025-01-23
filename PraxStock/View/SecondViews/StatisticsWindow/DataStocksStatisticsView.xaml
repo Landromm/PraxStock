@@ -271,7 +271,6 @@
                 x:Name="dataStockListMain"
                 Grid.Row="2" 
                 ItemsSource="{Binding DataStocksList, UpdateSourceTrigger=PropertyChanged}"
-                SelectedItem="{Binding CurrentDataStockList}"
                 BorderThickness="0"
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
@@ -427,10 +426,10 @@
 
                                         <Border.InputBindings>
                                             <MouseBinding 
-                                            Gesture="LeftDoubleClick"
-                                            Command="{Binding DataContext.ShowActionSelectedDataStockItemCommand,
-                                                  RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                                            CommandParameter="{Binding}"/>
+                                                Gesture="LeftDoubleClick"
+                                                Command="{Binding DataContext.ShowActionSelectedDataStockItemCommand,
+                                                      RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                                CommandParameter="{Binding}"/>
                                         </Border.InputBindings>
                                     </Border>
                                 </ControlTemplate>
@@ -443,9 +442,7 @@
                             <Trigger Property="ItemsControl.AlternationIndex" Value="1">
                                 <Setter Property="Background" Value="{StaticResource color6Default}" />
                             </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{StaticResource color8}" />
-                            </Trigger>
+
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource PraxixColor}"/>
                             </Trigger>
