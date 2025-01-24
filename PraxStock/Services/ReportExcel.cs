@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using PraxStock.Model.OtherModel.StatisticsModel;
+using System.Collections.ObjectModel;
 
 namespace PraxStock.Services;
 internal class ReportExcel : DialogViewModel, IReportExcel
@@ -103,19 +105,59 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 		proc.Start();
 	}
 	/// <summary>
-	/// Метод генерации расходного отчета по материалом.
+	/// Метод генерации расходного отчета по материалам.
 	/// </summary>
-	public void GenerationReport()
+	public void GenerationReport(ObservableCollection<ExpenseStatisticModel> StatisticMainCollection)
 	{
+		CheckExistsFile();
+
 		ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 		using (var package = new ExcelPackage())
 		{			
-			//Add a new worksheet to the empty workbook
+			//Добавление новой страницы в пустую книгу.
 			var worksheet = package.Workbook.Worksheets.Add("Отчет по расходам.");
+			
+			//Добавление заголовка.
+			worksheet.Cells[1, 1, 1, 4].Merge = true;
+			worksheet.Cells[1, 1].Value = "Отчет по расходам материалов";
+			worksheet.Cells[2, 1, 2, 4].Merge = true;
+			worksheet.Cells[2, 1].Value = $"c {DateOnly.FromDateTime(StartDate)} по {DateOnly.FromDateTime(EndDate)}";
+			worksheet.Cells[2, 1].Style.Numberformat.Format = "d/mm/yyyy;@";
+			worksheet.Cells[3, 2].Value = "Наименование";
+			worksheet.Cells[3, 3].Value = "Ед.изм.";
+			worksheet.Cells[3, 4].Value = "Списано (Сумма)";
 
+			//Отрисовка линий-border.
+			using (var range = worksheet.Cells[1, 1, 3 + StatisticMainCollection.Count, 4])
+			{
+				range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+			}
 
+			//Add some items...
+			for (int i = 0; i < StatisticMainCollection.Count; i++)
+			{
+				worksheet.Cells[4 + i, 1].Value = i+1;
+				worksheet.Cells[4 + i, 2].Value = StatisticMainCollection[i].NamePosition;
+				worksheet.Cells[4 + i, 3].Value = StatisticMainCollection[i].UnitMeasure;
+				worksheet.Cells[4 + i, 4].Value = StatisticMainCollection[i].MoveInPostSumm;
+			}
 
+			// Общий стиль для всех ячеек.
+			using (var range = worksheet.Cells[1, 1, 3 + StatisticMainCollection.Count, 4])
+			{
+				range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+				range.Style.Font.Name = "Arial";
+			}
+
+			worksheet.Cells.AutoFitColumns();  //Autofit columns for all cells
+
+			//worksheet.PrinterSettings.RepeatRows = worksheet.Cells["1:2"];
+			//worksheet.PrinterSettings.RepeatColumns = worksheet.Cells["A:G"];
 
 			// Change the sheet view to show it in page layout mode
 			worksheet.View.PageLayoutView = false;

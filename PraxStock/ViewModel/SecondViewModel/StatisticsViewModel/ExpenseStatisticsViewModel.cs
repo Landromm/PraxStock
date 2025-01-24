@@ -129,8 +129,7 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 		var path = _reportExcel.PathFolderSaveFile();
 		if(path != null && !path.Equals(""))
 		{
-			_reportExcel.CheckExistsFile();
-			_reportExcel.GenerationReport();
+			_reportExcel.GenerationReport(StatisticMainCollection);
 			_reportExcel.OpenReportFile();
 		}
 	}
