@@ -130,6 +130,8 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 		if(path != null && !path.Equals(""))
 		{
 			_reportExcel.CheckExistsFile();
+			_reportExcel.GenerationReport();
+			_reportExcel.OpenReportFile();
 		}
 	}
 	#endregion

@@ -12,4 +12,6 @@ internal interface IReportExcel
 	/// Проверка существования директории. Если директории НЕТ, то создает её.
 	/// </summary>
 	void CheckExistsFile();
+	void OpenReportFile();
+	void GenerationReport();
 }
