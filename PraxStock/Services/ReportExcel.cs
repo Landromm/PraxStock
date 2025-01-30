@@ -115,6 +115,7 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 
 		using (var package = new ExcelPackage())
 		{			
+			
 			//Добавление новой страницы в пустую книгу.
 			var worksheet = package.Workbook.Worksheets.Add("Отчет по расходам.");
 			
@@ -154,6 +155,14 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 				range.Style.Font.Name = "Arial";
 			}
 
+			worksheet.Cells[1, 1, 3, 4].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+			worksheet.Cells[1, 1, 3, 4].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+			worksheet.Cells[1, 1, 3, 4].Style.Font.Italic = true;
+			worksheet.Cells[1, 1, 3, 4].Style.Font.Bold = true;
+			worksheet.Cells[3, 1, 3, 4].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+			worksheet.Cells[1, 4, StatisticMainCollection.Count + 3, 4].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+			worksheet.Cells[StatisticMainCollection.Count + 3, 1, StatisticMainCollection.Count + 3, 4].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+			worksheet.Cells[1, 1, StatisticMainCollection.Count + 3, 1].Style.Border.Left.Style = ExcelBorderStyle.Medium;
 			worksheet.Cells.AutoFitColumns();  //Autofit columns for all cells
 
 			//worksheet.PrinterSettings.RepeatRows = worksheet.Cells["1:2"];
