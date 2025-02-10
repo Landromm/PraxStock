@@ -126,7 +126,7 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	private void ExecutedGenerationReportCommand()
 	{
 		_reportExcel = new ReportExcel(StartDateStatistic, EndDateStatistic);
-		var path = _reportExcel.PathFolderSaveFile();
+		var path = _reportExcel.PathFolderSaveFileMergeDate("Отчет по расходам");
 		if(path != null && !path.Equals(""))
 		{
 			_reportExcel.GenerationReport(StatisticMainCollection);

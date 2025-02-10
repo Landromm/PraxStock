@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 namespace PraxStock.Services;
 internal interface IReportExcel
 {
-	string? PathFolderSaveFile();
+	string? PathFolderSaveFileMergeDate(string fileName);
+	string? PathFolderSaveFileNowDate(string fileName);
 	/// <summary>
 	/// Проверка существования директории. Если директории НЕТ, то создает её.
 	/// </summary>
 	void CheckExistsFile();
 	void OpenReportFile();
 	void GenerationReport(ObservableCollection<ExpenseStatisticModel> StatisticMainCollection);
+	void GenarationReport(ObservableCollection<DataStocksStatisticModel> dataStocksStatisticModels);
 }

@@ -1,6 +1,7 @@
 ﻿using PraxStock.Communication.Repositories;
 using PraxStock.Model.OtherModel;
 using PraxStock.Model.OtherModel.StatisticsModel;
+using PraxStock.Services;
 using PraxStock.View.Commands;
 using PraxStock.ViewModel.Base;
 using System;
@@ -15,6 +16,7 @@ namespace PraxStock.ViewModel.SecondViewModel.StatisticsViewModel;
 internal class DataStocksStatisticsViewModel : DialogViewModel
 {
 	private readonly IAdminRepositories _repositoriesDB = null!;
+	private IReportExcel _reportExcel = null!;
 
 	#region SelectedAll : bool - Статус выделения всех элементов перечня.
 
@@ -86,10 +88,18 @@ internal class DataStocksStatisticsViewModel : DialogViewModel
 	/// <summary>Логика выполнения - Создание отчета остатков.</summary>
 	private void ExecutedGenerationReportCommand()
 	{
-		ObservableCollection<DataStocksStatisticModel> testCollection = [];
-		foreach(var item in DataStocksList)
-			if(item.StatusExport == true)
-				testCollection.Add(item);
+		ObservableCollection<DataStocksStatisticModel> tempDataStockStatistic = [];
+		foreach (var item in DataStocksList)
+			if (item.StatusExport == true)
+				tempDataStockStatistic.Add(item);
+
+		_reportExcel = new ReportExcel();
+		var path = _reportExcel.PathFolderSaveFileNowDate("Отчет по остаткам");
+		if (path != null && !path.Equals(""))
+		{
+			_reportExcel.GenarationReport(tempDataStockStatistic);
+			_reportExcel.OpenReportFile();
+		}
 	}
 	#endregion
 
