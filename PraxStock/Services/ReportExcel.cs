@@ -138,7 +138,7 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 			worksheet.Cells[1, 1].Value = "Отчет по расходам материалов";
 			worksheet.Cells[2, 1, 2, 4].Merge = true;
 			worksheet.Cells[2, 1].Value = $"c {DateOnly.FromDateTime(StartDate)} по {DateOnly.FromDateTime(EndDate)}";
-			worksheet.Cells[2, 1].Style.Numberformat.Format = "d/mm/yyyy;@";
+			worksheet.Cells[2, 1].Style.Numberformat.Format = "dd/mm/yyyy;@";
 			worksheet.Cells[3, 2].Value = "Наименование";
 			worksheet.Cells[3, 3].Value = "Ед.изм.";
 			worksheet.Cells[3, 4].Value = "Списано (Сумма)";
@@ -210,7 +210,7 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 			worksheet.Cells[1, 1].Value = "Отчет по остаткам материалов";
 			worksheet.Cells[2, 1, 2, 7].Merge = true;
 			worksheet.Cells[2, 1].Value = $"на {DateOnly.FromDateTime(DateTime.Now)}";
-			worksheet.Cells[2, 1].Style.Numberformat.Format = "d/mm/yyyy;@";
+			worksheet.Cells[2, 1].Style.Numberformat.Format = "dd/mm/yyyy;@";
 			worksheet.Cells[3, 1].Value = "№ п/п";
 			worksheet.Cells[3, 2].Value = "№ id";
 			worksheet.Cells[3, 3].Value = "Наименование";
@@ -236,8 +236,8 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 				worksheet.Cells[4 + i, 3].Value = dataStocksStatisticModels[i].Name;
 				worksheet.Cells[4 + i, 4].Value = dataStocksStatisticModels[i].UnitMeasure;
 				worksheet.Cells[4 + i, 5].Value = dataStocksStatisticModels[i].UnitCount;
-				worksheet.Cells[4 + i, 6].Style.Numberformat.Format = "d/mm/yyyy;@";
-				worksheet.Cells[4 + i, 7].Style.Numberformat.Format = "d/mm/yyyy;@";
+				worksheet.Cells[4 + i, 6].Style.Numberformat.Format = "dd/mm/yyyy;@";
+				worksheet.Cells[4 + i, 7].Style.Numberformat.Format = "dd/mm/yyyy;@";
 				worksheet.Cells[4 + i, 6].Value = dataStocksStatisticModels[i].ExpirationDate;
 				worksheet.Cells[4 + i, 7].Value = dataStocksStatisticModels[i].DateReceipt;	
 			}

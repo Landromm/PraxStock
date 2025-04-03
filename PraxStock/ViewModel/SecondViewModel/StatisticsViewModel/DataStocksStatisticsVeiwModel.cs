@@ -57,8 +57,6 @@ internal class DataStocksStatisticsViewModel : DialogViewModel
 	}
 	#endregion
 
-
-
 	#region DataStocksList : ObservableCollection<DataStocksStatisticModel> - Перечень остатков.
 
 	/// <summary>Перечень остатков. - поле.</summary>
