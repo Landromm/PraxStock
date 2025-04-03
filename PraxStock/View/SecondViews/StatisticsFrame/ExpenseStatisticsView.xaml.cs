@@ -23,4 +23,9 @@ public partial class ExpenseStatisticsView : UserControl
 	{
 		InitializeComponent();
 	}
+
+	private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+	{
+
+	}
 }

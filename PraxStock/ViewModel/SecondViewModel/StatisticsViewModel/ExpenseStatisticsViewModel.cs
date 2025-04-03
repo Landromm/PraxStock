@@ -50,6 +50,24 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	}
 	#endregion
 
+	#region StatusExport : bool - Флаг включения подробного отчёта.
+
+	/// <summary>Флаг включения подробного отчёта. - поле.</summary>
+	private bool _StatusExport;
+
+	/// <summary>Флаг включения подробного отчёта. - свойство.</summary>
+	public bool StatusExport
+	{
+		get => _StatusExport;
+		set
+		{
+			_StatusExport = value;
+			OnPropertyChanged(nameof(StatusExport));
+		}
+	}
+	#endregion
+
+
 	#region StatisticMainCollection : ObservableCollection<ExpenseStatisticModel> - Основная расходная коллекция.
 
 	/// <summary>Основная расходная коллекция. - поле.</summary>
@@ -105,7 +123,7 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	private void ExecutedGenerationStatisticsCommand()
 	{
 		var tempResultCollection = new ObservableCollection<ExpenseStatisticModel>();
-		var tempCollection= _repositoriesDB.GetExpenseStatisticModels(DateOnly.FromDateTime(StartDateStatistic), DateOnly.FromDateTime(EndDateStatistic));
+		var tempCollection = _repositoriesDB.GetExpenseStatisticModels(DateOnly.FromDateTime(StartDateStatistic), DateOnly.FromDateTime(EndDateStatistic));
 		
 		foreach (var model in tempCollection)
 			if(model.MoveInPostSumm != 0)
@@ -127,10 +145,20 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	{
 		_reportExcel = new ReportExcel(StartDateStatistic, EndDateStatistic);
 		var path = _reportExcel.PathFolderSaveFileMergeDate("Отчет по расходам");
-		if(path != null && !path.Equals(""))
+
+		
+		if (path != null && !path.Equals(""))
 		{
-			_reportExcel.GenerationReport(StatisticMainCollection);
-			_reportExcel.OpenReportFile();
+			if (StatusExport)
+			{
+				_reportExcel.GenerationReport(StatisticMainCollection, StatusExport);
+				_reportExcel.OpenReportFile();
+			}
+			else
+			{
+				_reportExcel.GenerationReport(StatisticMainCollection);
+				_reportExcel.OpenReportFile();
+			}
 		}
 	}
 	#endregion

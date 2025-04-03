@@ -17,5 +17,6 @@ internal interface IReportExcel
 	void CheckExistsFile();
 	void OpenReportFile();
 	void GenerationReport(ObservableCollection<ExpenseStatisticModel> StatisticMainCollection);
+	void GenerationReport(ObservableCollection<ExpenseStatisticModel> StatisticMainCollection, bool statusExport);
 	void GenarationReport(ObservableCollection<DataStocksStatisticModel> dataStocksStatisticModels);
 }
