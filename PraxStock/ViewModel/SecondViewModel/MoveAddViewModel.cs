@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using PraxStock.View.SecondViews;
+using PraxStock.Communication.Repositories;
+using PraxStock.Model.OtherModel;
 
 namespace PraxStock.ViewModel.SecondViewModel;
 
@@ -17,7 +19,43 @@ class MoveAddViewModel : DialogViewModel
 {
 	private readonly IMessageBus _messageBus = null!;
 	private readonly IDisposable _subscription = null!;
+	private readonly IAdminRepositories _repositoriesDB = null!;
+	private List<string> _tempList;
 
+
+	#region IdDateStock : int - Id позиции на складе.
+
+	/// <summary>Id позиции на складе. - поле.</summary>
+	private int _IdDateStock;
+
+	/// <summary>Id позиции на складе. - свойство.</summary>
+	public int IdDateStock
+	{
+		get => _IdDateStock;
+		set
+		{
+			_IdDateStock = value;
+			OnPropertyChanged(nameof(IdDateStock));
+		}
+	}
+	#endregion
+
+	#region IdItems : int - ID самой позиции.
+
+	/// <summary>ID самой позиции. - поле.</summary>
+	private int _IdItems;
+
+	/// <summary>ID самой позиции. - свойство.</summary>
+	public int IdItems
+	{
+		get => _IdItems;
+		set
+		{
+			_IdItems = value;
+			OnPropertyChanged(nameof(IdItems));
+		}
+	}
+	#endregion
 
 	#region NameItem : string? - Наименование выбранной позиции.
 
@@ -32,6 +70,23 @@ class MoveAddViewModel : DialogViewModel
 		{
 			_NameItem = value;
 			OnPropertyChanged(nameof(NameItem));
+		}
+	}
+	#endregion
+
+	#region UnitMeasure : string? - Единицы измерения позиции.
+
+	/// <summary>Единицы измерения позиции. - поле.</summary>
+	private string? _unitMeasure;
+
+	/// <summary>Единицы измерения позиции. - свойство.</summary>
+	public string? UnitMeasure
+	{
+		get => _unitMeasure;
+		set
+		{
+			_unitMeasure = value;
+			OnPropertyChanged(nameof(UnitMeasure));
 		}
 	}
 	#endregion
@@ -70,19 +125,91 @@ class MoveAddViewModel : DialogViewModel
 	}
 	#endregion
 
-	#region NamePost : string? -  Наименование места перемещения.
+	#region OriginalNamePostList : List<string> - Оригинальный список наименований мест для перемещения.
 
-	///<summary>Наименование места перемещения. - поле.</summary>
-	private string? _NamePost;
+	/// <summary>Оригинальный список наименований мест для перемещения. - поле.</summary>
+	private List<string> _OriginalNamePostList;
 
-	///<summary>Наименование места перемещения. - свойство.</summary>
-	public string? NamePost
+	/// <summary>Оригинальный список наименований мест для перемещения. - свойство.</summary>
+	public List<string> OriginalNamePostList
 	{
-		get => _NamePost;
+		get => _OriginalNamePostList;
 		set
 		{
-			_NamePost = value;
-			OnPropertyChanged(nameof(NamePost));
+			_OriginalNamePostList = value;
+			OnPropertyChanged(nameof(OriginalNamePostList));
+		}
+	}
+	#endregion
+
+
+
+	#region NamePostList : List<string> - Список наименований мест для перемещения.
+
+	/// <summary>Список наименований мест для перемещения. - поле.</summary>
+	private List<string> _NamePostList;
+
+	/// <summary>Список наименований мест для перемещения. - свойство.</summary>
+	public List<string> NamePostList
+	{
+		get => _NamePostList;
+		set
+		{
+			_NamePostList = value;
+			OnPropertyChanged(nameof(NamePostList));
+		}
+	}
+	#endregion
+
+	#region NamePostSearch : string? - Вводимое наименование поста.
+
+	/// <summary>Вводимое наименование поста. - поле.</summary>
+	private string? _NamePostSearch;
+
+	/// <summary>Вводимое наименование поста. - свойство.</summary>
+	public string? NamePostSearch
+	{
+		get => _NamePostSearch;
+		set
+		{
+			_NamePostSearch = value;
+			OnPropertyChanged(nameof(NamePostSearch));
+			if(_tempList != null)
+				_tempList.Clear();
+			if (value != "")
+			{
+				var result = OriginalNamePostList.Where(x => x.StartsWith(value!)).ToList();
+
+				if (result != null)
+					NamePostList = result;
+				
+				SelectedNamePost = NamePostSearch;
+			}
+			else
+			{
+				foreach (var item in OriginalNamePostList)
+					_tempList.Add(item);
+				NamePostList = _tempList;
+			}
+		}
+	}
+	#endregion
+
+
+
+	#region SelectedNamePost : string? -  Наименование выбранного места перемещения.
+
+	///<summary>Наименование места перемещения. - поле.</summary>
+	private string? _SelectedNamePost;
+
+	///<summary>Наименование места перемещения. - свойство.</summary>
+	public string? SelectedNamePost
+	{
+		get => _SelectedNamePost;
+		set
+		{
+			_SelectedNamePost = value;
+			OnPropertyChanged(nameof(SelectedNamePost));
 		}
 	}
 	#endregion
@@ -104,22 +231,31 @@ class MoveAddViewModel : DialogViewModel
 	}
 	#endregion
 
-
 	public MoveAddViewModel(IMessageBus MessageBus) 
     {
 		_messageBus = MessageBus;
+		_repositoriesDB = new AdminRepositories();
 		_subscription = MessageBus.RegisterHandler<CurrentlyMainItemList>(OnReceiveMessage);
+		_tempList = [];
+		NamePostList = new List<string>();
 		DateMove = DateTime.Now;
+		OriginalNamePostList = _repositoriesDB.GetAllNamePost();
+		foreach (var item in OriginalNamePostList)
+			NamePostList.Add(item);
 	}
 
 	private void OnReceiveMessage(CurrentlyMainItemList message)
 	{
+		IdDateStock = message._MainListItems.IdDataStock;
+		IdItems = message._MainListItems.IdItem;
 		NameItem = message._MainListItems.Name;
-		RemainingStock = message._MainListItems.UnitCount;
+		UnitMeasure = message._MainListItems.UnitMeasure;
+		RemainingStock = _repositoriesDB.GetRemainingStock(message._MainListItems.IdDataStock);
 		Dispose();
 	}
 	public void Dispose() => _subscription.Dispose();
 
+	private bool CanTestCommandExecute(object p) => true;
 
 	#region Command CancelCommand - Отмена введенных данных.
 
@@ -127,13 +263,13 @@ class MoveAddViewModel : DialogViewModel
 	private LambdaCommand? _CancelCommand;
 
 	///<summary>Отмена введенных данных. - Реализация интерфейса</summary>
-	public ICommand CancelCommand => _CancelCommand ??= new(ExecuteCancelCommand);
+	public ICommand CancelCommand => _CancelCommand ??= new(ExecuteCancelCommand, CanTestCommandExecute);
 
 	///<summary>Логикак выполнения - Отмена введенных данных</summary>
-	private void ExecuteCancelCommand()
+	private void ExecuteCancelCommand(object p)
 	{
 		UnitCount = 0;
-		NamePost = "";
+		SelectedNamePost = "";
 		DateMove = DateTime.Now;
 	}
 	#endregion
@@ -144,16 +280,58 @@ class MoveAddViewModel : DialogViewModel
 	private LambdaCommand? _AddMoveCommand;
 
 	///<summary>Подтверждение перемещения при выполнении условий. - Реализация интерфейса</summary>
-	public ICommand AddMoveCommand => _AddMoveCommand ??= new(ExecuteAddMoveCommand);
+	public ICommand AddMoveCommand => _AddMoveCommand ??= new(ExecuteAddMoveCommand, CanExecuteAddMoveCommand);
 
-	///<summary>Логикак выполнения - Подтверждение перемещения при выполнении условий</summary>
-	private void ExecuteAddMoveCommand()
+	private bool CanExecuteAddMoveCommand(object p)
 	{
+		if (UnitCount > 0 && SelectedNamePost is not null)
+			return true;
+		return false;
+	}
+	///<summary>Логикак выполнения - Подтверждение перемещения при выполнении условий</summary>
+	private void ExecuteAddMoveCommand(object p)
+	{
+		if (UnitCount! > RemainingStock)
+		{
+			MessageBox.Show("Количество перемещаемой позиции, не может быть больше остатка на складе!",
+				"Не верное количество!",
+				MessageBoxButton.OK,
+				MessageBoxImage.Warning);
+			UnitCount = 0;
+			return;
+		}
+		var moveListItem = new MoveListItem()
+		{
+			IdDataStock = IdDateStock,
+			IdItem = IdItems,
+			Name = NameItem,
+			UnitMeasure = UnitMeasure,
+			UnitCount = UnitCount,
+			NamePost = SelectedNamePost,
+			DateMove = DateOnly.FromDateTime(DateMove)
+		};
+		var resultAdd = _repositoriesDB.AddMoveInPost(moveListItem);
+		if (resultAdd)
+		{
+			MessageBox.Show("Добавление перемещения позиции произведено УСПЕШНО!",
+				"Результат операции перемещения",
+				MessageBoxButton.OK,
+				MessageBoxImage.Information);
 
+			IdDateStock = 0;
+			IdItems = 0;
+			NameItem = "";
+			SelectedNamePost = "";
+			UnitMeasure = "";
+			RemainingStock = 0;
+			UnitCount = 0;
+		}
+		else
+			MessageBox.Show("Ошибка операции перемещения позиции!",
+				"Результат операции перемещения",
+				MessageBoxButton.OK,
+				MessageBoxImage.Warning);
 	}
 	#endregion
-
-
-
 }
 

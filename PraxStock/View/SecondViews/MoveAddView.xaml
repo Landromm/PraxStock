@@ -3,19 +3,394 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PraxStock.View.SecondViews"
+        xmlns:local="clr-namespace:PraxStock.View.SecondViews" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
-        Title="MoveAddView" Height="380" Width="300"
+        Title="Перемещение позиции"
+        Height="380" Width="330"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
-    <Grid>
+
+    <Window.Resources>
+        
+        <!--#region Стиль для CHECKBO'а выбора параметра поиска-->
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+
+                <Border 
+                    x:Name="Border" 
+                    Grid.ColumnSpan="2"
+                    Background="Transparent"
+                    BorderBrush="{StaticResource activeSecondaryBackColorDark}"
+                    BorderThickness="1" 
+                    CornerRadius="3"/>
+
+                <Border 
+                    x:Name="BorderToggle"
+                    Grid.Column="0"
+                    CornerRadius="0" 
+                    Margin="1" 
+                    Background="Transparent" 
+                    BorderBrush="{StaticResource activeSecondaryBackColorDark}"
+                    BorderThickness="0,0,1,0" />
+
+                <Path 
+                  x:Name="Arrow"
+                  Grid.Column="1"
+                  Fill="{StaticResource activeSecondaryBackColorDark}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"/>
+            </Grid>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                    <Setter TargetName="BorderToggle" Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                    <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource PraxixColor}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
+            <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
+        </ControlTemplate>
+
+        <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="MinWidth" Value="170"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="Foreground" Value="{StaticResource secondaryBackColorDark}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+
+                        <Grid>
+
+                            <ToggleButton 
+                                Name="ToggleButton" 
+                                Template="{StaticResource ComboBoxToggleButton}" 
+                                Grid.Column="2" 
+                                Focusable="false"
+                                IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                ClickMode="Press">
+                            </ToggleButton>
+
+                            <ContentPresenter   
+                                Name="ContentSite" 
+                                IsHitTestVisible="False"  
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                Margin="7 3 30 3"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left" />
+
+                            <TextBox    
+                                x:Name="PART_EditableTextBox"
+                                Style="{x:Null}" 
+                                Template="{StaticResource ComboBoxTextBox}" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Center" 
+                                Margin="5 3 30 3"
+                                Focusable="True" 
+                                Background="Transparent"
+                                Visibility="Hidden"
+                                IsReadOnly="{TemplateBinding IsReadOnly}"/>
+
+                            <Popup  
+                                Name="Popup"
+                                Placement="Bottom"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                AllowsTransparency="True" 
+                                Focusable="False"
+                                PopupAnimation="Slide">
+
+                                <Grid 
+                                    Name="DropDown"
+                                    SnapsToDevicePixels="True"
+                                    MinWidth="{TemplateBinding ActualWidth}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}">
+
+                                    <Border 
+                                        x:Name="DropDownBorder"
+                                        Background="{StaticResource primaryBackColorDefault}"
+                                        BorderThickness="1"
+                                        CornerRadius="5"
+                                        BorderBrush="{StaticResource PraxixColor}"/>
+
+                                    <ScrollViewer Margin="5 6 4 6" SnapsToDevicePixels="True">
+
+                                        <StackPanel IsItemsHost="True" 
+                                            KeyboardNavigation.DirectionalNavigation="Contained" />
+
+                                    </ScrollViewer>
+
+                                </Grid>
+
+                            </Popup>
+
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#888888"/>
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </Trigger>
+                            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="5"/>
+                                <Setter TargetName="DropDownBorder" Property="Margin" Value="0 2 0 0"/>
+                            </Trigger>
+                            <Trigger Property="IsEditable"  Value="true">
+                                <Setter Property="IsTabStop" Value="false"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+
+            </Setter>
+            <Style.Triggers>
+            </Style.Triggers>
+        </Style>
+
+        <!-- SimpleStyles: ComboBoxItem -->
+        <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="Foreground" Value="{StaticResource blackFontColorDark}"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border 
+                            Name="Border"
+                            Margin="0 0 0 0"
+                            Padding="5,3,5,3"
+                            SnapsToDevicePixels="true"
+                            CornerRadius="0 3 3 0"
+                            BorderBrush="{StaticResource BorderColor1Dark}">
+                            <ContentPresenter 
+                                Margin="5 0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource PraxixColor}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="2 0 0 0"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{StaticResource blackFontColorDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+
+        <!--#region Стиль для Label-->
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <!--#endregion-->
+
+        <!--#region Стиль для TextBox-->
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Padding" Value="5 0"/>
+            <Setter Property="Cursor" Value="IBeam"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="MaxHeight" Value="40"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="txtBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="3"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                SnapsToDevicePixels="True">
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              Focusable="False"
+                                              HorizontalScrollBarVisibility="Hidden"
+                                              VerticalScrollBarVisibility="Hidden"
+                                              Margin="-2 0"/>
+                                <Label x:Name="WaterMarkerLabel"
+                                       Content="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                       HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                       Visibility="Collapsed"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       Padding="{TemplateBinding Padding}"/>
+                            </Grid>
+
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Text" Value=""/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="WaterMarkerLabel" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+
+        <!--#region Стиль для Button-->
+        <Style x:Key="btnOK" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="5"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                                VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color7Default}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color4Default}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="btnCANCEL" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="5"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color1Dark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color2Dark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+
+        <!--#region Стиль для DatePickerTextBox-->
+        <Thickness x:Key="BaseErrorBorderThickness">1</Thickness>
+
+        <SolidColorBrush x:Key="ErrorBorderBrush" Color="Red"/>
+        <SolidColorBrush x:Key="ErrorPolygonFillBrush" Color="Red"/>
+
+        <Style TargetType="{x:Type DatePicker}" x:Key="BaseDatePickerStyle">
+            <Setter Property="Padding" Value="5 2" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <AdornedElementPlaceholder x:Name="adorner">
+                                <Border 
+                            BorderBrush="{StaticResource ErrorBorderBrush}"
+                            BorderThickness="{StaticResource BaseErrorBorderThickness}" />
+                            </AdornedElementPlaceholder>
+                            <Polygon Fill="{StaticResource ErrorPolygonFillBrush}"
+                         Margin="0,2,2,0"
+                         Points="10,10 10,0 0,0"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Right" >
+                            </Polygon>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="BorderBrush" Value="Black" />
+                </Style>
+
+                <Style x:Key="{x:Type ToolTip}" TargetType="{x:Type ToolTip}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="{StaticResource ErrorPolygonFillBrush}"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="{StaticResource BaseErrorBorderThickness}"/>
+                </Style>
+            </Style.Resources>
+
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+        <!--#endregion-->
+    </Window.Resources>
+
+    <Grid  Background="{StaticResource gradientPurpleColor3}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="50"/>    
+            <RowDefinition Height="30"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="40"/>
@@ -29,87 +404,165 @@
             Grid.Column="0"
             Text="Наименование:"
             FontSize="14"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
+            Margin="10 0"
             VerticalAlignment="Center"/>
 
         <TextBox
             Grid.Row="0"
-            Grid.Column="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
             Text="{Binding NameItem, UpdateSourceTrigger=PropertyChanged}"
             FontSize="14"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
             VerticalAlignment="Center"
             IsEnabled="False"
-            Padding="10 3"/>
+            Margin="120 0 0 0"
+            Style="{StaticResource TextBoxStyle}"/>
 
         <TextBlock
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            Text="Введите необходимое количество для перемещения."
-            VerticalAlignment="Center"
-            TextAlignment="Center"
+            Text="Введите необходимое количество для перемещения:"
+            VerticalAlignment="Bottom"
+            TextAlignment="Left"
             TextWrapping="Wrap"
-            Margin="10 5"/>
+            Margin="10 2"
+            FontStyle="Italic"/>
 
-        <StackPanel
-            Orientation="Vertical"
+        <Grid
             Grid.Row="2"
             Grid.Column="0"
-            HorizontalAlignment="Center">
-            
-            <Label
-                Content="В наличии:"/>
+            Grid.ColumnSpan="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                Orientation="Vertical"
+                Grid.Column="0"
+                HorizontalAlignment="Center">
+
+                <Label
+                    Content="В наличии:"
+                    Foreground="{StaticResource color7Default}"
+                    FontWeight="Bold"/>
+
+                <TextBox
+                    Text="{Binding RemainingStock}"
+                    FontSize="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    BorderThickness="2"
+                    FontWeight="DemiBold"
+                    IsReadOnly="True"
+                    BorderBrush="{StaticResource color7Default}"
+                    Style="{StaticResource TextBoxStyle}"/>
+
+            </StackPanel>
+
+            <StackPanel
+                Orientation="Vertical"
+                Grid.Column="1"
+                HorizontalAlignment="Center">
+
+                <Label
+                    Content="ед.измер:"
+                    FontSize="12"
+                    Margin="0 2 0 0"/>
+
+                <TextBlock
+                    Text="{Binding UnitMeasure}"
+                    FontSize="18"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+
+            </StackPanel>
+
+            <StackPanel
+                Orientation="Vertical"
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                Margin="0 0 5 0">
+
+                <Label
+                    Content="Переместить:"
+                    HorizontalAlignment="Center"
+                    Foreground="{StaticResource color2}"
+                    FontWeight="DemiBold"/>
+
+                <TextBox
+                    Width="80"
+                    Text="{Binding UnitCount}"
+                    FontSize="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    FontWeight="DemiBold"
+                    Foreground="Black"
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource color2}"
+                    Style="{StaticResource TextBoxStyle}"/>
+
+            </StackPanel>
+
+        </Grid>
+
+        <Grid
+            Grid.Column="0"
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
             <TextBlock
-                Text="{Binding RemainingStock}"
-                FontSize="26"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Text="Выберите наименование места перемещения:"
+                TextAlignment="Center"
+                VerticalAlignment="Bottom"
+                TextWrapping="Wrap"
+                FontStyle="Italic"
+                Margin="10 5 10 2"/>
+
+            <StackPanel
+                Orientation="Horizontal"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"/>
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="3">
+                
+                <ComboBox 
+                    Margin="0"
+                    Height="30" 
+                    Width="175"
+                    FontSize="16"
+                    IsEditable="True"
+                    IsTextSearchEnabled="False"
+                    ItemsSource="{Binding NamePostList, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedIndex="0"
+                    Text="{Binding NamePostSearch}"
+                    SelectedItem="{Binding SelectedNamePost}">
+                </ComboBox>
 
-        </StackPanel>
+            </StackPanel>
+            
 
-        <StackPanel
-            Orientation="Vertical"
-            Grid.Row="2"
-            Grid.Column="1"
-            HorizontalAlignment="Center">
-
-            <Label
-                Content="Переместить:"
-                HorizontalAlignment="Center"/>
-
-            <TextBox
-                Width="100"
-                Text="{Binding UnitCount}"
-                FontSize="26"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"/>
-
-        </StackPanel>
-
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            Text="Введите наименование места перещения:"
-            TextAlignment="Center"
-            VerticalAlignment="Bottom"
-            TextWrapping="Wrap"
-            Margin="10 5"/>
-
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            Margin="10 5"
-            VerticalContentAlignment="Center"
-            HorizontalContentAlignment="Center"
-            Text="{Binding NamePost}"
-            FontSize="16"
-            FontWeight="DemiBold"/>
+        </Grid>
 
         <TextBlock
             Grid.Row="5"
@@ -119,18 +572,21 @@
             TextAlignment="Center"
             VerticalAlignment="Center"
             TextWrapping="Wrap"
-            Margin="10 5"/>
+            FontStyle="Italic"
+            Margin="10 5 10 2"/>
 
         <DatePicker
             Grid.Row="6"
             Grid.Column="0"
             Grid.ColumnSpan="2"
+            FontSize="16"
             Width="175"
-            Margin="0 5"
+            Margin="0 0 0 5"
             VerticalContentAlignment="Center"
             HorizontalContentAlignment="Center"
             SelectedDate="{Binding DateMove}"
-            DisplayDate="{Binding DateMove}"/>
+            DisplayDate="{Binding DateMove}"
+            Style="{StaticResource BaseDatePickerStyle}"/>
 
         <Button
             x:Name="btnCancel"
@@ -138,8 +594,9 @@
             Grid.Column="0"
             Content="Отменить"
             Margin="10"
-            Command="{Binding CancelCommand}"
-            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:MoveAddView}}"/>
+            Command="{Binding CancelCommand}" 
+            Click="btnCancel_Click"
+            Style="{StaticResource btnCANCEL}"/>
 
         <Button
             Grid.Row="7"
@@ -147,7 +604,9 @@
             Content="Подтвердить"
             Margin="10"
             Command="{Binding AddMoveCommand}"
-            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:MoveAddView}}"/>
+            Click="btnCancel_Click"
+            IsCancel="True"
+            Style="{StaticResource btnOK}"/>
 
     </Grid>
 </Window>

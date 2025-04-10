@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace PraxStock.ViewModel.SecondViewModel
@@ -16,7 +17,7 @@ namespace PraxStock.ViewModel.SecondViewModel
     class ReceiptAddViewModel : DialogViewModel
     {
 		private readonly IAdminRepositories _repositoriesDB = null!;
-
+		private List<string> _tempList;
 		private ObservableCollection<Item> _ItemListCollection;
 		public ObservableCollection<Item> ItemListCollection
 		{
@@ -27,6 +28,78 @@ namespace PraxStock.ViewModel.SecondViewModel
 				OnPropertyChanged(nameof(ItemListCollection));
 			}
 		}
+
+		#region ItemListCollectionSecond : MainListItems -  Объект позиции для суммирования.
+
+		///<summary>Объект позиции для суммирования. - поле.</summary>
+		private MainListItems _ItemListCollectionSecond;
+
+		///<summary>Объект позиции для суммирования. - свойство.</summary>
+		public MainListItems ItemListCollectionSecond
+		{
+			get => _ItemListCollectionSecond;
+			set
+			{
+				_ItemListCollectionSecond = value;
+				OnPropertyChanged(nameof(ItemListCollectionSecond));
+			}
+		}
+		#endregion
+
+		#region OriginalNameItemList : List<string> - Оригинальный список наименований.
+
+		/// <summary>Оригинальный список наименований. - поле.</summary>
+		private List<string> _OriginalNameItemList;
+
+		/// <summary>Оригинальный список наименований. - свойство.</summary>
+		public List<string> OriginalNameItemList
+		{
+			get => _OriginalNameItemList;
+			set
+			{
+				_OriginalNameItemList = value;
+				OnPropertyChanged(nameof(OriginalNameItemList));
+			}
+		}
+		#endregion
+
+		#region NameItemSearch : string? - Вводимое наименование позиции.
+
+		/// <summary>Вводимое наименование позиции. - поле.</summary>
+		private string? _NameItemSearch;
+
+		/// <summary>Вводимое наименование позиции. - свойство.</summary>
+		public string? NameItemSearch
+		{
+			get => _NameItemSearch;
+			set
+			{
+				_NameItemSearch = value;
+				OnPropertyChanged(nameof(NameItemSearch));
+				
+				if(_tempList != null) 
+					_tempList.Clear();
+
+				if(value != "") 
+				{
+					var result = OriginalNameItemList.Where(x => x.StartsWith(value!)).ToList();
+
+					if(result != null)
+						NameItemList = result;
+
+					SelectedNameItem = NameItemSearch;
+				}
+				else
+				{
+					foreach(var item in OriginalNameItemList)
+						_tempList.Add(item);
+					NameItemList = _tempList;
+				}
+            }
+		}
+		#endregion
+
+
 
 		#region NameItemList : List<string> - Список наименований.
 
@@ -44,6 +117,22 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
+		#region NameItemListSecond : List<MainListItems> -  Список наименований для суммирования.
+
+		///<summary>Список наименований для суммирования. - поле.</summary>
+		private List<MainListItems> _NameItemListSecond;
+
+		///<summary>Список наименований для суммирования. - свойство.</summary>
+		public List<MainListItems> NameItemListSecond
+		{
+			get => _NameItemListSecond;
+			set
+			{
+				_NameItemListSecond = value;
+				OnPropertyChanged(nameof(NameItemListSecond));
+			}
+		}
+		#endregion
 
 		#region SelectedNameItem : string? - Выбранное наименование позиции.
 
@@ -58,17 +147,55 @@ namespace PraxStock.ViewModel.SecondViewModel
 			{
 				_SelectedNameItem = value;
 				OnPropertyChanged(nameof(SelectedNameItem));
-				ItemListCollection = _repositoriesDB.GetBySearchNameItem(value);
-				foreach (var item in ItemListCollection)
+				if(value is not null)
 				{
-					NameItem = item.NameItem;
-					UnitMeasure = item.UnitMeasure;
+					ShowCheckBoxSecretPanel = true;
+					ItemListCollection?.Clear();
+					ItemListCollection = _repositoriesDB.GetBySearchNameItem(value);
+					foreach (var item in ItemListCollection)
+					{
+						NameItem = item.NameItem;
+						UnitMeasure = item.UnitMeasure;
+					}
+					ItemListCollectionSecond = null!;
+					SelectedNameItemSecond = null!;
+					ShowSecretPanel = false;
+					NameItemSecond = null;
+					UnitMeasureSecond = null;
+					QuantityReceiptSecond = 0;
+					ExpirationDateSecond = null;
 				}
 			}
 		}
 		#endregion
+		#region SelectedNameItemSecond : MainListItems -  Выбранное наименование позиции для суммирования.
 
+		///<summary>Выбранное наименование позиции для суммирования. - поле.</summary>
+		private MainListItems _SelectedNameItemSecond;
 
+		///<summary>Выбранное наименование позиции для суммирования. - свойство.</summary>
+		public MainListItems SelectedNameItemSecond
+		{
+			get => _SelectedNameItemSecond;
+			set
+			{
+				_SelectedNameItemSecond = value;
+				OnPropertyChanged(nameof(SelectedNameItemSecond));
+				if(value is not null)
+				{
+					ItemListCollectionSecond = _repositoriesDB.GetBySearchIdStockItem(value.IdDataStock);
+					NameItemSecond = ItemListCollectionSecond.Name;
+					UnitMeasureSecond = ItemListCollectionSecond.UnitMeasure;
+					QuantityReceiptSecond = ItemListCollectionSecond.UnitCount;
+					var tempExpiration = ItemListCollectionSecond.ExpirationDate;
+					if (tempExpiration is not null)
+						ExpirationDateSecond = ((DateOnly)tempExpiration).ToDateTime(TimeOnly.MinValue);
+					DateReceiptSecond = ItemListCollectionSecond.DateReceipt.ToDateTime(TimeOnly.MinValue);
+				}
+
+			}
+		}
+		#endregion
 
 		#region NameItem : string? - Наименование позиции.
 
@@ -83,6 +210,22 @@ namespace PraxStock.ViewModel.SecondViewModel
 			{
 				_NameItem = value;
 				OnPropertyChanged(nameof(NameItem));
+			}
+		}
+		#endregion
+		#region NameItemSecond : string? -  Наименование позиции для суммирования.
+
+		///<summary>Наименование позиции для суммирования. - поле.</summary>
+		private string? _NameItemSecond;
+
+		///<summary>Наименование позиции для суммирования. - свойство.</summary>
+		public string? NameItemSecond
+		{
+			get => _NameItemSecond;
+			set
+			{
+				_NameItemSecond = value;
+				OnPropertyChanged(nameof(NameItemSecond));
 			}
 		}
 		#endregion
@@ -103,6 +246,22 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
+		#region UnitMeasureSecond : string? -  Единица измерения позиции для суммирования.
+
+		///<summary>Единица измерения позиции для суммирования. - поле.</summary>
+		private string? _UnitMeasureSecond;
+
+		///<summary>Единица измерения позиции для суммирования. - свойство.</summary>
+		public string? UnitMeasureSecond
+		{
+			get => _UnitMeasureSecond;
+			set
+			{
+				_UnitMeasureSecond = value;
+				OnPropertyChanged(nameof(UnitMeasureSecond));
+			}
+		}
+		#endregion
 
 		#region QuantityReceipt : double - Количество поступившей позиции.
 
@@ -120,20 +279,52 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
+		#region QuantityReceiptSecond : double -  Количество поступившей позиции.
+
+		///<summary>Количество поступившей позиции. - поле.</summary>
+		private double _QuantityReceiptSecond;
+
+		///<summary>Количество поступившей позиции. - свойство.</summary>
+		public double QuantityReceiptSecond
+		{
+			get => _QuantityReceiptSecond;
+			set
+			{
+				_QuantityReceiptSecond = value;
+				OnPropertyChanged(nameof(QuantityReceiptSecond));
+			}
+		}
+		#endregion
 
 		#region ExpirationDate : DateTime - Срок годности.
 
 		/// <summary>Срок годности. - поле.</summary>
-		private DateTime _ExpirationDate;
+		private DateTime? _ExpirationDate;
 
 		/// <summary>Срок годности. - свойство.</summary>
-		public DateTime ExpirationDate
+		public DateTime? ExpirationDate
 		{	
 			get => _ExpirationDate;
 			set
 			{
 				_ExpirationDate = value;
 				OnPropertyChanged(nameof(ExpirationDate));
+			}
+		}
+		#endregion
+		#region ExpirationDateSecond : DateTime? -  Срок годности для суммирования.
+
+		///<summary>Срок годности для суммирования. - поле.</summary>
+		private DateTime? _ExpirationDateSecond;
+
+		///<summary>Срок годности для суммирования. - свойство.</summary>
+		public DateTime? ExpirationDateSecond
+		{
+			get => _ExpirationDateSecond;
+			set
+			{
+				_ExpirationDateSecond = value;
+				OnPropertyChanged(nameof(ExpirationDateSecond));
 			}
 		}
 		#endregion
@@ -154,13 +345,69 @@ namespace PraxStock.ViewModel.SecondViewModel
 			}
 		}
 		#endregion
+		#region DateReceiptSecond : DateTime -  Дата поступления для суммирования.
+
+		///<summary>Дата поступления для суммирования. - поле.</summary>
+		private DateTime _DateReceiptSecond;
+
+		///<summary>Дата поступления для суммирования. - свойство.</summary>
+		public DateTime DateReceiptSecond
+		{
+			get => _DateReceiptSecond;
+			set
+			{
+				_DateReceiptSecond = value;
+				OnPropertyChanged(nameof(DateReceiptSecond));
+			}
+		}
+		#endregion
+
+		#region ShowSecretPanel : bool -  Флаг отображения скрытой панели.
+
+		///<summary>Флаг отображения скрытой панели. - поле.</summary>
+		private bool _ShowSecretPanel;
+
+		///<summary>Флаг отображения скрытой панели. - свойство.</summary>
+		public bool ShowSecretPanel
+		{
+			get => _ShowSecretPanel;
+			set
+			{
+
+				_ShowSecretPanel = value;
+				OnPropertyChanged(nameof(ShowSecretPanel));
+			}
+		}
+		#endregion
+
+		#region ShowCheckBoxSecretPanel : bool -  Флаг отображения checkbox-активации скрытой панели.
+
+		///<summary>Флаг отображения checkbox-активации скрытой панели. - поле.</summary>
+		private bool _ShowCheckBoxSecretPanel;
+
+		///<summary>Флаг отображения checkbox-активации скрытой панели. - свойство.</summary>
+		public bool ShowCheckBoxSecretPanel
+		{
+			get => _ShowCheckBoxSecretPanel;
+			set
+			{
+				_ShowCheckBoxSecretPanel = value;
+				OnPropertyChanged(nameof(ShowCheckBoxSecretPanel));
+			}
+		}
+		#endregion
+
 
 		public ReceiptAddViewModel()
 		{
 			_repositoriesDB = new AdminRepositories();
+			_tempList = [];
+			OriginalNameItemList = [];
+			NameItemList = [];
 			InicializationMain();
 		}
 
+		private bool CanTestCommandExecute(object p) => true;
 
 		#region Command DropdownSelectionChanged - Раскрытие выпадающего списка наименований.
 
@@ -168,12 +415,27 @@ namespace PraxStock.ViewModel.SecondViewModel
 		private LambdaCommand? _DropdownSelectionChanged;
 
 		/// <summary>Раскрытие выпадающего списка наименований.</summary>
-		public ICommand DropdownSelectionChanged => _DropdownSelectionChanged ??= new(ExecutedDropdownSelectionChanged);
+		public ICommand DropdownSelectionChanged => _DropdownSelectionChanged ??= new(ExecutedDropdownSelectionChanged, CanTestCommandExecute);
 
 		/// <summary>Логика выполнения - Раскрытие выпадающего списка наименований.</summary>
-		private void ExecutedDropdownSelectionChanged()
+		private void ExecutedDropdownSelectionChanged(object p)
 		{
 			NameItemList = _repositoriesDB.GetAllNameItem();
+		}
+		#endregion
+
+		#region Command DropdownSelectionSecondChanged - Раскрытие выпадающего списка позициий для суммирования.
+
+		///<summary>Раскрытие выпадающего списка позициий для суммирования. - поле.</summary>
+		private LambdaCommand? _DropdownSelectionSecondChanged;
+
+		///<summary>Раскрытие выпадающего списка позициий для суммирования. - Реализация интерфейса</summary>
+		public ICommand DropdownSelectionSecondChanged => _DropdownSelectionSecondChanged ??= new(ExecuteDropdownSelectionSecondChanged, CanTestCommandExecute);
+
+		///<summary>Логикак выполнения - Раскрытие выпадающего списка позициий для суммирования</summary>
+		private void ExecuteDropdownSelectionSecondChanged(object p)
+		{
+			NameItemListSecond = _repositoriesDB.GetAllNameItemSecond(NameItem!);
 		}
 		#endregion
 
@@ -183,23 +445,65 @@ namespace PraxStock.ViewModel.SecondViewModel
 		private LambdaCommand? _AddReceiptCommand;
 
 		/// <summary>Добавление нового поступления позиции.</summary>
-		public ICommand AddReceiptCommand => _AddReceiptCommand ??= new(ExecutedAddReceiptCommand);
+		public ICommand AddReceiptCommand => _AddReceiptCommand ??= new(ExecutedAddReceiptCommand, CanTestCommandExecute);
 
 		/// <summary>Логика выполнения - Добавление нового поступления позиции.</summary>
-		private void ExecutedAddReceiptCommand()
+		private void ExecutedAddReceiptCommand(object p)
 		{
-			ReceiptListItem fullInfoItem = new ReceiptListItem();
-			fullInfoItem.Name = NameItem;
-			fullInfoItem.UnitMeasure = UnitMeasure;
-			fullInfoItem.UnitCount = QuantityReceipt;
-			fullInfoItem.ExpirationDate = DateOnly.FromDateTime(ExpirationDate);
-			fullInfoItem.DateReceipt = DateOnly.FromDateTime(DateReceipt);
+			
+				ReceiptListItem fullInfoItem = new ReceiptListItem();
+				fullInfoItem.IdItem = _repositoriesDB.GetBySearchIdItem(NameItem!);
+				fullInfoItem.Name = NameItem;
+				fullInfoItem.UnitMeasure = UnitMeasure;
+				fullInfoItem.UnitCount = QuantityReceipt;
+				if (ExpirationDate is not null)
+					fullInfoItem.ExpirationDate = DateOnly.FromDateTime((DateTime)ExpirationDate);
+				fullInfoItem.DateReceipt = DateOnly.FromDateTime(DateReceipt);
 
-			_repositoriesDB.AddReceiptItem(fullInfoItem);
+			try
+			{
+				if (!ShowSecretPanel)
+					_repositoriesDB.AddReceiptItem(fullInfoItem);
+				else
+				{
+					if(ShowSecretPanel && SelectedNameItemSecond != null)
+					{
+						var resultReceipt = _repositoriesDB.AddReceiptItemSecond(fullInfoItem, SelectedNameItemSecond.IdDataStock);
+						if (resultReceipt)
+						{
+							MessageBox.Show("Позиция добавлена УСПЕШНО!", "Результат добавления", MessageBoxButton.OK, MessageBoxImage.Information);
+						}
+						else
+						{
+							MessageBox.Show("В процессе добавления произошла ОШИБКА!", "Результат добавления", MessageBoxButton.OK, MessageBoxImage.Warning);
+						}						
+					}
+					else
+					{
+						MessageBox.Show("Не выбрана существующая позиция.\n" +
+							"Если ее нет, рекумендуется убрать галочку 'Добавить к существующей позиции'.", "Результат добавления", MessageBoxButton.OK, MessageBoxImage.Warning);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Добавление перемещение прошло с ошибкой. Проверьте правильность последних действий.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
 
-			NameItem = "";
-			UnitMeasure = "";
+			NameItem = null;
+			UnitMeasure = null;
 			QuantityReceipt = 0;
+			ItemListCollection = null!;
+			ItemListCollectionSecond = null!;
+			SelectedNameItem = null;
+			SelectedNameItemSecond = null!;
+			ShowSecretPanel = false;
+			NameItemSecond = null;
+			UnitMeasureSecond = null;
+			QuantityReceiptSecond = 0;
+			ExpirationDate = null;
+			ExpirationDateSecond = null;
+			ShowCheckBoxSecretPanel = false;
 		}
 		#endregion
 
@@ -209,26 +513,36 @@ namespace PraxStock.ViewModel.SecondViewModel
 		private LambdaCommand? _ResetCommand;
 
 		/// <summary>Очистить форму для добавления нового поступления позиции.</summary>
-		public ICommand ResetCommand => _ResetCommand ??= new(ExecutedResetCommand);
+		public ICommand ResetCommand => _ResetCommand ??= new(ExecutedResetCommand, CanTestCommandExecute);
 
 		/// <summary>Логика выполнения - Очистить форму для добавления нового поступления позиции.</summary>
-		private void ExecutedResetCommand()
+		private void ExecutedResetCommand(object p)
 		{
-			NameItem = "";
-			UnitMeasure = "";
+			NameItem = null;
+			UnitMeasure = null;
 			QuantityReceipt = 0;
-			ExpirationDate = DateTime.Now;
+			ItemListCollection = null!;
+			ItemListCollectionSecond = null!;
+			SelectedNameItem = null;
+			SelectedNameItemSecond = null!;
+			ShowSecretPanel = false;
+			NameItemSecond = null;
+			UnitMeasureSecond = null;
+			QuantityReceiptSecond = 0;
 			DateReceipt = DateTime.Now;
+			ExpirationDate = null;
+			ExpirationDateSecond = null;
+			ShowCheckBoxSecretPanel = false;
 		}
 		#endregion
 
-
 		private void InicializationMain()
 		{
-			NameItemList = _repositoriesDB.GetAllNameItem();
-			NameItemList = [];
+			OriginalNameItemList = _repositoriesDB.GetAllNameItem();
+			foreach (var originalNameItem in OriginalNameItemList)
+				NameItemList.Add(originalNameItem);
+
 			ItemListCollection = [];
-			ExpirationDate = DateTime.Now;
 			DateReceipt = DateTime.Now;
 		}
 	}

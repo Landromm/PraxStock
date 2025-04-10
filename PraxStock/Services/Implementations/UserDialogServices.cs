@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PraxStock.View.MainViews;
 using PraxStock.View.SecondViews;
+using PraxStock.View.SecondViews.StatisticsWindow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,5 +97,34 @@ internal class UserDialogServices : IUserDialog
 		window.Show();
 	}
 
+	//Открытие окна статистики.
+	private StatisticMainView? _statisticMainView = null;
+	public void OpenStatisticsMainWindow()
+	{
+		if(_statisticMainView is { } window)
+		{
+			window.Show();
+			return;
+		}
+		window = _service.GetRequiredService<StatisticMainView>();
+		window.Closed += (_, _) => _statisticMainView = null;
+		_statisticMainView = window;
+		window.Show();
+	}
+
+	//Открытие окна подготовки отчета по остаткам.
+	private DataStocksStatisticsView? _dataStocksStatisticsView = null;
+	public void OpenDataStocksStatisticsWindow()
+	{
+		if(_dataStocksStatisticsView is { } window)
+		{
+			window.Show();
+			return;
+		}
+		window = _service.GetRequiredService<DataStocksStatisticsView>();
+		window.Closed += (_, _) => _dataStocksStatisticsView = null;
+		_dataStocksStatisticsView = window;
+		window.Show();
+	}
 
 }

@@ -5,21 +5,410 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PraxStock.View.SecondViews"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Поступление" 
-        Height="300" 
-        Width="350"
+        Title="Поступление"
+        Width="360"
+        Height="565"
+        MaxWidth="360"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
-    <Grid>
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="Height">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <!--#region Стиль для CHECKBOX'а выбора параметра поиска-->
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+
+                <Border 
+                    x:Name="Border" 
+                    Grid.ColumnSpan="2"
+                    Background="Transparent"
+                    BorderBrush="{StaticResource activeSecondaryBackColorDark}"
+                    BorderThickness="1" 
+                    CornerRadius="3"/>
+
+                <Border 
+                    x:Name="BorderToggle"
+                    Grid.Column="0"
+                    CornerRadius="0" 
+                    Margin="1" 
+                    Background="Transparent" 
+                    BorderBrush="{StaticResource activeSecondaryBackColorDark}"
+                    BorderThickness="0,0,1,0" />
+
+                <Path 
+                  x:Name="Arrow"
+                  Grid.Column="1"
+                  Fill="{StaticResource activeSecondaryBackColorDark}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"/>
+            </Grid>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                    <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
+                    <Setter TargetName="BorderToggle" Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                    <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource PraxixColor}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
+            <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
+        </ControlTemplate>
+
+        <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="MinWidth" Value="170"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="Foreground" Value="{StaticResource secondaryBackColorDark}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+
+                        <Grid>
+
+                            <ToggleButton 
+                                Name="ToggleButton" 
+                                Template="{StaticResource ComboBoxToggleButton}" 
+                                Grid.Column="2" 
+                                Focusable="false"
+                                IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                ClickMode="Press">
+                            </ToggleButton>
+
+                            <ContentPresenter   
+                                Name="ContentSite" 
+                                IsHitTestVisible="False"  
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                Margin="10 3 30 3"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left" />
+
+                            <TextBox    
+                                x:Name="PART_EditableTextBox"
+                                Style="{x:Null}" 
+                                Template="{StaticResource ComboBoxTextBox}" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Center" 
+                                Margin="5 3 30 3"
+                                Focusable="True" 
+                                Background="Transparent"
+                                Visibility="Hidden"
+                                IsReadOnly="{TemplateBinding IsReadOnly}"/>
+
+                            <Popup  
+                                Name="Popup"
+                                Placement="Bottom"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                AllowsTransparency="True" 
+                                Focusable="False"
+                                PopupAnimation="Slide">
+
+                                <Grid 
+                                    Name="DropDown"
+                                    SnapsToDevicePixels="True"
+                                    MinWidth="{TemplateBinding ActualWidth}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}">
+
+                                    <Border 
+                                        x:Name="DropDownBorder"
+                                        Background="{StaticResource primaryBackColorDefault}"
+                                        BorderThickness="1"
+                                        CornerRadius="5"
+                                        BorderBrush="{StaticResource PraxixColor}"/>
+
+                                    <ScrollViewer Margin="5 6 4 6" SnapsToDevicePixels="True" MaxHeight="195">
+
+                                        <StackPanel IsItemsHost="True" 
+                                            KeyboardNavigation.DirectionalNavigation="Contained" />
+
+                                    </ScrollViewer>
+
+                                </Grid>
+
+                            </Popup>
+
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#888888"/>
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </Trigger>
+                            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="5"/>
+                                <Setter TargetName="DropDownBorder" Property="Margin" Value="0 2 0 0"/>
+                            </Trigger>
+                            <Trigger Property="IsEditable"  Value="true">
+                                <Setter Property="IsTabStop" Value="false"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+
+            </Setter>
+            <Style.Triggers>
+            </Style.Triggers>
+        </Style>
+
+        <!-- SimpleStyles: ComboBoxItem -->
+        <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="Foreground" Value="{StaticResource blackFontColorDark}"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border 
+                            Name="Border"
+                            Margin="0 0 0 0"
+                            Padding="5,3,5,3"
+                            SnapsToDevicePixels="true"
+                            CornerRadius="0 3 3 0"
+                            BorderBrush="{StaticResource BorderColor1Dark}">
+                            <ContentPresenter 
+                                Margin="5 0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource PraxixColor}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="2 0 0 0"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{StaticResource blackFontColorDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+
+        <!--#region Стиль для Label-->
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <!--#endregion-->
+        
+        <!--#region Стиль для TextBox-->
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Padding" Value="5 0"/>
+            <Setter Property="Cursor" Value="IBeam"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="MaxHeight" Value="40"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="txtBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="3"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                SnapsToDevicePixels="True">
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              Focusable="False"
+                                              HorizontalScrollBarVisibility="Hidden"
+                                              VerticalScrollBarVisibility="Hidden"
+                                              Margin="-2 0"/>
+                                <Label x:Name="WaterMarkerLabel"
+                                       Content="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                       HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                       Visibility="Collapsed"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       Padding="{TemplateBinding Padding}"/>
+                            </Grid>
+                            
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Text" Value=""/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="WaterMarkerLabel" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PraxixColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+        
+        <!--#region Стиль для Button-->
+        <Style x:Key="btnOK" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="5"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                                VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color7Default}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color4Default}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="btnCANCEL" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="5"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color1Dark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color2Dark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+
+        <!--#region Стиль для DatePickerTextBox-->
+        <Thickness x:Key="BaseErrorBorderThickness">1</Thickness>
+        
+        <SolidColorBrush x:Key="ErrorBorderBrush" Color="Red"/>
+        <SolidColorBrush x:Key="ErrorPolygonFillBrush" Color="Red"/>
+
+        <Style TargetType="{x:Type DatePicker}" x:Key="BaseDatePickerStyle">
+            <Setter Property="Padding" Value="5 2" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <AdornedElementPlaceholder x:Name="adorner">
+                                <Border 
+                                    BorderBrush="{StaticResource ErrorBorderBrush}"
+                                    BorderThickness="{StaticResource BaseErrorBorderThickness}" />
+                            </AdornedElementPlaceholder>
+                            <Polygon Fill="{StaticResource ErrorPolygonFillBrush}"
+                                 Margin="0,2,2,0"
+                                 Points="10,10 10,0 0,0"
+                                 VerticalAlignment="Top"
+                                 HorizontalAlignment="Right" >
+                            </Polygon>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="BorderBrush" Value="Black" />
+                </Style>
+
+                <Style x:Key="{x:Type ToolTip}" TargetType="{x:Type ToolTip}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="{StaticResource ErrorPolygonFillBrush}"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="{StaticResource BaseErrorBorderThickness}"/>
+                </Style>
+            </Style.Resources>
+
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="Tag" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+        <!--#endregion-->
+
+    </Window.Resources>
+
+    <Grid Background="{StaticResource gradientYellowColor2}">
         <StackPanel
             Orientation="Vertical"
             Margin="5">
+
             <Label
-                Content="Позиция:"/>
-            <ComboBox
-                IsEditable="False"
+                Content="Позиция:"
+                Padding="12 5 0 2"/>
+            <ComboBox 
+                Grid.Column="1" 
+                Margin="10 0"
+                Height="35" 
+                FontSize="16"
                 ItemsSource="{Binding NameItemList}"
+                SelectedIndex="0"
+                IsEditable="True"
+                IsTextSearchEnabled="False"
+                Text="{Binding NameItemSearch}"
                 SelectedItem="{Binding SelectedNameItem}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="DropDownOpened">
@@ -28,10 +417,16 @@
                 </i:Interaction.Triggers>
             </ComboBox>
             <Label
-                Content="Наименование"/>
+                Content="Наименование:"
+                Padding="12 5 0 2"/>
             <TextBox
+                Text="{Binding NameItem, UpdateSourceTrigger=PropertyChanged}"
                 IsEnabled="False"
-                Text="{Binding NameItem}"/>
+                Margin="10 0"
+                Padding="5 2"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Style="{StaticResource TextBoxStyle}"/>
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -41,72 +436,244 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <StackPanel
+                    
+                <Label
                     Grid.Column="0"
                     Grid.Row="0"
-                    Orientation="Vertical"
-                    Margin="0 0 5 0">
-                    <Label
-                        Content="Еденица измерения"/>
-                    <TextBox
-                        IsEnabled="False"
-                        Text="{Binding UnitMeasure}"/>
-                </StackPanel>
-                <StackPanel 
-                    Grid.Column="1"
-                    Grid.Row="0"
-                    Orientation="Vertical"
-                    Margin="5 0 0 0">
-                    <Label
-                        Content="Количество"/>
-                    <TextBox 
-                        IsEnabled="True"
-                        Text="{Binding QuantityReceipt}"/>
-                </StackPanel>
-                <StackPanel 
+                    Content="Еденица измерения:"
+                    Margin="10 0"
+                    Padding="2 5 0 2"/>
+                <TextBox
                     Grid.Column="0"
                     Grid.Row="1"
-                    Margin="0 5 5 5">
-                    <Label
-                        Content="Срок годности (до):"/>
-                    <DatePicker
-                        SelectedDate="{Binding ExpirationDate, UpdateSourceTrigger=PropertyChanged}"
-                        DisplayDate="{Binding ExpirationDate}"/>
-
-                </StackPanel>
-                <StackPanel 
+                    IsEnabled="False"
+                    Text="{Binding UnitMeasure, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="10 0"
+                    Style="{StaticResource TextBoxStyle}"/>
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Margin="10 0"
+                    Content="Количество:"
+                    Padding="2 5 0 2"/>
+                <TextBox 
                     Grid.Column="1"
                     Grid.Row="1"
-                    Margin="5 5 0 5">
-                    <Label
-                        Content="Дата поступления:"/>
-                    <DatePicker
-                        SelectedDate="{Binding DateReceipt, UpdateSourceTrigger=PropertyChanged}"
-                        DisplayDate="{Binding DateReceipt}"/>
+                    IsEnabled="True"
+                    Text="{Binding QuantityReceipt, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="10 0"
+                    FontWeight="Bold"
+                    Foreground="Black"
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource color7Default}"
+                    Style="{StaticResource TextBoxStyle}"/>
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Margin="10 0"
+                    Content="Срок годности (до):"/>
+                <DatePicker
+                    Grid.Column="0"
+                    Grid.Row="3"
+                    Margin="10 0"
+                    SelectedDate="{Binding ExpirationDate, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="16"
+                    Style="{StaticResource BaseDatePickerStyle}"/>
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Margin="10 0"
+                    Content="Дата поступления:"/>
+                <DatePicker
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Margin="10 0"
+                    SelectedDate="{Binding DateReceipt, UpdateSourceTrigger=PropertyChanged}"
+                    DisplayDate="{Binding DateReceipt}"
+                    FontSize="16"
+                    Style="{StaticResource BaseDatePickerStyle}"/>
 
-                </StackPanel>
+                <CheckBox
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="4"
+                    x:Name="cbShowSecret"
+                    Content="Добавить к существующей позиции"
+                    Margin="10"
+                    Padding="7 0"
+                    VerticalContentAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    IsChecked="{Binding ShowSecretPanel}">
+                    <CheckBox.Style>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowCheckBoxSecretPanel}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger> 
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+                </CheckBox>
             </Grid>
 
-            <StackPanel
-                Orientation="Horizontal"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Margin="0 10">
+            <DockPanel 
+                Visibility="{Binding ElementName=cbShowSecret, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                <Border
+                    DockPanel.Dock="Top"
+                    BorderThickness="1"
+                    BorderBrush="Gray"/>
+                <Label
+                    DockPanel.Dock="Top"
+                    Content="Позиция:"
+                    Margin="10 0"/>
+                <ComboBox
+                    DockPanel.Dock="Top"
+                    IsEditable="False"
+                    Height="35" 
+                    Margin="10 0"
+                    FontSize="16"
+                    ItemsSource="{Binding NameItemListSecond}"
+                    SelectedValue="{Binding SelectedNameItemSecond}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="DropDownOpened">
+                            <i:InvokeCommandAction Command="{Binding DropdownSelectionSecondChanged}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="2 2">
+                                <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" Margin="2 2 5 2" FontSize="16" FontWeight="DemiBold"/>
+                                <TextBlock Text=" - " Margin="3 2" FontSize="16"/>
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding UnitMeasure}" Margin="2 2 5 2" FontSize="16" FontWeight="Bold"/>
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding UnitCount}" Margin="2 2 5 2" FontSize="16" FontWeight="Bold"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <Label
+                    DockPanel.Dock="Top"
+                    Margin="10 0"
+                    Content="Наименование"/>
+                <TextBox
+                    DockPanel.Dock="Top"
+                    Margin="10 0"
+                    IsEnabled="False"
+                    FontSize="16"
+                    Text="{Binding NameItemSecond, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource TextBoxStyle}"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Margin="10 0"
+                        Content="Еденица измерения"/>
+                    <TextBox
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Margin="10 0"
+                        IsEnabled="False"
+                        FontSize="16"
+                        Text="{Binding UnitMeasureSecond, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource TextBoxStyle}"/>
+
+                    <Label
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Margin="10 0"
+                        Content="Количество"/>
+                    <TextBox 
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Margin="10 0"
+                        IsEnabled="False"
+                        FontSize="16"
+                        FontWeight="DemiBold"
+                        Text="{Binding QuantityReceiptSecond, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource TextBoxStyle}"/>
+
+                    <Label
+                        Grid.Column="0"
+                        Grid.Row="2"
+                        Margin="10 0"
+                        Content="Срок годности (до):"/>
+                    <DatePicker
+                        Grid.Column="0"
+                        Grid.Row="3"
+                        Margin="10 0"
+                        SelectedDate="{Binding ExpirationDateSecond, UpdateSourceTrigger=PropertyChanged}"
+                        DisplayDate="{Binding ExpirationDateSecond}"
+                        FontSize="16"
+                        FontWeight="DemiBold"
+                        IsEnabled="False"
+                        Style="{StaticResource BaseDatePickerStyle}"/>
+
+                    <Label
+                        Grid.Column="1"
+                        Grid.Row="2"
+                        Margin="10 0"
+                        Content="Дата поступления:"/>
+                    <DatePicker
+                        Grid.Column="1"
+                        Grid.Row="3"
+                        Margin="10 0"
+                        SelectedDate="{Binding DateReceiptSecond, UpdateSourceTrigger=PropertyChanged}"
+                        DisplayDate="{Binding DateReceiptSecond}"
+                        FontSize="16"
+                        FontWeight="DemiBold"
+                        IsEnabled="False"
+                        Style="{StaticResource BaseDatePickerStyle}"/>
+
+                </Grid>
+
+            </DockPanel>
+            
+            <Grid
+                Margin="10 15 10 5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
                 
                 <Button
+                    Grid.Column="0"
                     Content="Очистить"
-                    Width="100"
+                    Width="120"
                     Height="30"
-                    Margin="5 5 15 5"
-                    Command="{Binding ResetCommand}"/>
+                    Command="{Binding ResetCommand}"
+                    Style="{StaticResource btnCANCEL}"
+                    HorizontalAlignment="Right"
+                    Margin="0 0 10 0"/>
                 <Button
+                    Grid.Column="1"
                     Content="Добавить"
-                    Width="100"
+                    Width="120"
                     Height="30"
-                    Margin="15 5 5 5"
-                    Command="{Binding AddReceiptCommand}"/>
-            </StackPanel>
+                    Command="{Binding AddReceiptCommand}"
+                    Style="{StaticResource btnOK}"
+                    HorizontalAlignment="Left"
+                    Margin="10 0 0 0"/>
+            </Grid>
         </StackPanel>
     </Grid>
 </Window>

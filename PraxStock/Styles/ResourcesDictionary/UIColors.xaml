@@ -11,7 +11,16 @@
     <Color x:Key="gradientBackColor1Default">#EEF0F6</Color>
     <Color x:Key="gradientBackColor2Default">#CFDAEC</Color>
     <Color x:Key="gradientBackColor1Dark">#383838</Color>
-    <Color x:Key="gradientBackColor2Dark">#383838</Color>
+    <Color x:Key="gradientGreenColor1Default">#90fca0</Color>
+    <Color x:Key="gradientGreenColor2Default">#4CD661</Color>
+    <Color x:Key="gradientGreenColor1White">#EEF0F6</Color>
+    <SolidColorBrush x:Key="gradientYellowColor1">#ebfc7c</SolidColorBrush>
+    <SolidColorBrush x:Key="gradientYellowColor2">#f5ffb8</SolidColorBrush>
+    <SolidColorBrush x:Key="gradientPurpleColor1">#d2a6ff</SolidColorBrush>
+    <SolidColorBrush x:Key="gradientPurpleColor2">#d7b7f7</SolidColorBrush>
+    <SolidColorBrush x:Key="gradientPurpleColor3">#f0e0ff</SolidColorBrush>
+
+
 
     <!--Border Colors-->
     <SolidColorBrush x:Key="BorderColor1Default" Color="#094D74"/>
@@ -19,12 +28,16 @@
     <!--Color Palette-->
     <SolidColorBrush x:Key="PraxixColor" Color="#73C0C8"/>
     <SolidColorBrush x:Key="color1Default" Color="#D35A5A"/>
+    <SolidColorBrush x:Key="color1_1Default" Color="#ff9191"/>
+    <SolidColorBrush x:Key="color1_2Default" Color="#f5cece"/>
     <SolidColorBrush x:Key="color2Default" Color="#FF0000"/>
     <SolidColorBrush x:Key="color3Default" Color="#71A05A"/>
     <SolidColorBrush x:Key="color4Default" Color="#57FF04"/>
     <SolidColorBrush x:Key="color5Default" Color="#EEF0F6"/>
     <SolidColorBrush x:Key="color6Default" Color="#CFDAEC"/>
     <SolidColorBrush x:Key="color7Default" Color="#4CD661"/>
+    <SolidColorBrush x:Key="color8Default" Color="#90fca0"/>
+    <SolidColorBrush x:Key="color9Default" Color="#d9fcdf"/>
     <SolidColorBrush x:Key="color1Dark" Color="#D35A5A"/>
     <SolidColorBrush x:Key="color2Dark" Color="#DE0000" Opacity="0.7"/>
     <SolidColorBrush x:Key="color3Dark" Color="#71A05A"/>
@@ -44,6 +57,9 @@
     <SolidColorBrush x:Key="color11" Color="#e8e1ed"/>
     <SolidColorBrush x:Key="color12" Color="#302f2f"/>
     <SolidColorBrush x:Key="color13" Color="#4dde43"/>
+    <SolidColorBrush x:Key="color14" Color="#f0e0ff"/>
+    <SolidColorBrush x:Key="color15" Color="#d7b7f7"/>
+    <SolidColorBrush x:Key="color16" Color="#d2a6ff"/>
 
     <!--Font Colors-->
     <SolidColorBrush x:Key="mainFontColorDefault" Color="#CFDAEC"/>
@@ -52,6 +68,7 @@
     <SolidColorBrush x:Key="mainFontColorDark" Color="#FAFAFA"/>
     <SolidColorBrush x:Key="secondFontColorDark" Color="#63BECE"/>
     <SolidColorBrush x:Key="blackFontColorDark" Color="Black"/>
+    <SolidColorBrush x:Key="grayFontColorDark" Color="#3D3D3D"/>
     <!--Panel Colors-->
     <SolidColorBrush x:Key="panelColorDefault" Color="#094D74"/>
     <SolidColorBrush x:Key="panelOverColorDefault" Color="#063b59"/>

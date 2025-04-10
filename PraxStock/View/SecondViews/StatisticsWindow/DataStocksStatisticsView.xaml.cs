@@ -12,22 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PraxStock.View.SecondViews
+namespace PraxStock.View.SecondViews.StatisticsWindow
 {
     /// <summary>
-    /// Логика взаимодействия для MoveAddView.xaml
+    /// Логика взаимодействия для DataStocksStatisticsView.xaml
     /// </summary>
-    public partial class MoveAddView : Window
+    public partial class DataStocksStatisticsView : Window
     {
-        public MoveAddView()
+        public DataStocksStatisticsView()
         {
             InitializeComponent();
         }
-
-		private void btnCancel_Click(object sender, RoutedEventArgs e)
-		{
-            Thread.Sleep(500);
-            this.Close();
-		}
-	}
+    }
 }

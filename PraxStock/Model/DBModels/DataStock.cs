@@ -11,6 +11,10 @@ public partial class DataStock
 
     public double RemainingStock { get; set; }
 
+    public double? MinValue { get; set; }
+
+    public bool? FlagSett { get; set; }
+
     public virtual Item IdItemNavigation { get; set; } = null!;
 
     public virtual Receipt IdItemStockNavigation { get; set; } = null!;

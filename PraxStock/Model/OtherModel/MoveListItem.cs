@@ -9,5 +9,7 @@ internal class MoveListItem : ItemStock
 {
 	public int IdMove { get; set; }
 
+	public string? NamePost { get; set; }
+
 	public DateOnly DateMove { get; set; }
 }

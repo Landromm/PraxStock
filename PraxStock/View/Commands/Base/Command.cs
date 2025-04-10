@@ -21,8 +21,6 @@ public abstract class Command : ICommand
 		if (((ICommand)this).CanExecute(parameter))
 			Execute(parameter);
 	}
-
-	protected virtual bool CanExecute(object? p) => true;
-
-	protected abstract void Execute(object? p);
+	public virtual bool CanExecute(object? p) => true;
+	public abstract void Execute(object? p);
 }

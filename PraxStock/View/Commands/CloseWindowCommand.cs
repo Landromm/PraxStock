@@ -5,43 +5,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 
-namespace PraxStock.View.Commands;
-class CloseWindowCommand : Command
+namespace PraxStock.View.Commands
 {
-	private readonly Action<object> _Execute;
-	private readonly Func<object, bool>? _CanExecute;
-
-	public CloseWindowCommand(Action<object> Execute, Func<object, bool>? CanExecute = null)
+	class CloseWindowCommand : Command
 	{
-		_Execute = Execute;
-		_CanExecute = CanExecute;
+		public override bool CanExecute(object? p) => p is Window;
+
+		public override void Execute(object? p)
+		{
+			if(!CanExecute(p)) return;
+
+			var window = (Window)p!;
+			window!.Close();
+		}
 	}
-	protected override bool CanExecute(object? parameter) => parameter is Window;
 
-	protected override void Execute(object? parameter)
+	class CloseDialogCommand : Command
 	{
-		if (!CanExecute(parameter))
-			return;
+		public bool? DialogResult { get; set; }
 
-		var window = (Window)parameter!;
-		window.Close();
-	}
-}
+		public override bool CanExecute(object? p) => p is Window;
 
-class CloseDialogCommand : Command
-{
-	public bool? DialogResult { get; set; }
+		public override void Execute(object? p)
+		{
+			if (!CanExecute(p))
+				return;
 
-	protected override bool CanExecute(object? parameter) => parameter is Window;
-
-	protected override void Execute(object? parameter)
-	{
-		if (!CanExecute(parameter))
-			return;
-
-		var window = (Window)parameter!;
-		window.DialogResult = DialogResult;
-		window.Close();
+			var window = (Window)p!;
+			window.DialogResult = DialogResult;
+			window!.Close();
+		}
 	}
 }
