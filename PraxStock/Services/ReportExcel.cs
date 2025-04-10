@@ -206,7 +206,8 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 	{
 		CheckExistsFile();
 
-		ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+		ExcelPackage.License.SetNonCommercialPersonal("Radkevich Igor");
+		;
 
 		using (var package = new ExcelPackage())
 		{
