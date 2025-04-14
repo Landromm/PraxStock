@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace PraxStock.Model.DBModels;
@@ -21,14 +20,16 @@ public partial class PraxixSkladContext : DbContext
     public virtual DbSet<Item> Items { get; set; }
 
     public virtual DbSet<MoveInPost> MoveInPosts { get; set; }
-    
+
     public virtual DbSet<Receipt> Receipts { get; set; }
+
+    public virtual DbSet<SqleanDefine> SqleanDefines { get; set; }
 
     public virtual DbSet<WriteOff> WriteOffs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["LibraryWPF.Properties.Settings.SqlConnectionWork"].ConnectionString);
+        => optionsBuilder.UseSqlite("Data Source=.\\Data\\Praxix_Sklad.db");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -38,19 +39,12 @@ public partial class PraxixSkladContext : DbContext
 
             entity.ToTable("DataStock");
 
-            entity.Property(e => e.IdItemStock)
-                .ValueGeneratedNever()
-                .HasColumnName("idItemStock");
+            entity.Property(e => e.IdItemStock).HasColumnName("idItemStock");
             entity.Property(e => e.IdItem).HasColumnName("idItem");
 
             entity.HasOne(d => d.IdItemNavigation).WithMany(p => p.DataStocks)
                 .HasForeignKey(d => d.IdItem)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DataStock_Items");
-
-            entity.HasOne(d => d.IdItemStockNavigation).WithOne(p => p.DataStock)
-                .HasForeignKey<DataStock>(d => d.IdItemStock)
-                .HasConstraintName("FK_DataStock_Receipt");
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Item>(entity =>
@@ -58,8 +52,6 @@ public partial class PraxixSkladContext : DbContext
             entity.HasKey(e => e.IdItem);
 
             entity.Property(e => e.IdItem).HasColumnName("idItem");
-            entity.Property(e => e.NameItem).HasMaxLength(50);
-            entity.Property(e => e.UnitMeasure).HasMaxLength(50);
         });
 
         modelBuilder.Entity<MoveInPost>(entity =>
@@ -69,13 +61,16 @@ public partial class PraxixSkladContext : DbContext
             entity.ToTable("MoveInPost");
 
             entity.Property(e => e.IdMove).HasColumnName("idMove");
-            entity.Property(e => e.IdItem).HasColumnName("idItem");
-            entity.Property(e => e.NamePost).HasMaxLength(50);
+            entity.Property(e => e.IdItemStock).HasColumnName("idItemStock");
+            entity.Property(e => e.IdItems).HasColumnName("idItems");
 
-            entity.HasOne(d => d.IdItemNavigation).WithMany(p => p.MoveInPosts)
-                .HasForeignKey(d => d.IdItem)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MoveInPost_Items");
+            entity.HasOne(d => d.IdItemStockNavigation).WithMany(p => p.MoveInPosts)
+                .HasForeignKey(d => d.IdItemStock)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.IdItemsNavigation).WithMany(p => p.MoveInPosts)
+                .HasForeignKey(d => d.IdItems)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Receipt>(entity =>
@@ -84,13 +79,29 @@ public partial class PraxixSkladContext : DbContext
 
             entity.ToTable("Receipt");
 
-            entity.Property(e => e.IdReceipt).HasColumnName("idReceipt");
+            entity.Property(e => e.IdReceipt)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("idReceipt");
             entity.Property(e => e.IdItem).HasColumnName("idItem");
 
             entity.HasOne(d => d.IdItemNavigation).WithMany(p => p.Receipts)
                 .HasForeignKey(d => d.IdItem)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Receipt_Items1");
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.IdReceiptNavigation).WithOne(p => p.Receipt)
+                .HasForeignKey<Receipt>(d => d.IdReceipt)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<SqleanDefine>(entity =>
+        {
+            entity.HasKey(e => e.Name);
+
+            entity.ToTable("sqlean_define");
+
+            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Body).HasColumnName("body");
+            entity.Property(e => e.Type).HasColumnName("type");
         });
 
         modelBuilder.Entity<WriteOff>(entity =>
@@ -100,15 +111,11 @@ public partial class PraxixSkladContext : DbContext
             entity.ToTable("WriteOff");
 
             entity.Property(e => e.IdWriteOff).HasColumnName("idWriteOff");
-            entity.Property(e => e.DateWriteOff)
-                .HasMaxLength(10)
-                .IsFixedLength();
             entity.Property(e => e.IdItem).HasColumnName("idItem");
 
             entity.HasOne(d => d.IdItemNavigation).WithMany(p => p.WriteOffs)
                 .HasForeignKey(d => d.IdItem)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_WriteOff_Items");
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         OnModelCreatingPartial(modelBuilder);

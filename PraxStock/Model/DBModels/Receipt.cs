@@ -11,11 +11,11 @@ public partial class Receipt
 
     public double QuantityReceipt { get; set; }
 
-    public DateOnly? ExprirationDate { get; set; }
+    public string? ExpirationDate { get; set; }
 
-    public DateOnly DateReceipt { get; set; }
-
-    public virtual DataStock? DataStock { get; set; }
+    public string DateReceipt { get; set; } = null!;
 
     public virtual Item IdItemNavigation { get; set; } = null!;
+
+    public virtual DataStock IdReceiptNavigation { get; set; } = null!;
 }

@@ -7,13 +7,17 @@ public partial class MoveInPost
 {
     public int IdMove { get; set; }
 
-    public int IdItem { get; set; }
+    public int IdItems { get; set; }
 
     public double QuantityMove { get; set; }
 
     public string? NamePost { get; set; }
 
-    public DateOnly DateMove { get; set; }
+    public string? DateMove { get; set; }
 
-    public virtual Item IdItemNavigation { get; set; } = null!;
+    public int IdItemStock { get; set; }
+
+    public virtual DataStock IdItemStockNavigation { get; set; } = null!;
+
+    public virtual Item IdItemsNavigation { get; set; } = null!;
 }
