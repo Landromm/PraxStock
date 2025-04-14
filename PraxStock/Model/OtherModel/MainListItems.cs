@@ -16,7 +16,7 @@ public class MainListItems : ItemStock
 
 	//public double? RemainingStock { get; set; }
 
-	//public DateOnly ExpirationDate { get; set; }
+	//public DateOnly? ExpirationDate { get; set; }
 
 	public DateOnly DateReceipt { get; set; }
 

@@ -283,8 +283,8 @@ internal class MainViewModel : DialogViewModel
 	private void Inicialization()
 	{
 		DataStockList = _repositoriesDB.GetDataStockList();
-		ReceiptList = _repositoriesDB.GetReseiptList();
-		MoveList = _repositoriesDB.GetMoveInPostList();
+		//ReceiptList = _repositoriesDB.GetReseiptList();
+		//MoveList = _repositoriesDB.GetMoveInPostList();
 	}
 
 	#region Command's - Реализация комманд.

@@ -13,7 +13,7 @@ public partial class DataStock
 
     public double? MinValue { get; set; }
 
-    public byte[]? FlagSett { get; set; }
+    public bool FlagSett { get; set; }
 
     public virtual Item IdItemNavigation { get; set; } = null!;
 
