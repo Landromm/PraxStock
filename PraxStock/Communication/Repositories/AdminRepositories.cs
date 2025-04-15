@@ -351,14 +351,14 @@ namespace PraxStock.Communication.Repositories
 			}
 		}
 
-		public ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(string dateReceipt)
+		public ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(string dateMove)
 		{
 			ObservableCollection<MoveListItem> moveList = new();
 			using var context = new PraxixSkladContext();
 			{
 				var result = from moveInPost in context.MoveInPosts
 							 join items in context.Items on moveInPost.IdItems equals items.IdItem
-							 where EF.Functions.Like(moveInPost.DateMove, "%" + dateReceipt + "%")
+							 where EF.Functions.Like(moveInPost.DateMove.ToString(), "%" + dateMove + "%")
 							 select new
 							 {
 								 IdMove = moveInPost.IdMove,
@@ -394,7 +394,7 @@ namespace PraxStock.Communication.Repositories
 			{
 				var result = from receipt in context.Receipts
 							 join items in context.Items on receipt.IdItem equals items.IdItem
-							 where EF.Functions.Like(receipt.DateReceipt, "%" + dateReceipt + "%")
+							 where EF.Functions.Like(receipt.DateReceipt.ToString(), "%" + dateReceipt + "%")
 							 select new
 							 {
 								 IdReceipt = receipt.IdReceipt,

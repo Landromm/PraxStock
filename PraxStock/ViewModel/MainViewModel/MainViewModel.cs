@@ -639,13 +639,9 @@ internal class MainViewModel : DialogViewModel
 				}
 			case "Дата поступления":
 				{
-					var resultParse = DateOnly.TryParse(SearchReceiptList, out var dateString);
-					if (resultParse)
-					{
-						var tempReceiptList = _repositoriesDB.GetBySearchDateReceiptReceiptList(dateString.ToString());
-						foreach (var item in tempReceiptList)
-							ReceiptList.Add(item);
-					}
+					var tempReceiptList = _repositoriesDB.GetBySearchDateReceiptReceiptList(SearchReceiptList);
+					foreach (var item in tempReceiptList)
+						ReceiptList.Add(item);
 					break;
 				}
 		}
@@ -669,13 +665,10 @@ internal class MainViewModel : DialogViewModel
 				}
 			case "Дата перемещения":
 				{
-					var resultParse = DateOnly.TryParse(SearchMoveList, out var dateString);
-					if (resultParse)
-					{
-						var tempmoveList = _repositoriesDB.GetBySearchDateReceiptMoveList(dateString.ToString());
-						foreach (var item in tempmoveList)
-							MoveList.Add(item);
-					}
+					var tempmoveList = _repositoriesDB.GetBySearchDateReceiptMoveList(SearchMoveList);
+					foreach (var item in tempmoveList)
+						MoveList.Add(item);
+
 					break;
 				}
 			case "Пост":
@@ -683,7 +676,6 @@ internal class MainViewModel : DialogViewModel
 					var tempMovetList = _repositoriesDB.GetBySearchNamePostMoveList(SearchMoveList);
 					foreach (var item in tempMovetList)
 						MoveList.Add(item);
-
 					break;
 				}
 

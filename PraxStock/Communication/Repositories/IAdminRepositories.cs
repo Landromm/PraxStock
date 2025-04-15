@@ -22,17 +22,17 @@ namespace PraxStock.Communication.Repositories
 		ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate);                 // OK
 		ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(string dateReceipt);                         // OK
 
-		ObservableCollection<ReceiptListItem> GetBySearchNameItemReceiptList(string searchName);                        // OK ???
-		ObservableCollection<ReceiptListItem> GetBySearchUnitCountReceiptList(string unitCount);                        // OK ???
-		ObservableCollection<ReceiptListItem> GetBySearchDateReceiptReceiptList(string dateReceipt);                    // OK ???
+		ObservableCollection<ReceiptListItem> GetBySearchNameItemReceiptList(string searchName);                        // OK
+		ObservableCollection<ReceiptListItem> GetBySearchUnitCountReceiptList(string unitCount);                        // OK
+		ObservableCollection<ReceiptListItem> GetBySearchDateReceiptReceiptList(string dateReceipt);                    // OK
 
-        ObservableCollection<MoveListItem> GetBySearchNameItemMoveList(string searchName);                              // OK ???
-        ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(string dateReceipt);                          // OK ???
-        ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost);                                // OK ???
+        ObservableCollection<MoveListItem> GetBySearchNameItemMoveList(string searchName);                              // OK
+        ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(string dateReceipt);                          // OK
+        ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost);                                // OK
 
 		ObservableCollection<MainListItems> GetDataStockList();                                                         // OK
 		ObservableCollection<ReceiptListItem> GetReseiptList();                                                         // OK
-        ObservableCollection<MoveListItem> GetMoveInPostList();                                                         // OK ???
+        ObservableCollection<MoveListItem> GetMoveInPostList();                                                         // OK
 
         ObservableCollection<ExpenseStatisticModel> GetExpenseStatisticModels(DateOnly startDate, DateOnly endDate);    // OK ???
 
@@ -41,7 +41,7 @@ namespace PraxStock.Communication.Repositories
 		List<string> GetAllNamePost();                                                                                  // OK
 
 		List<MainListItems> GetAllNameItemSecond(string nameItem);                                                      // OK
-		MainListItems GetBySearchIdStockItem(int searchIdStock);                                                        // OK ???
+		MainListItems GetBySearchIdStockItem(int searchIdStock);                                                        // OK
         int GetBySearchIdItem(string searchName);                                                                       // OK
 		void AddItemsList(string nameItem, string unitMeasure);                                                         // OK
         void ChangedItemList(string nameItem, string unitMeasure, int idItem);                                          // OK
@@ -51,7 +51,7 @@ namespace PraxStock.Communication.Repositories
         bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem);                                    // proc
 
 		bool AddMoveInPost(MoveListItem moveListItem);                                                                  // OK
-        double GetRemainingStock(int idDataStock);                                                                      // OK ???
+        double GetRemainingStock(int idDataStock);                                                                      // OK
 
         bool AddWriteOff(MainListItems writeOffItem);                                                                   // proc
 
