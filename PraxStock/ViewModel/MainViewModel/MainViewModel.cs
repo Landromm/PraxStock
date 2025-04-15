@@ -228,12 +228,12 @@ internal class MainViewModel : DialogViewModel
 	}
 	#endregion
 
-	#region CurrentDataStockList : MainListItems - Текущий выбор позициив перечне.
+	#region CurrentDataStockList : MainListItems - Текущий выбор позиции в перечне.
 
-	/// <summary>Текущий выбор позициив перечне. - поле.</summary>
+	/// <summary>Текущий выбор позиции в перечне. - поле.</summary>
 	private MainListItems _CurrentDataStockList;
 
-	/// <summary>Текущий выбор позициив перечне. - свойство.</summary>
+	/// <summary>Текущий выбор позиции в перечне. - свойство.</summary>
 	public MainListItems CurrentDataStockList
 	{
 		get => _CurrentDataStockList;
@@ -284,7 +284,7 @@ internal class MainViewModel : DialogViewModel
 	{
 		DataStockList = _repositoriesDB.GetDataStockList();
 		ReceiptList = _repositoriesDB.GetReseiptList();
-		//MoveList = _repositoriesDB.GetMoveInPostList();
+		MoveList = _repositoriesDB.GetMoveInPostList();
 	}
 
 	#region Command's - Реализация комманд.
@@ -607,13 +607,9 @@ internal class MainViewModel : DialogViewModel
 				}
 			case "Дата поступления":
 				{
-					var resultParse = DateOnly.TryParse(SearchMainList, out var dateString);
-					if (resultParse)
-					{
-						var tempMainList = _repositoriesDB.GetBySearchDateReceiptMainList(dateString);
-						foreach (var item in tempMainList)
-							DataStockList.Add(item);
-					}
+					var tempMainList = _repositoriesDB.GetBySearchDateReceiptMainList(SearchMainList);
+					foreach (var item in tempMainList)
+						DataStockList.Add(item);
 					break;
 				}
 		}
@@ -646,7 +642,7 @@ internal class MainViewModel : DialogViewModel
 					var resultParse = DateOnly.TryParse(SearchReceiptList, out var dateString);
 					if (resultParse)
 					{
-						var tempReceiptList = _repositoriesDB.GetBySearchDateReceiptReceiptList(dateString);
+						var tempReceiptList = _repositoriesDB.GetBySearchDateReceiptReceiptList(dateString.ToString());
 						foreach (var item in tempReceiptList)
 							ReceiptList.Add(item);
 					}
@@ -676,7 +672,7 @@ internal class MainViewModel : DialogViewModel
 					var resultParse = DateOnly.TryParse(SearchMoveList, out var dateString);
 					if (resultParse)
 					{
-						var tempmoveList = _repositoriesDB.GetBySearchDateReceiptMoveList(dateString);
+						var tempmoveList = _repositoriesDB.GetBySearchDateReceiptMoveList(dateString.ToString());
 						foreach (var item in tempmoveList)
 							MoveList.Add(item);
 					}

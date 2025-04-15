@@ -17,43 +17,43 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<Item> GetBySearchNameItem(string searchName);                                              // OK
         ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure);                                // OK
 
-        ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName);
-        ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock);
-		ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate);
-		ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt);
+        ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName);                             // OK
+        ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock);                   // OK
+		ObservableCollection<MainListItems> GetBySearchExpirationDateMainList(DateOnly expirationDate);                 // OK
+		ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(string dateReceipt);                         // OK
 
-		ObservableCollection<ReceiptListItem> GetBySearchNameItemReceiptList(string searchName);
-		ObservableCollection<ReceiptListItem> GetBySearchUnitCountReceiptList(string unitCount);
-		ObservableCollection<ReceiptListItem> GetBySearchDateReceiptReceiptList(DateOnly dateReceipt);
+		ObservableCollection<ReceiptListItem> GetBySearchNameItemReceiptList(string searchName);                        // OK ???
+		ObservableCollection<ReceiptListItem> GetBySearchUnitCountReceiptList(string unitCount);                        // OK ???
+		ObservableCollection<ReceiptListItem> GetBySearchDateReceiptReceiptList(string dateReceipt);                    // OK ???
 
-        ObservableCollection<MoveListItem> GetBySearchNameItemMoveList(string searchName);
-        ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(DateOnly dateReceipt);
-        ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost);
+        ObservableCollection<MoveListItem> GetBySearchNameItemMoveList(string searchName);                              // OK ???
+        ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(string dateReceipt);                          // OK ???
+        ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost);                                // OK ???
 
 		ObservableCollection<MainListItems> GetDataStockList();                                                         // OK
 		ObservableCollection<ReceiptListItem> GetReseiptList();                                                         // OK
-        ObservableCollection<MoveListItem> GetMoveInPostList();                                                         // ???
+        ObservableCollection<MoveListItem> GetMoveInPostList();                                                         // OK ???
 
-        ObservableCollection<ExpenseStatisticModel> GetExpenseStatisticModels(DateOnly startDate, DateOnly endDate);
+        ObservableCollection<ExpenseStatisticModel> GetExpenseStatisticModels(DateOnly startDate, DateOnly endDate);    // OK ???
 
 
-		List<string> GetAllNameItem();
-		List<string> GetAllNamePost();
+		List<string> GetAllNameItem();                                                                                  // OK
+		List<string> GetAllNamePost();                                                                                  // OK
 
-		List<MainListItems> GetAllNameItemSecond(string nameItem);
-		MainListItems GetBySearchIdStockItem(int searchIdStock);
-        int GetBySearchIdItem(string searchName);
+		List<MainListItems> GetAllNameItemSecond(string nameItem);                                                      // OK
+		MainListItems GetBySearchIdStockItem(int searchIdStock);                                                        // OK ???
+        int GetBySearchIdItem(string searchName);                                                                       // OK
 		void AddItemsList(string nameItem, string unitMeasure);                                                         // OK
         void ChangedItemList(string nameItem, string unitMeasure, int idItem);                                          // OK
-        bool UpdateControlValueDataStock(int idItem, double minValue);
+        bool UpdateControlValueDataStock(int idItem, double minValue);                                                  // OK
 
-        void AddReceiptItem(ReceiptListItem receiptListItem);
-        bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem);
+        void AddReceiptItem(ReceiptListItem receiptListItem);                                                           // OK
+        bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem);                                    // proc
 
-		bool AddMoveInPost(MoveListItem moveListItem);
-        double GetRemainingStock(int idDataStock);
+		bool AddMoveInPost(MoveListItem moveListItem);                                                                  // OK
+        double GetRemainingStock(int idDataStock);                                                                      // OK ???
 
-        bool AddWriteOff(MainListItems writeOffItem);
+        bool AddWriteOff(MainListItems writeOffItem);                                                                   // proc
 
 	}
 }
