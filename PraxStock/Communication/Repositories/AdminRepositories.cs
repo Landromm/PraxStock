@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using PraxStock.Model.DBModels;
 using PraxStock.Model.OtherModel;
 using PraxStock.Model.OtherModel.StatisticsModel;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PraxStock.Communication.Repositories
 {
@@ -17,7 +19,12 @@ namespace PraxStock.Communication.Repositories
 	{
 		public void AddItemsList(string nameItem, string unitMeasure)
 		{
-			throw new NotImplementedException();
+			using var contex = new PraxixSkladContext();
+			{
+				var tempItem = new Item() { NameItem = nameItem, UnitMeasure = unitMeasure };
+				contex.Add(tempItem);
+				contex.SaveChanges();
+			}
 		}
 
 		public bool AddMoveInPost(MoveListItem moveListItem)
@@ -27,12 +34,108 @@ namespace PraxStock.Communication.Repositories
 
 		public void AddReceiptItem(ReceiptListItem receiptListItem)
 		{
-			throw new NotImplementedException();
+			Receipt receipt = new();
+			DataStock dataStock = new();
+			using var context = new PraxixSkladContext();
+			{
+				var idItem = (from item in context.Items
+							  where item.NameItem == receiptListItem.Name
+							  select item.IdItem).First();
+
+				receipt = new Receipt()
+				{
+					IdItem = idItem,
+					QuantityReceipt = receiptListItem.UnitCount,
+					ExpirationDate = receiptListItem.ExpirationDate.ToString(),
+					DateReceipt = receiptListItem.DateReceipt.ToString(),
+				};
+
+
+				context.Receipts.Add(receipt);
+				context.SaveChanges();
+
+				using var context2 = new PraxixSkladContext();
+				{
+					var idStock = context.Receipts
+						.Where(id => id.IdItem == idItem)
+						.OrderBy(x => x.IdReceipt)
+						.Select(idS => idS.IdReceipt)
+						.LastOrDefault();
+
+					dataStock = new DataStock()
+					{
+						IdItemStock = idStock,
+						IdItem = idItem,
+						RemainingStock = receiptListItem.UnitCount
+					};
+
+					context.DataStocks.Add(dataStock);
+					context.SaveChanges();
+				}
+			}
 		}
 
 		public bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem)
 		{
-			throw new NotImplementedException();
+			//try
+			//{
+			//	using var context = new PraxixSkladContext();
+			//	{
+			//		SqlParameter[] param =
+			//		{
+			//				new ()
+			//				{
+			//					ParameterName = "@idItem",
+			//					SqlDbType = System.Data.SqlDbType.Int,
+			//					Value = receiptListItem.IdItem,
+			//				},
+			//				new ()
+			//				{
+			//					ParameterName = "@idItemStock",
+			//					SqlDbType = System.Data.SqlDbType.Int,
+			//					Value = idStockItem
+
+			//				},
+			//				new ()
+			//				{
+			//					ParameterName = "@quatityReceipt",
+			//					SqlDbType = System.Data.SqlDbType.Float,
+			//					Value = receiptListItem.UnitCount
+			//				},
+			//				new ()
+			//				{
+			//					ParameterName = "@expirrationDate",
+			//					SqlDbType = System.Data.SqlDbType.Date,
+			//					Value = receiptListItem.ExpirationDate
+			//				},
+			//				new ()
+			//				{
+			//					ParameterName = "@dateReceip",
+			//					SqlDbType = System.Data.SqlDbType.Date,
+			//					Value = receiptListItem.DateReceipt
+			//				},
+			//				new ()
+			//				{
+			//					ParameterName = "@result",
+			//					SqlDbType = System.Data.SqlDbType.Int,
+			//					Direction = System.Data.ParameterDirection.Output
+			//				}
+			//			};
+
+			//		if (param[3].Value == null)
+			//			param[3].Value = DBNull.Value;
+
+			//		context.Database.ExecuteSqlRaw(
+			//			"update_dataStock_afterReceipt @idItem, @idItemStock, @quatityReceipt, @expirrationDate, @dateReceip, @result output", param);
+
+			//		return Convert.ToInt32(param[5].Value) == 1 ? true : false;
+			//	}
+			//}
+			//catch (Exception ex)
+			//{
+			//	return false;
+			//}
+			return false;
 		}
 
 		public bool AddWriteOff(MainListItems writeOffItem)
@@ -42,7 +145,17 @@ namespace PraxStock.Communication.Repositories
 
 		public void ChangedItemList(string nameItem, string unitMeasure, int idItem)
 		{
-			throw new NotImplementedException();
+			using var contex = new PraxixSkladContext();
+			{
+				var item = new Item()
+				{
+					IdItem = idItem,
+					NameItem = nameItem,
+					UnitMeasure = unitMeasure
+				};
+				contex.Update(item);
+				contex.SaveChanges();
+			}
 		}
 
 		public ObservableCollection<Item> GetAllItemsList()
@@ -60,17 +173,69 @@ namespace PraxStock.Communication.Repositories
 
 		public List<string> GetAllNameItem()
 		{
-			throw new NotImplementedException();
+			var result = new List<string>();
+			using var context = new PraxixSkladContext();
+			{
+				result = context.Items
+					.OrderBy(x => x.NameItem)
+					.Select(n => n.NameItem)
+					.ToList();
+			}
+
+			return result;
 		}
 
 		public List<MainListItems> GetAllNameItemSecond(string nameItem)
 		{
-			throw new NotImplementedException();
+			var mainCollection = new List<MainListItems>();
+			var dateEx = new DateOnly();
+
+			using var context = new PraxixSkladContext();
+			{
+				var result = from dataStoks in context.DataStocks
+							 join items in context.Items on dataStoks.IdItem equals items.IdItem
+							 join receipt in context.Receipts on dataStoks.IdItemStock equals receipt.IdReceipt
+							 where items.NameItem == nameItem
+							 select new
+							 {
+								 IdItemStock = dataStoks.IdItemStock,
+								 IdItem = dataStoks.IdItem,
+								 NameItem = items.NameItem,
+								 UnitMeasure = items.UnitMeasure,
+								 RemainingStock = dataStoks.RemainingStock,
+								 ExpirationDate = receipt.ExpirationDate,
+								 DateReceipt = receipt.DateReceipt,
+								 MinValue = dataStoks.MinValue,
+								 FlagSett = dataStoks.FlagSett
+							 };
+				foreach (var item in result)
+				{
+					mainCollection.Add(new MainListItems()
+					{
+						IdDataStock = item.IdItemStock,
+						IdItem = item.IdItem,
+						Name = item.NameItem,
+						UnitMeasure = item.UnitMeasure,
+						UnitCount = item.RemainingStock,
+						ExpirationDate = DateOnly.TryParse(item.ExpirationDate, out dateEx) == true ? DateOnly.Parse(item.ExpirationDate) : null,
+						DateReceipt = DateOnly.Parse(item.DateReceipt),
+						MinValue = item.MinValue,
+						FlagSett = item.FlagSett
+					});
+				}
+			}
+			return mainCollection;
 		}
 
 		public List<string> GetAllNamePost()
 		{
-			throw new NotImplementedException();
+			var result = new List<string>();
+			using var context = new PraxixSkladContext();
+			{
+				result = [.. context.MoveInPosts.Select(nP => nP.NamePost).Distinct()];
+			}
+
+			return result;
 		}
 
 		public ObservableCollection<MainListItems> GetBySearchDateReceiptMainList(DateOnly dateReceipt)
@@ -95,7 +260,21 @@ namespace PraxStock.Communication.Repositories
 
 		public int GetBySearchIdItem(string searchName)
 		{
-			throw new NotImplementedException();
+			using var context = new PraxixSkladContext();
+			{
+				try
+				{
+					var idItem = (from item in context.Items
+								  where item.NameItem == searchName
+								  select item.IdItem).First();
+
+					return idItem;
+				}
+				catch (Exception ex)
+				{
+					return 0;
+				}
+			}
 		}
 
 		public MainListItems GetBySearchIdStockItem(int searchIdStock)
@@ -105,7 +284,18 @@ namespace PraxStock.Communication.Repositories
 
 		public ObservableCollection<Item> GetBySearchNameItem(string searchName)
 		{
-			throw new NotImplementedException();
+			ObservableCollection<Item> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var selectSearchCollection = from item in context.Items
+											 where EF.Functions.Like(item.NameItem, searchName + "%")
+											 select item;
+
+				foreach (var item in selectSearchCollection)
+					resultCollection.Add(item);
+			}
+
+			return resultCollection;
 		}
 
 		public ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName)
@@ -130,7 +320,18 @@ namespace PraxStock.Communication.Repositories
 
 		public ObservableCollection<Item> GetBySearchNumberItem(string searchNumber)
 		{
-			throw new NotImplementedException();
+			ObservableCollection<Item> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var selectSearchCollection = from item in context.Items
+											 where EF.Functions.Like(item.IdItem.ToString(), searchNumber + "%")
+											 select item;
+
+				foreach (var item in selectSearchCollection)
+					resultCollection.Add(item);
+			}
+
+			return resultCollection;
 		}
 
 		public ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock)
@@ -145,21 +346,24 @@ namespace PraxStock.Communication.Repositories
 
 		public ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure)
 		{
-			throw new NotImplementedException();
+			ObservableCollection<Item> resultCollection = [];
+			using var context = new PraxixSkladContext();
+			{
+				var selectSearchCollection = from item in context.Items
+											 where EF.Functions.Like(item.UnitMeasure, searchUnitMeasure + "%")
+											 select item;
+
+				foreach (var item in selectSearchCollection)
+					resultCollection.Add(item);
+			}
+
+			return resultCollection;
 		}
 
 		public ObservableCollection<MainListItems> GetDataStockList()
 		{
 			var mainCollection = new ObservableCollection<MainListItems>();
-			//// TEST QUERY
-			//using var contextTest = new PraxixSkladContext();
-			//{
-			//	var result = (from dataStock in contextTest.DataStocks
-			//				  join items in contextTest.Items on dataStock.IdItem equals items.IdItem
-			//				  join receipt in contextTest.Receipts on dataStock.IdItemStock equals receipt.IdReceipt
-			//				  select receipt.DateReceipt).ToList();
-			//}
-
+			var dateEx = new DateOnly();
 
 			using var context = new PraxixSkladContext();
 			{
@@ -181,7 +385,6 @@ namespace PraxStock.Communication.Repositories
 							 };
 				foreach (var item in result)
 				{
-					var dateEx = new DateOnly();
 					mainCollection.Add(new MainListItems()
 					{
 						IdDataStock = item.IdItemStock,
@@ -230,7 +433,7 @@ namespace PraxStock.Communication.Repositories
 						Name = item.NameItem,
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.QuantityMove,
-						DateMove = DateOnly.Parse(item.DateMove),
+						DateMove = DateOnly.Parse(item.DateMove), 
 						NamePost = item.NamePost
 					});
 
@@ -246,6 +449,8 @@ namespace PraxStock.Communication.Repositories
 		public ObservableCollection<ReceiptListItem> GetReseiptList()
 		{
 			var receiptCollection = new ObservableCollection<ReceiptListItem>();
+			var dateEx = new DateOnly();
+
 			using var context = new PraxixSkladContext();
 			{
 				var result = from receipt in context.Receipts
@@ -256,7 +461,7 @@ namespace PraxStock.Communication.Repositories
 								 NameItem = items.NameItem,
 								 UnitMeasure = items.UnitMeasure,
 								 QuantityReceipt = receipt.QuantityReceipt,
-								 ExpirationDate = DateOnly.Parse(receipt.ExpirationDate),
+								 ExpirationDate = receipt.ExpirationDate,
 								 DateReceipt = receipt.DateReceipt
 							 };
 				foreach (var item in result)
@@ -267,7 +472,7 @@ namespace PraxStock.Communication.Repositories
 						Name = item.NameItem,
 						UnitMeasure = item.UnitMeasure,
 						UnitCount = item.QuantityReceipt,
-						ExpirationDate = item.ExpirationDate,
+						ExpirationDate = DateOnly.TryParse(item.ExpirationDate, out dateEx) == true ? DateOnly.Parse(item.ExpirationDate) : null,
 						DateReceipt = DateOnly.Parse(item.DateReceipt)
 					});
 				}
@@ -285,30 +490,7 @@ namespace PraxStock.Communication.Repositories
 	//{
 
 
-	//	public void AddItemsList(string nameItem, string unitMeasure)
-	//	{
-	//		using var contex = new PraxixSkladContext();
-	//		{
-	//			var tempItem = new Item() { NameItem = nameItem, UnitMeasure = unitMeasure };
-	//			contex.Add(tempItem);
-	//			contex.SaveChanges();
-	//		}
-	//	}
 
-	//	public void ChangedItemList(string nameItem, string unitMeasure, int idItem)
-	//	{
-	//		using var contex = new PraxixSkladContext();
-	//		{
-	//			var item = new Item()
-	//			{
-	//				IdItem = idItem,
-	//				NameItem = nameItem,
-	//				UnitMeasure = unitMeasure
-	//			};
-	//			contex.Update(item);
-	//			contex.SaveChanges();
-	//		}
-	//	}
 
 	//	public bool UpdateControlValueDataStock(int idItem, double minValue)
 	//	{
@@ -351,53 +533,7 @@ namespace PraxStock.Communication.Repositories
 	//	}
 
 
-	//	public ObservableCollection<Item> GetBySearchNumberItem(string searchNumber)
-	//	{
-	//		ObservableCollection<Item> resultCollection = [];
-	//		using var context = new PraxixSkladContext();
-	//		{
-	//			var selectSearchCollection = from item in context.Items
-	//										 where EF.Functions.Like(item.IdItem.ToString(), searchNumber + "%")
-	//										 select item;
 
-	//			foreach (var item in selectSearchCollection)
-	//				resultCollection.Add(item);
-	//		}
-
-	//		return resultCollection;
-	//	}
-
-	//	public ObservableCollection<Item> GetBySearchNameItem(string searchName)
-	//	{
-	//		ObservableCollection<Item> resultCollection = [];
-	//		using var context = new PraxixSkladContext();
-	//		{
-	//			var selectSearchCollection = from item in context.Items
-	//										 where EF.Functions.Like(item.NameItem, searchName + "%")
-	//										 select item;
-
-	//			foreach (var item in selectSearchCollection)
-	//				resultCollection.Add(item);
-	//		}
-
-	//		return resultCollection;
-	//	}
-
-	//	public ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure)
-	//	{
-	//		ObservableCollection<Item> resultCollection = [];
-	//		using var context = new PraxixSkladContext();
-	//		{
-	//			var selectSearchCollection = from item in context.Items
-	//										 where EF.Functions.Like(item.UnitMeasure, searchUnitMeasure + "%")
-	//										 select item;
-
-	//			foreach (var item in selectSearchCollection)
-	//				resultCollection.Add(item);
-	//		}
-
-	//		return resultCollection;
-	//	}
 
 	//	public ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName)
 	//	{
@@ -752,70 +888,7 @@ namespace PraxStock.Communication.Repositories
 	//		}
 	//	}
 
-	//	public List<string> GetAllNameItem()
-	//	{
-	//		var result = new List<string>();
-	//		using var context = new PraxixSkladContext();
-	//		{
-	//			result = context.Items
-	//				.OrderBy(x => x.NameItem)
-	//				.Select(n =>  n.NameItem)
-	//				.ToList();
-	//		}
 
-	//		return result;
-	//	}
-
-	//	public List<string> GetAllNamePost()
-	//	{
-	//		var result = new List<string>();
-	//		using var context = new PraxixSkladContext();
-	//		{
-	//			result = [.. context.MoveInPosts.Select(nP => nP.NamePost).Distinct()];
-	//		}
-
-	//		return result;
-	//	}
-
-	//	public List<MainListItems> GetAllNameItemSecond(string nameItem)
-	//	{
-	//		var mainCollection = new List<MainListItems>();
-	//		using var context = new PraxixSkladContext();
-	//		{
-	//			var result = from dataStoks in context.DataStocks
-	//						 join items in context.Items on dataStoks.IdItem equals items.IdItem
-	//						 join receipt in context.Receipts on dataStoks.IdItemStock equals receipt.IdReceipt
-	//						 where items.NameItem == nameItem
-	//						 select new
-	//						 {
-	//							 IdItemStock = dataStoks.IdItemStock,
-	//							 IdItem = dataStoks.IdItem,
-	//							 NameItem = items.NameItem,
-	//							 UnitMeasure = items.UnitMeasure,
-	//							 RemainingStock = dataStoks.RemainingStock,
-	//							 ExpirationDate = receipt.ExprirationDate,
-	//							 DateReceipt = receipt.DateReceipt,
-	//							 MinValue = dataStoks.MinValue,
-	//							 FlagSett = dataStoks.FlagSett
-	//						 };
-	//			foreach (var item in result)
-	//			{
-	//				mainCollection.Add(new MainListItems()
-	//				{
-	//					IdDataStock = item.IdItemStock,
-	//					IdItem = item.IdItem,
-	//					Name = item.NameItem,
-	//					UnitMeasure = item.UnitMeasure,
-	//					UnitCount = item.RemainingStock,
-	//					ExpirationDate = item.ExpirationDate,
-	//					DateReceipt = item.DateReceipt,
-	//					MinValue = item.MinValue,
-	//					FlagSett = item.FlagSett
-	//				});
-	//			}
-	//		}
-	//		return mainCollection;
-	//	}
 
 	//	public MainListItems GetBySearchIdStockItem(int searchIdStock)
 	//	{
@@ -852,130 +925,6 @@ namespace PraxStock.Communication.Repositories
 	//					FlagSett = item.FlagSett
 	//				};
 	//			return resultCollection;
-	//		}
-	//	}
-
-	//	public int GetBySearchIdItem(string searchName)
-	//	{
-
-	//		using var context = new PraxixSkladContext();
-	//		{
-	//			try
-	//			{
-	//				var idItem = (from item in context.Items
-	//							  where item.NameItem == searchName
-	//							  select item.IdItem).First();
-
-	//				return idItem;
-	//			}
-	//			catch (Exception ex)
-	//			{
-	//				return 0;
-	//			}
-	//		}
-	//	}
-
-	//	public void AddReceiptItem(ReceiptListItem receiptListItem)
-	//	{
-	//		Receipt receipt = new();
-	//		DataStock dataStock = new();
-	//		using var context = new PraxixSkladContext();
-	//		{
-	//			var idItem = (from item in context.Items
-	//						  where item.NameItem == receiptListItem.Name
-	//						  select item.IdItem).First();
-
-	//			receipt = new Receipt()
-	//			{
-	//				IdItem = idItem,
-	//				QuantityReceipt = receiptListItem.UnitCount,
-	//				ExprirationDate = receiptListItem.ExpirationDate,
-	//				DateReceipt = receiptListItem.DateReceipt,
-	//			};
-
-
-	//			context.Receipts.Add(receipt);
-	//			context.SaveChanges();
-
-	//			using var context2 = new PraxixSkladContext();
-	//			{
-	//				var idStock = context.Receipts
-	//					.Where(id => id.IdItem == idItem)
-	//					.OrderBy(x => x.IdReceipt)
-	//					.Select(idS => idS.IdReceipt)
-	//					.LastOrDefault();
-
-	//				dataStock = new DataStock()
-	//				{
-	//					IdItemStock = idStock,
-	//					IdItem = idItem,
-	//					RemainingStock = receiptListItem.UnitCount
-	//				};
-
-	//				context.DataStocks.Add(dataStock);
-	//				context.SaveChanges();
-	//			}
-	//		}
-	//	}
-	//	public bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem)
-	//	{
-	//		try
-	//		{
-	//			using var context = new PraxixSkladContext();
-	//			{
-	//				SqlParameter[] param =
-	//				{
-	//				new ()
-	//				{
-	//					ParameterName = "@idItem",
-	//					SqlDbType = System.Data.SqlDbType.Int,
-	//					Value = receiptListItem.IdItem,
-	//				},
-	//				new ()
-	//				{
-	//					ParameterName = "@idItemStock",
-	//					SqlDbType = System.Data.SqlDbType.Int,
-	//					Value = idStockItem
-
-	//				},
-	//				new ()
-	//				{
-	//					ParameterName = "@quatityReceipt",
-	//					SqlDbType = System.Data.SqlDbType.Float,
-	//					Value = receiptListItem.UnitCount
-	//				},
-	//				new ()
-	//				{
-	//					ParameterName = "@expirrationDate",
-	//					SqlDbType = System.Data.SqlDbType.Date,
-	//					Value = receiptListItem.ExpirationDate
-	//				},
-	//				new ()
-	//				{
-	//					ParameterName = "@dateReceip",
-	//					SqlDbType = System.Data.SqlDbType.Date,
-	//					Value = receiptListItem.DateReceipt
-	//				},
-	//				new ()
-	//				{
-	//					ParameterName = "@result",
-	//					SqlDbType = System.Data.SqlDbType.Int,
-	//					Direction = System.Data.ParameterDirection.Output
-	//				}
-	//			};
-
-	//					if (param[3].Value == null)
-	//						param[3].Value = DBNull.Value;
-
-	//				context.Database.ExecuteSqlRaw(
-	//					"update_dataStock_afterReceipt @idItem, @idItemStock, @quatityReceipt, @expirrationDate, @dateReceip, @result output", param);
-
-	//				return Convert.ToInt32(param[5].Value) == 1 ? true : false;
-	//			}
-	//		}
-	//		catch (Exception ex)
-	//		{
-	//			return false;
 	//		}
 	//	}
 

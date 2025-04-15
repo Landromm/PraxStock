@@ -12,10 +12,10 @@ namespace PraxStock.Communication.Repositories
 {
     interface IAdminRepositories
     {
-        ObservableCollection<Item> GetAllItemsList();
-        ObservableCollection<Item> GetBySearchNumberItem(string searchNumber);
-        ObservableCollection<Item> GetBySearchNameItem(string searchName);
-        ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure);
+        ObservableCollection<Item> GetAllItemsList();                                                                   // OK
+        ObservableCollection<Item> GetBySearchNumberItem(string searchNumber);                                          // OK
+        ObservableCollection<Item> GetBySearchNameItem(string searchName);                                              // OK
+        ObservableCollection<Item> GetBySearchUnitMeasureItem(string searchUnitMeasure);                                // OK
 
         ObservableCollection<MainListItems> GetBySearchNameItemMainList(string searchName);
         ObservableCollection<MainListItems> GetBySearchRemainingStockMainList(string remainingStock);
@@ -30,9 +30,9 @@ namespace PraxStock.Communication.Repositories
         ObservableCollection<MoveListItem> GetBySearchDateReceiptMoveList(DateOnly dateReceipt);
         ObservableCollection<MoveListItem> GetBySearchNamePostMoveList(string namePost);
 
-		ObservableCollection<MainListItems> GetDataStockList();
-		ObservableCollection<ReceiptListItem> GetReseiptList();
-        ObservableCollection<MoveListItem> GetMoveInPostList();
+		ObservableCollection<MainListItems> GetDataStockList();                                                         // OK
+		ObservableCollection<ReceiptListItem> GetReseiptList();                                                         // OK
+        ObservableCollection<MoveListItem> GetMoveInPostList();                                                         // ???
 
         ObservableCollection<ExpenseStatisticModel> GetExpenseStatisticModels(DateOnly startDate, DateOnly endDate);
 
@@ -43,8 +43,8 @@ namespace PraxStock.Communication.Repositories
 		List<MainListItems> GetAllNameItemSecond(string nameItem);
 		MainListItems GetBySearchIdStockItem(int searchIdStock);
         int GetBySearchIdItem(string searchName);
-		void AddItemsList(string nameItem, string unitMeasure);
-        void ChangedItemList(string nameItem, string unitMeasure, int idItem);
+		void AddItemsList(string nameItem, string unitMeasure);                                                         // OK
+        void ChangedItemList(string nameItem, string unitMeasure, int idItem);                                          // OK
         bool UpdateControlValueDataStock(int idItem, double minValue);
 
         void AddReceiptItem(ReceiptListItem receiptListItem);
