@@ -70,11 +70,6 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 
 	public string? PathFolderSaveFileMergeDate(string fileName)
 	{
-		//FolderBrowserDialog directchoosedlg = new FolderBrowserDialog();
-		//if (directchoosedlg.ShowDialog() == DialogResult.OK)
-		//{
-		//	return pathFolder = directchoosedlg.SelectedPath + fileInfo.Name;
-		//}
 		SaveFileDialog saveFileDialog = new SaveFileDialog();
 		saveFileDialog.FileName = $"{fileName} за {DateOnly.FromDateTime(StartDate)}-{DateOnly.FromDateTime(EndDate)}";
 		saveFileDialog.Filter = "Книга Excel (*.xlsx)|*.xlsx|Книга Excel 97-2003 (*.xls)|*.xls";
@@ -129,7 +124,7 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 	{
 		CheckExistsFile();
 
-		ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+		ExcelPackage.License.SetNonCommercialPersonal("Radkevich Igor");
 
 		using (var package = new ExcelPackage())
 		{			
@@ -207,7 +202,6 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 		CheckExistsFile();
 
 		ExcelPackage.License.SetNonCommercialPersonal("Radkevich Igor");
-		;
 
 		using (var package = new ExcelPackage())
 		{
@@ -318,7 +312,7 @@ internal class ReportExcel : DialogViewModel, IReportExcel
 	{
 		CheckExistsFile();
 
-		ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+		ExcelPackage.License.SetNonCommercialPersonal("Radkevich Igor");
 
 		using (var package = new ExcelPackage())
 		{
