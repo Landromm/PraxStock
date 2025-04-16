@@ -39,7 +39,9 @@ public partial class PraxixSkladContext : DbContext
 
             entity.ToTable("DataStock");
 
-            entity.Property(e => e.IdItemStock).HasColumnName("idItemStock");
+            entity.Property(e => e.IdItemStock)
+                .ValueGeneratedNever()
+                .HasColumnName("idItemStock");
             entity.Property(e => e.IdItem).HasColumnName("idItem");
 
             entity.HasOne(d => d.IdItemNavigation).WithMany(p => p.DataStocks)
@@ -79,17 +81,11 @@ public partial class PraxixSkladContext : DbContext
 
             entity.ToTable("Receipt");
 
-            entity.Property(e => e.IdReceipt)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("idReceipt");
+            entity.Property(e => e.IdReceipt).HasColumnName("idReceipt");
             entity.Property(e => e.IdItem).HasColumnName("idItem");
 
             entity.HasOne(d => d.IdItemNavigation).WithMany(p => p.Receipts)
                 .HasForeignKey(d => d.IdItem)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.IdReceiptNavigation).WithOne(p => p.Receipt)
-                .HasForeignKey<Receipt>(d => d.IdReceipt)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 

@@ -13,11 +13,9 @@ public partial class DataStock
 
     public double? MinValue { get; set; }
 
-    public bool FlagSett { get; set; }
+    public int? FlagSett { get; set; }
 
     public virtual Item IdItemNavigation { get; set; } = null!;
 
     public virtual ICollection<MoveInPost> MoveInPosts { get; set; } = new List<MoveInPost>();
-
-    public virtual Receipt? Receipt { get; set; }
 }

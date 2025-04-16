@@ -20,11 +20,19 @@ namespace PraxStock.Communication.Repositories
 	{
 		public void AddItemsList(string nameItem, string unitMeasure)
 		{
-			using var contex = new PraxixSkladContext();
+			try
 			{
-				var tempItem = new Item() { NameItem = nameItem, UnitMeasure = unitMeasure };
-				contex.Add(tempItem);
-				contex.SaveChanges();
+				using var contex = new PraxixSkladContext();
+				{
+					var tempItem = new Item() { NameItem = nameItem, UnitMeasure = unitMeasure };
+					contex.Add(tempItem);
+					contex.SaveChanges();
+				}
+			}
+			catch (Exception ex)
+			{
+
+				throw;
 			}
 		}
 
@@ -42,7 +50,7 @@ namespace PraxStock.Communication.Repositories
 							IdItems = moveListItem.IdItem,
 							QuantityMove = moveListItem.UnitCount,
 							NamePost = moveListItem.NamePost,
-							DateMove = moveListItem.DateMove.ToString(),
+							DateMove = moveListItem.DateMove.ToString("yyyy-MM-dd"),
 							IdItemStock = moveListItem.IdDataStock
 						});
 						return Convert.ToBoolean(context.SaveChanges());
@@ -59,161 +67,115 @@ namespace PraxStock.Communication.Repositories
 
 		public void AddReceiptItem(ReceiptListItem receiptListItem)
 		{
-			Receipt receipt = new();
-			DataStock dataStock = new();
-			using var context = new PraxixSkladContext();
+			try
 			{
-				var idItem = (from item in context.Items
-							  where item.NameItem == receiptListItem.Name
-							  select item.IdItem).First();
-
-				receipt = new Receipt()
+				using var context = new PraxixSkladContext();
 				{
-					IdItem = idItem,
-					QuantityReceipt = receiptListItem.UnitCount,
-					ExpirationDate = receiptListItem.ExpirationDate.ToString(),
-					DateReceipt = receiptListItem.DateReceipt.ToString(),
-				};
+					var idItem = (from item in context.Items
+								 where item.NameItem == receiptListItem.Name
+								 select item.IdItem).First();
 
-
-				context.Receipts.Add(receipt);
-				context.SaveChanges();
-
-				using var context2 = new PraxixSkladContext();
-				{
-					var idStock = context.Receipts
-						.Where(id => id.IdItem == idItem)
-						.OrderBy(x => x.IdReceipt)
-						.Select(idS => idS.IdReceipt)
-						.LastOrDefault();
-
-					dataStock = new DataStock()
+					var receipt = new Receipt()
 					{
-						IdItemStock = idStock,
 						IdItem = idItem,
-						RemainingStock = receiptListItem.UnitCount
+						QuantityReceipt = receiptListItem.UnitCount,
+						ExpirationDate = receiptListItem.ExpirationDate is null ? string.Empty : receiptListItem.ExpirationDate.Value.ToString("yyyy-MM-dd"),
+						DateReceipt = receiptListItem.DateReceipt.ToString("yyyy-MM-dd"),
 					};
 
-					context.DataStocks.Add(dataStock);
+					context.Receipts.Add(receipt);
 					context.SaveChanges();
+
+					using var context2 = new PraxixSkladContext();
+					{
+						var idStock = context.Receipts
+							.Where(id => id.IdItem == idItem)
+							.OrderBy(x => x.IdReceipt)
+							.Select(idS => idS.IdReceipt)
+							.LastOrDefault();
+
+						var dataStock = new DataStock()
+						{
+							IdItemStock = idStock,
+							IdItem = idItem,
+							RemainingStock = receiptListItem.UnitCount
+						};
+
+						context.DataStocks.Add(dataStock);
+						context.SaveChanges();
+					}
 				}
+			}
+			catch (Exception ex)
+			{
+				throw;
 			}
 		}
 
 		public bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem)
 		{
-			//try
-			//{
-			//	using var context = new PraxixSkladContext();
-			//	{
-			//		SqlParameter[] param =
-			//		{
-			//				new ()
-			//				{
-			//					ParameterName = "@idItem",
-			//					SqlDbType = System.Data.SqlDbType.Int,
-			//					Value = receiptListItem.IdItem,
-			//				},
-			//				new ()
-			//				{
-			//					ParameterName = "@idItemStock",
-			//					SqlDbType = System.Data.SqlDbType.Int,
-			//					Value = idStockItem
+			try
+			{
+				using var context = new PraxixSkladContext();
+				{
+					var receipt = new Receipt()
+					{
+						IdItem = receiptListItem.IdItem,
+						QuantityReceipt = receiptListItem.UnitCount,
+						ExpirationDate = receiptListItem.ExpirationDate is null ? string.Empty : receiptListItem.ExpirationDate.Value.ToString("yyyy-MM-dd"),
+						DateReceipt = receiptListItem.DateReceipt.ToString("yyyy-MM-dd")
+					};
 
-			//				},
-			//				new ()
-			//				{
-			//					ParameterName = "@quatityReceipt",
-			//					SqlDbType = System.Data.SqlDbType.Float,
-			//					Value = receiptListItem.UnitCount
-			//				},
-			//				new ()
-			//				{
-			//					ParameterName = "@expirrationDate",
-			//					SqlDbType = System.Data.SqlDbType.Date,
-			//					Value = receiptListItem.ExpirationDate
-			//				},
-			//				new ()
-			//				{
-			//					ParameterName = "@dateReceip",
-			//					SqlDbType = System.Data.SqlDbType.Date,
-			//					Value = receiptListItem.DateReceipt
-			//				},
-			//				new ()
-			//				{
-			//					ParameterName = "@result",
-			//					SqlDbType = System.Data.SqlDbType.Int,
-			//					Direction = System.Data.ParameterDirection.Output
-			//				}
-			//			};
+					var dataStock = context.DataStocks
+									.Where(id => id.IdItemStock == idStockItem)
+									.First();
 
-			//		if (param[3].Value == null)
-			//			param[3].Value = DBNull.Value;
-
-			//		context.Database.ExecuteSqlRaw(
-			//			"update_dataStock_afterReceipt @idItem, @idItemStock, @quatityReceipt, @expirrationDate, @dateReceip, @result output", param);
-
-			//		return Convert.ToInt32(param[5].Value) == 1 ? true : false;
-			//	}
-			//}
-			//catch (Exception ex)
-			//{
-			//	return false;
-			//}
-			return false;
+					dataStock.RemainingStock += receiptListItem.UnitCount;
+					context.Add(receipt);
+					context.Update(dataStock);
+					context.SaveChanges();
+					return true;
+				}
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
 		}
 
 		public bool AddWriteOff(MainListItems writeOffItem)
 		{
-			//		try
-			//		{
-			//			using var context = new PraxixSkladContext();
-			//			{
-			//				SqlParameter[] param =
-			//				{
-			//				new ()
-			//				{
-			//					ParameterName = "@idItem",
-			//					SqlDbType = System.Data.SqlDbType.Int,
-			//					Value = writeOffItem.IdItem,
-			//				},
-			//				new ()
-			//				{
-			//					ParameterName = "@idItemStock",
-			//					SqlDbType = System.Data.SqlDbType.Int,
-			//					Value = writeOffItem.IdDataStock
+			try
+			{
+				using var context = new PraxixSkladContext();
+				{
+					var writeOff = new WriteOff()
+					{
+						IdItem = writeOffItem.IdItem,
+						QuantityWriteOff = writeOffItem.UnitCount,
+						DateWriteOff = DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd")
+					};
 
-			//				},
-			//				new ()
-			//				{
-			//					ParameterName = "@countWriteOff",
-			//					SqlDbType = System.Data.SqlDbType.Float,
-			//					Value = writeOffItem.UnitCount
-			//				},
-			//				new ()
-			//				{
-			//					ParameterName = "@dateWriteOff",
-			//					SqlDbType = System.Data.SqlDbType.Date,
-			//					Value = DateOnly.FromDateTime(DateTime.Now)
-			//				},
-			//				new ()
-			//				{
-			//					ParameterName = "@result",
-			//					SqlDbType = System.Data.SqlDbType.Int,
-			//					Direction = System.Data.ParameterDirection.Output
-			//				}
-			//			};
-			//				context.Database.ExecuteSqlRaw(
-			//					"update_dataStock_afterWriteOff @idItem, @idItemStock, @countWriteOff, @dateWriteOff, @result output", param);
+					var dataStock = context.DataStocks
+									.Where(id => id.IdItemStock == writeOffItem.IdDataStock)
+									.First();
 
-			//				return Convert.ToInt32(param[4].Value) == 1 ? true : false;
-			//			}
-			//		}
-			//		catch (Exception ex)
-			//		{
-			//			return false;
-			//		}
-			return false;
+					context.Add(writeOff);
+					context.SaveChanges();
+
+					using var context2 = new PraxixSkladContext();
+					{
+						context2.Remove(dataStock);
+						context2.SaveChanges();
+					}
+				}
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
 		}
 
 		public void ChangedItemList(string nameItem, string unitMeasure, int idItem)
@@ -293,7 +255,7 @@ namespace PraxStock.Communication.Repositories
 						ExpirationDate = DateOnly.TryParse(item.ExpirationDate, out dateEx) == true ? DateOnly.Parse(item.ExpirationDate) : null,
 						DateReceipt = DateOnly.Parse(item.DateReceipt),
 						MinValue = item.MinValue,
-						FlagSett = item.FlagSett
+						FlagSett = Convert.ToBoolean(item.FlagSett)
 					});
 				}
 			}
@@ -345,7 +307,7 @@ namespace PraxStock.Communication.Repositories
 						ExpirationDate = DateOnly.TryParse(item.ExpirationDate, out dateEx) == true ? DateOnly.Parse(item.ExpirationDate) : null,
 						DateReceipt = DateOnly.Parse(item.DateReceipt),
 						MinValue = item.MinValue,
-						FlagSett = item.FlagSett
+						FlagSett = Convert.ToBoolean(item.FlagSett)
 					});
 				return resultCollection;
 			}
@@ -454,7 +416,7 @@ namespace PraxStock.Communication.Repositories
 						ExpirationDate = DateOnly.TryParse(item.ExpirationDate, out dateEx) == true ? DateOnly.Parse(item.ExpirationDate) : null,
 						DateReceipt = DateOnly.Parse(item.DateReceipt),
 						MinValue = item.MinValue,
-						FlagSett = item.FlagSett
+						FlagSett = Convert.ToBoolean(item.FlagSett)
 					});
 				return resultCollection;
 			}
@@ -513,7 +475,7 @@ namespace PraxStock.Communication.Repositories
 						ExpirationDate = DateOnly.TryParse(item.ExpirationDate, out dateEx) == true ? DateOnly.Parse(item.ExpirationDate) : null,
 						DateReceipt = DateOnly.Parse(item.DateReceipt),
 						MinValue = item.MinValue,
-						FlagSett = item.FlagSett
+						FlagSett = Convert.ToBoolean(item.FlagSett)
 					};
 				return resultCollection;
 			}
@@ -569,7 +531,7 @@ namespace PraxStock.Communication.Repositories
 						ExpirationDate = DateOnly.TryParse(item.ExpirationDate, out dateEx) == true ? DateOnly.Parse(item.ExpirationDate) : null,
 						DateReceipt = DateOnly.Parse(item.DateReceipt),
 						MinValue = item.MinValue,
-						FlagSett = item.FlagSett
+						FlagSett = Convert.ToBoolean(item.FlagSett)
 					});
 				return resultCollection;
 			}
@@ -728,7 +690,7 @@ namespace PraxStock.Communication.Repositories
 						ExpirationDate = DateOnly.TryParse(item.ExpirationDate, out dateEx) == true ? DateOnly.Parse(item.ExpirationDate) : null,
 						DateReceipt = DateOnly.Parse(item.DateReceipt),
 						MinValue = item.MinValue,
-						FlagSett = item.FlagSett
+						FlagSett = Convert.ToBoolean(item.FlagSett)
 					});
 				return resultCollection;
 			}
@@ -820,7 +782,7 @@ namespace PraxStock.Communication.Repositories
 						ExpirationDate = DateOnly.TryParse(item.ExpirationDate, out dateEx) == true ? DateOnly.Parse(item.ExpirationDate) : null,
 						DateReceipt = DateOnly.Parse(item.DateReceipt),
 						MinValue = item.MinValue,
-						FlagSett = item.FlagSett
+						FlagSett = Convert.ToBoolean(item.FlagSett)
 					});
 				}
 			}
@@ -858,8 +820,7 @@ namespace PraxStock.Communication.Repositories
 					{
 						var result = from moveInPost in context1.MoveInPosts
 									 join items in context1.Items on moveInPost.IdItems equals items.IdItem
-									 where moveInPost.IdItems == itemMove.Item1 &&
-									 (DateOnly.Parse(moveInPost.DateMove!) >= startDate && DateOnly.Parse(moveInPost.DateMove!) <= endDate)
+									 join dataStock in context1.DataStocks on moveInPost.IdItemStock equals dataStock.IdItemStock
 									 select new
 									 {
 										 IdMove = moveInPost.IdMove,
@@ -868,10 +829,18 @@ namespace PraxStock.Communication.Repositories
 										 UnitMeasure = items.UnitMeasure,
 										 QuantityMove = moveInPost.QuantityMove,
 										 DateMove = moveInPost.DateMove,
-										 NamePost = moveInPost.NamePost
+										 NamePost = moveInPost.NamePost,
+										 IdItemStock = dataStock.IdItemStock
 									 };
 
-						foreach (var item in result)
+						// Фильтрация выборки в диапозоне выбранных дат.
+						var filterResult = result
+							.ToList()
+							.Where(item => 
+							(item.IdItem == itemMove.Item1) && 
+							(DateOnly.Parse(item.DateMove) >= startDate && (DateOnly.Parse(item.DateMove) <= endDate)));
+
+						foreach (var item in filterResult)
 							moveList.Add(new MoveListItem
 							{
 								IdMove = item.IdMove,
@@ -880,7 +849,8 @@ namespace PraxStock.Communication.Repositories
 								UnitMeasure = item.UnitMeasure,
 								UnitCount = item.QuantityMove,
 								DateMove = DateOnly.Parse(item.DateMove),
-								NamePost = item.NamePost
+								NamePost = item.NamePost,
+								IdDataStock = item.IdItemStock
 							});
 					}
 
@@ -895,7 +865,6 @@ namespace PraxStock.Communication.Repositories
 			}
 			catch (Exception ex)
 			{
-
 				throw;
 			}
 		}
@@ -999,7 +968,7 @@ namespace PraxStock.Communication.Repositories
 							IdItem = targetId.IdItem,
 							RemainingStock = targetId.RemainingStock,
 							MinValue = minValue,
-							FlagSett = minValue > 0 ? true : false
+							FlagSett = minValue > 0 ? 1 : 0
 						};
 						context2.Update(updatedItem);
 						var result = context2.SaveChanges();

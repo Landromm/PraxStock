@@ -36,19 +36,19 @@ namespace PraxStock.Communication.Repositories
 
         ObservableCollection<ExpenseStatisticModel> GetExpenseStatisticModels(DateOnly startDate, DateOnly endDate);    // OK ???
 
-
 		List<string> GetAllNameItem();                                                                                  // OK
 		List<string> GetAllNamePost();                                                                                  // OK
 
 		List<MainListItems> GetAllNameItemSecond(string nameItem);                                                      // OK
 		MainListItems GetBySearchIdStockItem(int searchIdStock);                                                        // OK
+
         int GetBySearchIdItem(string searchName);                                                                       // OK
 		void AddItemsList(string nameItem, string unitMeasure);                                                         // OK
         void ChangedItemList(string nameItem, string unitMeasure, int idItem);                                          // OK
         bool UpdateControlValueDataStock(int idItem, double minValue);                                                  // OK
 
         void AddReceiptItem(ReceiptListItem receiptListItem);                                                           // OK
-        bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem);                                    // proc
+        bool AddReceiptItemSecond(ReceiptListItem receiptListItem, int idStockItem);                                    // OK
 
 		bool AddMoveInPost(MoveListItem moveListItem);                                                                  // OK
         double GetRemainingStock(int idDataStock);                                                                      // OK

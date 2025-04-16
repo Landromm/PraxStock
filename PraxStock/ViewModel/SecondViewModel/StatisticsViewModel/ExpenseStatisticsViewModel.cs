@@ -168,6 +168,9 @@ internal class ExpenseStatisticsViewModel : ViewModel.Base.ViewModel
 	{
 		StartDateStatistic = DateTime.Now.AddDays(-30);
 		EndDateStatistic = DateTime.Now;
+		var temp = DateOnly.FromDateTime(StartDateStatistic).ToString("yyyy-MM-dd");
+		var temp2 = DateOnly.ParseExact(temp, "yyyy-MM-dd");
+
 		StatisticMainCollection = _repositoriesDB.GetExpenseStatisticModels(DateOnly.FromDateTime(StartDateStatistic), DateOnly.FromDateTime(EndDateStatistic));
 	}
 }
